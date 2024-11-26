@@ -1,6 +1,12 @@
+import view.*;
+
+import javax.swing.*;
+
 public class Main {
     public static void main(String[] args) {
-        System.out.println("hello");
-        System.out.println("zhone-lb main");
+        SwingUtilities.invokeLater(() -> {
+            StartFrame startframe=new StartFrame();
+            startframe.setVisible(true);
+        });
     }
 }
