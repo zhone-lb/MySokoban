@@ -16,7 +16,7 @@ public class TestFrame extends JFrame implements Serializable {
         setLayout(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         add(character);
-//        character.setBounds(2,3,34,34);
+        character.setBounds(2,3,50,50);
         character.activate();
 //        addMouseMotionListener(new MouseAdapter() {
 //            @Override
