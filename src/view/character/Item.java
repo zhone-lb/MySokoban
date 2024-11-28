@@ -5,20 +5,23 @@ import view.Activator;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.List;
 
-public abstract class Character extends JLabel implements Serializable, Activator {
+/**
+ *  各种游戏元素的父类<p>
+ *  注意，添加Character进入框架时，遵循如下操作：<p>
+ *  add(component);<p>
+ *  component.setBounds(x,y,width,height);<p>
+ *  component.activate();
+ */
+public abstract class Item extends JLabel implements Serializable, Activator {
     protected ImageIcon originImage;
     protected boolean isMoving = false;
-    public Character(String filename) {
+    public Item(String filename) {
         try {
             originImage = new ImageIcon(ImageIO.read(new File(filename)));
             setIcon(originImage);

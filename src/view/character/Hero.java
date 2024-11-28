@@ -5,7 +5,7 @@ import view.Activator;
 import java.awt.event.*;
 import java.io.Serializable;
 
-public class Hero extends Character implements Activator, Serializable {
+public class Hero extends Item implements Activator, Serializable {
     public Hero(String filename) {
         super(filename);
     }
