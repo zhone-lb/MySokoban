@@ -1,28 +1,22 @@
 import controller.TestFrame;
-import view.*;
+import controller.level.NormalFrame;
+import model.Map;
 
-import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
 
 public class Main {
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            StartFrame startframe=new StartFrame();
-            startframe.setVisible(true);
-
-
-            //想控制窗口最小大小，失败了 qwq
-//            startframe.addComponentListener(new ComponentAdapter() {
-//                public void componentResized(ComponentEvent evt) {
-//                    if (startframe.getWidth() < 540) {
-//                        startframe.setSize(540,startframe.getHeight());
-//                    }
-//                    if (startframe.getHeight() < 360) {
-//                        startframe.setSize(startframe.getWidth(),360);
-//                    }
-//                }
-//            });
-        });
+        System.out.println("hello");
+        System.out.println("zhone-lb main");
+//        TestFrame testFrame = new TestFrame();
+        Point[] item = new Point[7];
+        for (int i = 0; i < 5; i++) {
+            item[i] = new Point(i,i);
+        }
+        item[5] = new Point(0,1);
+        item[6] = new Point(3,0);
+        int[] type = {0,1,1,3,3,2,2};
+        Map map = new Map(5,5,item,type);
+        NormalFrame frame = new NormalFrame(map);
     }
 }

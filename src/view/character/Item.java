@@ -5,20 +5,26 @@ import view.Activator;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.List;
 
-public abstract class Character extends JLabel implements Serializable, Activator {
+/**
+ *  各种游戏元素的父类<p>
+ *  注意，ImageIO比较low，不能读取webp图片<p>
+ *  注意，添加Character进入框架时，遵循如下操作：<p>
+ *  add(component);<p>
+ *  component.setBounds(x,y,width,height);<p>
+ *  component.activate();
+ */
+public abstract class Item extends JLabel implements Serializable, Activator {
+    protected int id;
     protected ImageIcon originImage;
-    protected boolean isMoving = false;
-    public Character(String filename) {
+    public boolean isMoving = false;
+    public Item(String filename) {
+        this.id = 0;
         try {
             originImage = new ImageIcon(ImageIO.read(new File(filename)));
             setIcon(originImage);
@@ -61,13 +67,12 @@ public abstract class Character extends JLabel implements Serializable, Activato
      * @param time 移动总时长
      * @param rate 刷新率
      */
-    public void move(int dx, int dy, long time, int rate) {
+    public synchronized void move(int dx, int dy, long time, int rate) {
         if(isMoving) return;
         isMoving = true;
         double a1 = 2.0*dx/time, a2 = 2.0*dy/time;
 //        double a1 = 6.0*dx/time/time/time, a2 = 6.0*dy/time/time/time;
         final int ox = getX(), oy = getY();
-
         MotionTimer motionTimer = new MotionTimer() {
             @Override
             public void run() {
@@ -77,8 +82,8 @@ public abstract class Character extends JLabel implements Serializable, Activato
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                    System.out.println(ticks);
-                    System.out.println(SwingUtilities.isEventDispatchThread());
+//                    System.out.println(ticks);
+//                    System.out.println(SwingUtilities.isEventDispatchThread());
                     SwingUtilities.invokeLater(()-> {
                         setLocation(ox+(int)(2*ticks<=time?a1*ticks*ticks/time:2.0*a1*ticks-a1*ticks*ticks/time-0.5*a1*time),
                                     oy+(int)(2*ticks<=time?a2*ticks*ticks/time:2.0*a2*ticks-a2*ticks*ticks/time-0.5*a2*time));
@@ -87,6 +92,7 @@ public abstract class Character extends JLabel implements Serializable, Activato
                     });
                 }
                 SwingUtilities.invokeLater(()->{setLocation(ox+dx,oy+dy);});
+//                System.out.println(getX()+" "+getY()+" "+ox+" "+oy);
                 isMoving = false;
             }
         };
@@ -94,5 +100,11 @@ public abstract class Character extends JLabel implements Serializable, Activato
         thread.start();
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
 
+    public int getId() {
+        return id;
+    }
 }
