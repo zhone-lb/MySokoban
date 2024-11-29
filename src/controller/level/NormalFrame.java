@@ -1,76 +1,158 @@
 package controller.level;
 
 import model.Map;
+import model.algorithm.PathExplorer;
 import view.Activator;
 import view.character.*;
 import model.config.UserConfig;
+import view.character.Box;
 
-import javax.swing.JFrame;
-import java.awt.Point;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.FocusEvent;
 import java.awt.event.KeyEvent;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class NormalFrame extends JFrame implements Serializable, Activator {
-    public int row, col;
+    public int row, col, size;
     public Map map;
     public Item[] item;
-    public Point[] location;
-    public Hero currentHero;
+    public int currentSite;
+    public ArrayList<Integer> past;
     public NormalFrame(Map originMap) {
         Init(originMap);
     }
     public void Init(Map originMap) {
         map = originMap;
-        row = map.row; col = map.col;
-        int tot =map.hero.length+map.box.length+map.wall.length+map.target.length;
-        item = new Item[tot]; int index = 0;
-        for (int i = 0; i < map.hero.length; i++, index++) item[index] = new Hero("");
-        for (int i = 0; i < map.box.length; i++, index++) item[index] = new Box("");
-        for (int i = 0; i < map.wall.length; i++, index++) item[index] = new Wall("");
-        for (int i = 0; i < map.target.length; i++, index++) item[index] = new Target("");
-        activate();
+        row = map.row; col = map.col; size = 50;
+        int tot = map.item.length;
+        currentSite = 0;
+        item = new Item[tot];
+        past = new ArrayList<>();
+        SwingUtilities.invokeLater(()->{
+            for (int i = 0; i < tot; i++) {
+                switch (map.type[i]) {
+                    case 0 -> item[i] = new Hero("src\\model\\data\\image\\Guide.png");
+                    case 1 -> item[i] = new Box("src\\model\\data\\image\\Box.jpg");
+                    case 2 -> item[i] = new Wall("src\\model\\data\\image\\Wall.png");
+                    case 3 -> item[i] = new Target("src\\model\\data\\image\\Target.png");
+                }
+            }
+            for (int i = 0; i < tot; i++) item[i].setId(i);
+            activate();
+        });
     }
     @Override
     public void activate() {
-        setLocation(200,100);
-        setSize(400,300);
-        setLayout(null);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        resetMap();
-        for (int i = 0; i < item.length; i++) {
-            add(item[i]);
-//            item[i].setBounds();    //根据布局设置合理大小和位置
-            item[i].activate();
-        }
-        setEnabled(true);
-        setFocusable(false);
-        setVisible(true);
+        SwingUtilities.invokeLater(()->{
+            size = 50;
+            enableEvents(AWTEvent.KEY_EVENT_MASK);
+            enableEvents(AWTEvent.MOUSE_EVENT_MASK);
+            setLocation(200,100);
+            setSize(400,300);
+            setLayout(null);
+            setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            for (int i = 0; i < item.length; i++) {
+                add(item[i]);
+                item[i].setBounds(map.item[i].x*size , map.item[i].y*size, size, size);    //根据布局设置合理大小和位置
+                item[i].activate();
+            }
+            PathExplorer.path(map);
+            setEnabled(true);
+            setFocusable(true);
+            setVisible(true);
+        });
     }
 
-    public void resetMap() {
-        map = new Map(row, col);
-        ArrayList<Point> hero = new ArrayList<>();
-        ArrayList<Point> box = new ArrayList<>();
-        ArrayList<Point> wall = new ArrayList<>();
-        ArrayList<Point> target = new ArrayList<>();
-        for (int i = 0; i < item.length; i++) {
-
+    public synchronized void update(int DIR) {
+        if(item[currentSite].isMoving) return;
+        int x = map.item[currentSite].x, y = map.item[currentSite].y;
+        if(PathExplorer.isValid(x,y,DIR)) {
+//            PathExplorer.put();
+            if(!PathExplorer.getBlocked(x,y,DIR)) {
+                past.add(DIR);
+                map.item[currentSite] = new Point(x+PathExplorer.dir[DIR][0], y+PathExplorer.dir[DIR][1]);
+                item[currentSite].move(PathExplorer.dir[DIR][0]*size, PathExplorer.dir[DIR][1]*size, UserConfig.GAME_SPEED, UserConfig.REFRESH_RATE);
+                PathExplorer.refresh(x,y,DIR,false);
+            }
+            else {
+                past.add(1 << 2 | DIR);
+                int boxSite = getBoxSite(new Point(x+PathExplorer.dir[DIR][0], y+PathExplorer.dir[DIR][1]));
+                map.item[currentSite] = new Point(x+PathExplorer.dir[DIR][0], y+PathExplorer.dir[DIR][1]);
+                map.item[boxSite] = new Point(x+2*PathExplorer.dir[DIR][0], y+2*PathExplorer.dir[DIR][1]);
+                item[currentSite].move(PathExplorer.dir[DIR][0]*size, PathExplorer.dir[DIR][1]*size, UserConfig.GAME_SPEED, UserConfig.REFRESH_RATE);
+                item[boxSite].move(PathExplorer.dir[DIR][0]*size, PathExplorer.dir[DIR][1]*size, UserConfig.GAME_SPEED, UserConfig.REFRESH_RATE);
+                PathExplorer.refresh(x,y,DIR,true);
+            }
+            checkSucceed();
+            checkFailed();
         }
+    }
+
+    public void checkFailed() {
+        if(PathExplorer.isFailed()) {
+            System.out.println("You failed");
+        }
+    }
+    public void checkSucceed() {
+        if(PathExplorer.isFinished()) {
+            System.out.println("You win");
+        }
+    }
+    public synchronized void withdraw() {
+        if(past.isEmpty()) return;
+        if(item[currentSite].isMoving) return;
+        int DIR = past.getLast(); past.removeLast();
+        boolean isBlocked = ((DIR & 4) != 0);
+        DIR &= 3; DIR ^= 3;
+        int x = map.item[currentSite].x, y = map.item[currentSite].y;
+        if(PathExplorer.isValid2(x,y,DIR)) {
+//            PathExplorer.put();
+            if(!PathExplorer.getBlocked2(x,y,DIR)) {
+                map.item[currentSite] = new Point(x+PathExplorer.dir[DIR][0], y+PathExplorer.dir[DIR][1]);
+                item[currentSite].move(PathExplorer.dir[DIR][0]*size, PathExplorer.dir[DIR][1]*size, UserConfig.GAME_SPEED, UserConfig.REFRESH_RATE);
+                PathExplorer.refresh2(x,y,DIR,false);
+            }
+            else {
+                int boxSite = getBoxSite(new Point(x+PathExplorer.dir[DIR^3][0], y+PathExplorer.dir[DIR^3][1]));
+                map.item[currentSite] = new Point(x+PathExplorer.dir[DIR][0], y+PathExplorer.dir[DIR][1]);
+                map.item[boxSite] = new Point(x, y);
+                item[currentSite].move(PathExplorer.dir[DIR][0]*size, PathExplorer.dir[DIR][1]*size, UserConfig.GAME_SPEED, UserConfig.REFRESH_RATE);
+                item[boxSite].move(PathExplorer.dir[DIR][0]*size, PathExplorer.dir[DIR][1]*size, UserConfig.GAME_SPEED, UserConfig.REFRESH_RATE);
+                PathExplorer.refresh2(x,y,DIR,true);
+            }
+            checkFailed();
+        }
+    }
+
+    public void Hint() {
+        update(PathExplorer.getHint(map.item[currentSite].x, map.item[currentSite].y));
+    }
+
+    protected int getBoxSite(Point p) {
+        for (int i = 0; i < item.length; i++) {
+            if(map.type[i] == 1 && map.item[i].equals(p)) return i;
+        }
+        return -1;
     }
 
     @Override
     protected void processFocusEvent(FocusEvent e) {
         super.processFocusEvent(e);
-        currentHero = (Hero) e.getSource();
+        currentSite = ((Hero) e.getSource()).getId();
     }
 
     @Override
     protected void processKeyEvent(KeyEvent e) {
         super.processKeyEvent(e);
-        if(e.getKeyCode() == UserConfig.MOVE_UP) {
-
-        }
+        if(e.getID() != KeyEvent.KEY_PRESSED) return;
+        if(e.getKeyCode() == UserConfig.MOVE_UP) update(PathExplorer.UP);
+        if(e.getKeyCode() == UserConfig.MOVE_DOWN) update(PathExplorer.DOWN);
+        if(e.getKeyCode() == UserConfig.MOVE_LEFT) update(PathExplorer.LEFT);
+        if(e.getKeyCode() == UserConfig.MOVE_RIGHT) update(PathExplorer.RIGHT);
+        if(e.getKeyCode() == UserConfig.HINT) Hint();
+        if(e.getKeyCode() == UserConfig.WITHDRAW) withdraw();
     }
 }
