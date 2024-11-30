@@ -9,8 +9,7 @@ import view.character.Box;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.FocusEvent;
-import java.awt.event.KeyEvent;
+import java.awt.event.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -50,6 +49,7 @@ public class NormalFrame extends JFrame implements Serializable, Activator {
             size = 50;
             enableEvents(AWTEvent.KEY_EVENT_MASK);
             enableEvents(AWTEvent.MOUSE_EVENT_MASK);
+            enableEvents(AWTEvent.COMPONENT_EVENT_MASK);
             setLocation(200,100);
             setSize(400,300);
             setLayout(null);
@@ -58,6 +58,7 @@ public class NormalFrame extends JFrame implements Serializable, Activator {
                 add(item[i]);
                 item[i].setBounds(map.item[i].x*size , map.item[i].y*size, size, size);    //根据布局设置合理大小和位置
                 item[i].activate();
+                if(map.type[i] == 0) currentSite = i;
             }
             PathExplorer.path(map);
             setEnabled(true);
@@ -139,6 +140,22 @@ public class NormalFrame extends JFrame implements Serializable, Activator {
     }
 
     @Override
+    public synchronized void repaint() {
+        super.repaint();
+        SwingUtilities.invokeLater(()->{
+            Dimension d = getSize();
+            size = Math.min(d.width / (col+1), d.height / (row+1));
+            for (int i = 0; i < item.length; i++) {
+                item[i].setBounds(map.item[i].x*size , map.item[i].y*size, size, size);
+                item[i].activate();
+            }
+            setEnabled(true);
+            setFocusable(true);
+            setVisible(true);
+        });
+    }
+
+    @Override
     protected void processFocusEvent(FocusEvent e) {
         super.processFocusEvent(e);
         currentSite = ((Hero) e.getSource()).getId();
@@ -147,6 +164,7 @@ public class NormalFrame extends JFrame implements Serializable, Activator {
     @Override
     protected void processKeyEvent(KeyEvent e) {
         super.processKeyEvent(e);
+        System.out.println(e.getSource().getClass());
         if(e.getID() != KeyEvent.KEY_PRESSED) return;
         if(e.getKeyCode() == UserConfig.MOVE_UP) update(PathExplorer.UP);
         if(e.getKeyCode() == UserConfig.MOVE_DOWN) update(PathExplorer.DOWN);
@@ -154,5 +172,12 @@ public class NormalFrame extends JFrame implements Serializable, Activator {
         if(e.getKeyCode() == UserConfig.MOVE_RIGHT) update(PathExplorer.RIGHT);
         if(e.getKeyCode() == UserConfig.HINT) Hint();
         if(e.getKeyCode() == UserConfig.WITHDRAW) withdraw();
+    }
+
+    @Override
+    protected void processComponentEvent(ComponentEvent e) {
+        super.processComponentEvent(e);
+        System.out.println(e.getSource().getClass());
+        repaint();
     }
 }
