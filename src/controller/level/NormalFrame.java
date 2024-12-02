@@ -1,5 +1,6 @@
 package controller.level;
 
+import controller.Settings;
 import model.Map;
 import model.algorithm.PathExplorer;
 import view.Activator;
@@ -18,10 +19,30 @@ public class NormalFrame extends JFrame implements Serializable, Activator {
     public int row, col, size;
     public Map map;
     public Item[] item;
+    public Item background;
     public int currentSite;
     public ArrayList<Integer> past;
+
+
+
+    public static UserConfig userConfig;
+
+
+
+
     public NormalFrame(Map originMap) {
         Init(originMap);
+
+
+
+        Settings settings = new Settings();
+        userConfig = new UserConfig();
+
+
+
+
+
+
     }
     public void Init(Map originMap) {
         map = originMap;
@@ -56,11 +77,15 @@ public class NormalFrame extends JFrame implements Serializable, Activator {
             setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             for (int i = 0; i < item.length; i++) {
                 add(item[i]);
-                item[i].setBounds(map.item[i].x*size , map.item[i].y*size, size, size);    //根据布局设置合理大小和位置
+                item[i].setBounds(map.item[i].x*size+size/2 , map.item[i].y*size+size/2, size, size);    //根据布局设置合理大小和位置
                 item[i].activate();
                 if(map.type[i] == 0) currentSite = i;
             }
             PathExplorer.path(map);
+            background = new Item("src\\model\\data\\image\\background.png") {};
+            add(background);
+            background.setBounds(0,0,size*(col+1), size*(row+1));
+            background.activate();
             setEnabled(true);
             setFocusable(true);
             setVisible(true);
@@ -144,11 +169,13 @@ public class NormalFrame extends JFrame implements Serializable, Activator {
         super.repaint();
         SwingUtilities.invokeLater(()->{
             Dimension d = getSize();
-            size = Math.min(d.width / (col+1), d.height / (row+1));
+            size = Math.min(d.width / (col+2), d.height / (row+2));
             for (int i = 0; i < item.length; i++) {
-                item[i].setBounds(map.item[i].x*size , map.item[i].y*size, size, size);
+                item[i].setBounds(map.item[i].x * size + size / 2, map.item[i].y * size + size / 2, size, size);
                 item[i].activate();
             }
+            background.setBounds(0,0,size*(col+1),size*(row+1));
+            background.activate();
             setEnabled(true);
             setFocusable(true);
             setVisible(true);
