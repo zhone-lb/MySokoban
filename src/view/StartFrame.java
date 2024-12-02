@@ -35,43 +35,58 @@ public class StartFrame extends JFrame {
         this.add(title,titlelocation);
 //        title.setLocation((int)((this.getWidth()-title.getWidth())/2),
 //                (int)((this.getHeight()/3-title.getHeight())/2));
-        title.setFont(new Font("Songti SC", Font.BOLD, 80));
+//        title.setFont(new Font("Songti SC", Font.BOLD, 80));
 
         //loginbutton
         loginframe = new Loginframe();
         loginbutton = new JButton();
-        loginbutton.setText("登录/注册");
+        Image guest_0 =(new ImageIcon("src/model/data/image/guest_0.png")).getImage().getScaledInstance(120, 120, Image.SCALE_SMOOTH);
+        Image guest_1 =(new ImageIcon("src/model/data/image/guest_1.png")).getImage().getScaledInstance(120, 120, Image.SCALE_SMOOTH);
+        loginbutton.setIcon(new ImageIcon(guest_0));
         loginbutton.setSize(100,50);
+        loginbutton.setOpaque(false);
+        loginbutton.setContentAreaFilled(false);
+        loginbutton.setBorder(null);
+        loginbutton.setPreferredSize(new Dimension(120,120));
         GridBagConstraints loginbuttonlocation=new GridBagConstraints();
         loginbuttonlocation.gridx=1;
         loginbuttonlocation.gridy=5;
         loginbuttonlocation.weightx = 1.0;
         loginbuttonlocation.weighty = 1.0;
-        loginbuttonlocation.ipadx = 50;
-        loginbuttonlocation.ipady = 50;
 //        loginbuttonlocation.fill=GridBagConstraints.BOTH;
         this.add(loginbutton,loginbuttonlocation);
         loginbutton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 loginframe.setVisible(true);
-                //想实现一个登录界面打开后锁定主界面
-//                StartFrame.this.setEnabled(false);
+            }
 
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                loginbutton.setIcon(new ImageIcon(guest_1));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                loginbutton.setIcon(new ImageIcon(guest_0));
             }
         });
 
         //settingbutton
         settingbutton = new JButton();
-        settingbutton.setText("更改设置");
-        settingbutton.setSize(100,50);
+        Image settingicon_0 =(new ImageIcon("src/model/data/image/setting.png")).getImage().getScaledInstance(120, 120, Image.SCALE_SMOOTH);
+        Image settingicon_1 =(new ImageIcon("src/model/data/image/setting_1.png")).getImage().getScaledInstance(120, 120, Image.SCALE_SMOOTH);
+        settingbutton.setIcon(new ImageIcon(settingicon_0));
+        settingbutton.setOpaque(false);
+        settingbutton.setContentAreaFilled(false);
+        settingbutton.setBorder(null);
+//        settingbutton.setText("更改设置");
+        settingbutton.setPreferredSize(new Dimension(120,120));
         GridBagConstraints settingbuttonlocation=new GridBagConstraints();
         settingbuttonlocation.gridx=11;
         settingbuttonlocation.gridy=5;
         settingbuttonlocation.weightx = 1.0;
         settingbuttonlocation.weighty = 1.0;
-        settingbuttonlocation.ipadx = 50;
-        settingbuttonlocation.ipady = 50;
 //        settingbuttonlocation.fill=GridBagConstraints.BOTH;
         this.add(settingbutton,settingbuttonlocation);
         settingbutton.addMouseListener(new MouseAdapter() {
@@ -79,6 +94,16 @@ public class StartFrame extends JFrame {
             public void mouseClicked(MouseEvent e) {
 //                setting();
 
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                settingbutton.setIcon(new ImageIcon(settingicon_1));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                settingbutton.setIcon(new ImageIcon(settingicon_0));
             }
         });
 
