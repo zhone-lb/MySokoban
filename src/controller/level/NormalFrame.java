@@ -61,6 +61,7 @@ public class NormalFrame extends JFrame implements Serializable, Activator {
                 }
             }
             for (int i = 0; i < tot; i++) item[i].setId(i);
+
             activate();
         });
     }
@@ -191,7 +192,6 @@ public class NormalFrame extends JFrame implements Serializable, Activator {
     @Override
     protected void processKeyEvent(KeyEvent e) {
         super.processKeyEvent(e);
-        System.out.println(e.getSource().getClass());
         if(e.getID() != KeyEvent.KEY_PRESSED) return;
         if(e.getKeyCode() == UserConfig.MOVE_UP) update(PathExplorer.UP);
         if(e.getKeyCode() == UserConfig.MOVE_DOWN) update(PathExplorer.DOWN);
@@ -204,7 +204,6 @@ public class NormalFrame extends JFrame implements Serializable, Activator {
     @Override
     protected void processComponentEvent(ComponentEvent e) {
         super.processComponentEvent(e);
-        System.out.println(e.getSource().getClass());
         repaint();
     }
 }
