@@ -1,5 +1,6 @@
 package controller.level;
 
+import controller.Settings;
 import model.Map;
 import model.algorithm.PathExplorer;
 import view.Activator;
@@ -9,8 +10,7 @@ import view.character.Box;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.FocusEvent;
-import java.awt.event.KeyEvent;
+import java.awt.event.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,10 +19,30 @@ public class NormalFrame extends JFrame implements Serializable, Activator {
     public int row, col, size;
     public Map map;
     public Item[] item;
+    public Item background;
     public int currentSite;
     public ArrayList<Integer> past;
+
+
+
+    public static UserConfig userConfig;
+
+
+
+
     public NormalFrame(Map originMap) {
         Init(originMap);
+
+
+
+        Settings settings = new Settings();
+        userConfig = new UserConfig();
+
+
+
+
+
+
     }
     public void Init(Map originMap) {
         map = originMap;
@@ -41,6 +61,7 @@ public class NormalFrame extends JFrame implements Serializable, Activator {
                 }
             }
             for (int i = 0; i < tot; i++) item[i].setId(i);
+
             activate();
         });
     }
@@ -50,16 +71,22 @@ public class NormalFrame extends JFrame implements Serializable, Activator {
             size = 50;
             enableEvents(AWTEvent.KEY_EVENT_MASK);
             enableEvents(AWTEvent.MOUSE_EVENT_MASK);
+            enableEvents(AWTEvent.COMPONENT_EVENT_MASK);
             setLocation(200,100);
             setSize(400,300);
             setLayout(null);
             setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             for (int i = 0; i < item.length; i++) {
                 add(item[i]);
-                item[i].setBounds(map.item[i].x*size , map.item[i].y*size, size, size);    //根据布局设置合理大小和位置
+                item[i].setBounds(map.item[i].x*size+size/2 , map.item[i].y*size+size/2, size, size);    //根据布局设置合理大小和位置
                 item[i].activate();
+                if(map.type[i] == 0) currentSite = i;
             }
             PathExplorer.path(map);
+            background = new Item("src\\model\\data\\image\\background.png") {};
+            add(background);
+            background.setBounds(0,0,size*(col+1), size*(row+1));
+            background.activate();
             setEnabled(true);
             setFocusable(true);
             setVisible(true);
@@ -139,6 +166,24 @@ public class NormalFrame extends JFrame implements Serializable, Activator {
     }
 
     @Override
+    public synchronized void repaint() {
+        super.repaint();
+        SwingUtilities.invokeLater(()->{
+            Dimension d = getSize();
+            size = Math.min(d.width / (col+2), d.height / (row+2));
+            for (int i = 0; i < item.length; i++) {
+                item[i].setBounds(map.item[i].x * size + size / 2, map.item[i].y * size + size / 2, size, size);
+                item[i].activate();
+            }
+            background.setBounds(0,0,size*(col+1),size*(row+1));
+            background.activate();
+            setEnabled(true);
+            setFocusable(true);
+            setVisible(true);
+        });
+    }
+
+    @Override
     protected void processFocusEvent(FocusEvent e) {
         super.processFocusEvent(e);
         currentSite = ((Hero) e.getSource()).getId();
@@ -154,5 +199,11 @@ public class NormalFrame extends JFrame implements Serializable, Activator {
         if(e.getKeyCode() == UserConfig.MOVE_RIGHT) update(PathExplorer.RIGHT);
         if(e.getKeyCode() == UserConfig.HINT) Hint();
         if(e.getKeyCode() == UserConfig.WITHDRAW) withdraw();
+    }
+
+    @Override
+    protected void processComponentEvent(ComponentEvent e) {
+        super.processComponentEvent(e);
+        repaint();
     }
 }

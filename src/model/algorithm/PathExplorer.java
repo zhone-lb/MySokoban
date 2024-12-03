@@ -16,28 +16,27 @@ public class PathExplorer {
     public static final int[][] dir = {{-1,0},{0,-1},{0,1},{1,0}};
     protected static int row, col;
     public static int[][] a;
-    protected static ArrayList<Map> end;
     protected static HashSet<Long> vis;
     protected static HashMap<Long, Integer> f;
     protected static HashMap<Long, Integer> trans;
+    public static PriorityQueue<Pair<Integer, Long>> q;
+    public static HashMap<Long, HashSet<Long>> e;
+    public static HashMap<Long, Long> tr;
     public static void path(Map map) {
         row = map.row; col = map.col;
         a = new int[row][col];
         f = new HashMap<>();
         trans = new HashMap<>();
-        end = new ArrayList<>();
         vis = new HashSet<>();
+        e = new HashMap<>();
         Init(map);
         int x = map.item[0].x, y = map.item[0].y;
+        e.put(0L,new HashSet<>());
         dfs(x, y);
-        for (int i = 0; i < end.size(); i++) {
-            vis.clear();
-            Init(end.get(i));
-//            put();
-            dfs2(getHero(end.get(i)).x, getHero(end.get(i)).y);
-        }
+        dijkstra();
         Init(map);
-//        put();
+        vis = new HashSet<>();
+        dfs2(x,y);
     }
     protected static Point getHero(Map map) {
         for (int i = 0; i < map.item.length; i++) {
@@ -47,10 +46,10 @@ public class PathExplorer {
     }
     protected static void dfs(int x, int y) {
         long now = getNum();
-        f.put(now,INF);
+        e.put(now,new HashSet<>());
         if(isFinished()) {
-            f.put(now, 0);
-            end.add(getMap());
+            HashSet<Long> tp = e.get(0L);
+            tp.add(now); e.put(0L,tp);
             return;
         }
         for (int i = 0; i < 4; i++) {
@@ -58,56 +57,69 @@ public class PathExplorer {
                 if((a[x+dir[i][0]][y+dir[i][1]] & 2) == 0) {
                     a[x][y] ^= 1; a[x+dir[i][0]][y+dir[i][1]] ^= 1;
                     long nxt = getNum();
-                    if(f.get(nxt) == null) dfs(x+dir[i][0], y+dir[i][1]);
-                    if(f.get(nxt) + 1 < f.get(now)) {
-                        f.put(now, f.get(nxt) + 1);
-                        trans.put(now, i);
-                    }
+                    if(e.get(nxt) == null) dfs(x+dir[i][0], y+dir[i][1]);
+                    HashSet<Long> tp = e.get(nxt); tp.add(now); e.put(nxt,tp);
+                    tp = e.get(now); tp.add(nxt); e.put(now,tp);
                     a[x][y] ^= 1; a[x+dir[i][0]][y+dir[i][1]] ^= 1;
                 }
                 else {
                     a[x][y] ^= 1; a[x+dir[i][0]][y+dir[i][1]] ^= 1;
                     a[x+dir[i][0]][y+dir[i][1]] ^= 2; a[x+2*dir[i][0]][y+2*dir[i][1]] ^= 2;
                     long nxt = getNum();
-                    if(f.get(nxt) == null) dfs(x+dir[i][0], y+dir[i][1]);
-                    if(f.get(nxt) + 1 < f.get(now)) {
-                        f.put(now, f.get(nxt) + 1);
-                        trans.put(now, i);
-                    }
+                    if(e.get(nxt) == null) dfs(x+dir[i][0], y+dir[i][1]);
+                    HashSet<Long> tp = e.get(nxt); tp.add(now); e.put(nxt,tp);
                     a[x][y] ^= 1; a[x+dir[i][0]][y+dir[i][1]] ^= 1;
                     a[x+dir[i][0]][y+dir[i][1]] ^= 2; a[x+2*dir[i][0]][y+2*dir[i][1]] ^= 2;
                 }
             }
         }
     }
+
+    public static void dijkstra() {
+        vis = new HashSet<>();
+        tr = new HashMap<>();
+        f = new HashMap<>();
+        for (Long i : e.keySet()) f.put(i,INF);
+        f.put(0L,0);
+        q = new PriorityQueue<>();
+        q.add(new Pair<>(0,0L));
+        while(!q.isEmpty()) {
+            long x = q.peek().value; q.poll();
+            if(vis.contains(x)) continue;
+            vis.add(x);
+            if(e.get(x) == null) continue;
+            for (Long i : e.get(x)) {
+                if(f.get(i) > f.get(x) + 1) {
+                    f.put(i, f.get(x) + 1);
+                    if(!vis.contains(i)) q.add(new Pair<>(f.get(i),i));
+                }
+                if(f.get(i) == f.get(x) + 1) tr.put(i, x);
+            }
+        }
+    }
+
     protected static void dfs2(int x, int y) {
         long now = getNum();
         vis.add(now);
+        if(isFinished()) return;
         for (int i = 0; i < 4; i++) {
-            if(isValid2(x,y,i)) {
-                if(inInterval(x+dir[i^3][0],y+dir[i^3][1]) && (a[x+dir[i^3][0]][y+dir[i^3][1]] & 6) == 2) {
+            if(isValid(x,y,i)) {
+                if((a[x+dir[i][0]][y+dir[i][1]] & 2) == 0) {
                     a[x][y] ^= 1; a[x+dir[i][0]][y+dir[i][1]] ^= 1;
-                    a[x+dir[i^3][0]][y+dir[i^3][1]] ^= 2; a[x][y] ^= 2;
                     long nxt = getNum();
-                    if(!f.containsKey(nxt)) f.put(nxt,INF);
-                    if(f.get(nxt) > f.get(now) + 1) {
-                        f.put(nxt, f.get(now) + 1);
-                        trans.put(nxt, i ^ 3);
-                    }
-                    if(!vis.contains(nxt)) dfs2(x+dir[i][0],y+dir[i][1]);
+                    if(!vis.contains(nxt)) dfs2(x+dir[i][0], y+dir[i][1]);
+                    if(tr.containsKey(nxt) && tr.get(nxt) == now) trans.put(nxt, i^3);
+                    if(tr.containsKey(now) && tr.get(now) == nxt) trans.put(now, i);
                     a[x][y] ^= 1; a[x+dir[i][0]][y+dir[i][1]] ^= 1;
-                    a[x+dir[i^3][0]][y+dir[i^3][1]] ^= 2; a[x][y] ^= 2;
                 }
                 else {
                     a[x][y] ^= 1; a[x+dir[i][0]][y+dir[i][1]] ^= 1;
+                    a[x+dir[i][0]][y+dir[i][1]] ^= 2; a[x+2*dir[i][0]][y+2*dir[i][1]] ^= 2;
                     long nxt = getNum();
-                    if(!f.containsKey(nxt)) f.put(nxt,INF);
-                    if(f.get(nxt) > f.get(now) + 1) {
-                        f.put(nxt, f.get(now) + 1);
-                        trans.put(nxt, i ^ 3);
-                    }
-                    if(!vis.contains(nxt)) dfs2(x+dir[i][0],y+dir[i][1]);
+                    if(!vis.contains(nxt)) dfs2(x+dir[i][0], y+dir[i][1]);
+                    if(tr.containsKey(now) && tr.get(now) == nxt) trans.put(now, i);
                     a[x][y] ^= 1; a[x+dir[i][0]][y+dir[i][1]] ^= 1;
+                    a[x+dir[i][0]][y+dir[i][1]] ^= 2; a[x+2*dir[i][0]][y+2*dir[i][1]] ^= 2;
                 }
             }
         }
@@ -204,23 +216,6 @@ public class PathExplorer {
             }
         }
         return ans;
-    }
-    protected static Map getMap() {
-        ArrayList<Point> item = new ArrayList<>();
-        ArrayList<Integer> type = new ArrayList<>();
-        for (int i = 0; i < col; i++) {
-            for (int j = 0; j < row; j++) {
-                if((a[i][j]&1) != 0) {item.add(new Point(i,j)); type.add(0);}
-                if((a[i][j]&2) != 0) {item.add(new Point(i,j)); type.add(1);}
-                if((a[i][j]&4) != 0) {item.add(new Point(i,j)); type.add(2);}
-                if((a[i][j]&8) != 0) {item.add(new Point(i,j)); type.add(3);}
-            }
-        }
-        Point[] pt = new Point[item.size()];
-        int[] tp = new int[type.size()];
-        for (int i = 0; i < item.size(); i++) pt[i] = item.get(i);
-        for (int i = 0; i < type.size(); i++) tp[i] = type.get(i);
-        return new Map(row,col,pt,tp);
     }
     protected static void Init(Map map) {
         a = new int[col][row];

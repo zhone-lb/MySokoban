@@ -37,6 +37,5 @@ public class Hero extends Item implements Activator, Serializable {
 //                }
 //            }
 //        });
-        requestFocus();
     }
 }
