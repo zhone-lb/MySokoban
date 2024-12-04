@@ -62,13 +62,11 @@ public class NormalFrame extends JFrame implements Serializable, Activator {
                 }
             }
             for (int i = 0; i < tot; i++) item[i].setId(i);
-            activate();
-            repaint();
         });
     }
 
     public void reset() {
-        map = originMap;
+        map = new Map(originMap.row, originMap.col, originMap.item.clone(), originMap.type.clone());
         past = new ArrayList<>();
         PathExplorer.Init(originMap);
         repaint();
@@ -161,6 +159,7 @@ public class NormalFrame extends JFrame implements Serializable, Activator {
             setEnabled(true);
             setFocusable(true);
             setVisible(true);
+            repaint();
         });
     }
 
