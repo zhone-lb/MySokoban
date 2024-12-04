@@ -1,11 +1,7 @@
 package model.algorithm;
 
-import jdk.jfr.Unsigned;
-import model.Map;
-
 import java.awt.*;
 import java.util.*;
-import java.util.List;
 
 /**
  * 还有道具！！！
@@ -30,7 +26,7 @@ public class PathExplorer {
         vis = new HashSet<>();
         e = new HashMap<>();
         Init(map);
-        int x = map.item[0].x, y = map.item[0].y;
+        int x = getHero(map).x, y = getHero(map).y;
         e.put(0L,new HashSet<>());
         dfs(x, y);
         dijkstra();
@@ -171,9 +167,6 @@ public class PathExplorer {
                     )
                );
     }
-    public static boolean getBlocked2(int x,int y,int DIR) {
-        return (inInterval(x+dir[DIR^3][0],y+dir[DIR^3][1]) && (a[x+dir[DIR^3][0]][y+dir[DIR^3][1]] & 6) == 2);
-    }
     public static void refresh(int x, int y, int DIR, boolean isBlocked) {
 //        System.out.println(x+" "+y+" "+DIR+" "+isBlocked);
         if(!isBlocked) {
@@ -217,7 +210,7 @@ public class PathExplorer {
         }
         return ans;
     }
-    protected static void Init(Map map) {
+    public static void Init(Map map) {
         a = new int[col][row];
         for (int i = 0; i < map.item.length; i++) {
             switch (map.type[i]) {

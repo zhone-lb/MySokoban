@@ -6,6 +6,9 @@ import view.Activator;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -21,18 +24,19 @@ import java.io.Serializable;
  */
 public abstract class Item extends JLabel implements Serializable, Activator {
     protected int id;
-    protected ImageIcon originImage;
+    protected ImageIcon currentImage,originImage, focusedImage;
     public boolean isMoving = false;
+    public Item() {}
     public Item(String filename) {
         this.id = 0;
         try {
             originImage = new ImageIcon(ImageIO.read(new File(filename)));
-            setIcon(originImage);
+            currentImage = originImage;
+            setIcon(currentImage);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
     /**
      * 注意：先将此组件添加至父容器，然后在父容器内执行该组件的setBounds，最后执行该activate()方法
      */
@@ -42,19 +46,20 @@ public abstract class Item extends JLabel implements Serializable, Activator {
         setEnabled(true);
         setFocusable(false);
         setVisible(true);
+        revalidate();
     }
 
 
     public void scale(int width, int height) {
-        BufferedImage bufferedImage = (BufferedImage)(originImage.getImage());
+        BufferedImage bufferedImage = (BufferedImage)(currentImage.getImage());
         setIcon(new ImageIcon(bufferedImage.getScaledInstance(width,height,Image.SCALE_DEFAULT)));
         setBounds(getX(),getY(),width,height);
     }
 
     public void scale(double ratio) {
-        int width = (int)((originImage.getIconWidth() * ratio) + 0.5);
-        int height = (int)((originImage.getIconHeight() * ratio) + 0.5);
-        BufferedImage bufferedImage = (BufferedImage)(originImage.getImage());
+        int width = (int)((currentImage.getIconWidth() * ratio) + 0.5);
+        int height = (int)((currentImage.getIconHeight() * ratio) + 0.5);
+        BufferedImage bufferedImage = (BufferedImage)(currentImage.getImage());
         setIcon(new ImageIcon(bufferedImage.getScaledInstance(width,height,Image.SCALE_DEFAULT)));
         setBounds(getX(),getY(),width,height);
     }
@@ -67,7 +72,7 @@ public abstract class Item extends JLabel implements Serializable, Activator {
      * @param time 移动总时长
      * @param rate 刷新率
      */
-    public synchronized void move(int dx, int dy, long time, int rate) {
+    public void move(int dx, int dy, long time, int rate) {
         if(isMoving) return;
         isMoving = true;
         double a1 = 2.0*dx/time, a2 = 2.0*dy/time;

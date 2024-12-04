@@ -143,13 +143,13 @@ public class Settings extends JFrame implements Serializable {
             index = 5;
         });
 
-        text[6] = new JLabel("动画刷新率(ms)");
+        text[6] = new JLabel("动画刷新率");
         text[6].setFont(new Font("微软雅黑",Font.BOLD,17));
         table.add(text[6]);
         text[6].setSize(60,40);
         text[6].setVisible(true);
 
-        button[6] = new JButton(KeyEvent.getKeyText(UserConfig.REFRESH_RATE));
+        button[6] = new JButton(Integer.toString(UserConfig.REFRESH_RATE));
         button[6].setFont(new Font("微软雅黑",Font.BOLD,17));
         table.add(button[6]);
         button[6].setSize(90,40);
@@ -159,13 +159,13 @@ public class Settings extends JFrame implements Serializable {
             button[6].setText("请键入");
             index = 6;
         });
-        text[7] = new JLabel("动画时长(ms)");
+        text[7] = new JLabel("动画时长");
         text[7].setFont(new Font("微软雅黑",Font.BOLD,17));
         table.add(text[7]);
         text[7].setSize(60,40);
         text[7].setVisible(true);
 
-        button[7] = new JButton(KeyEvent.getKeyText(UserConfig.GAME_SPEED));
+        button[7] = new JButton(Integer.toString(UserConfig.GAME_SPEED));
         button[7].setFont(new Font("微软雅黑",Font.BOLD,17));
         table.add(button[7]);
         button[7].setSize(90,40);
