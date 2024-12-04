@@ -23,5 +23,6 @@ public class Main {
         Map map = new Map(5,5,item,type);
         NormalFrame frame = new NormalFrame(map);
         frame.activate();
+
     }
 }
