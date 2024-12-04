@@ -1,21 +1,24 @@
 package view;
+import controller.user.*;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
+import static controller.user.User.currentuser;
+
 public class StartFrame extends JFrame {
     JLabel title;
     Loginframe loginframe;
-    JButton loginbutton,settingbutton,normalgamebutton,spacialgamebutton;
+    public JButton loginbutton,settingbutton,normalgamebutton,spacialgamebutton;
     public StartFrame() {
-
 
         //frame
         this.setTitle("推箱子");
         this.setSize(1080,720);
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         this.setLocation((int)((screenSize.getWidth()-this.getWidth())/2),
-                                (int)((screenSize.getHeight()-this.getHeight())/2));
+                (int)((screenSize.getHeight()-this.getHeight())/2));
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLayout(new GridBagLayout());
 
@@ -42,6 +45,8 @@ public class StartFrame extends JFrame {
         loginbutton = new JButton();
         Image guest_0 =(new ImageIcon("src/model/data/image/guest_0.png")).getImage().getScaledInstance(120, 120, Image.SCALE_SMOOTH);
         Image guest_1 =(new ImageIcon("src/model/data/image/guest_1.png")).getImage().getScaledInstance(120, 120, Image.SCALE_SMOOTH);
+        Image login_0 =(new ImageIcon("src/model/data/image/login_0.png")).getImage().getScaledInstance(120, 120, Image.SCALE_SMOOTH);
+        Image login_1 =(new ImageIcon("src/model/data/image/login_1.png")).getImage().getScaledInstance(120, 120, Image.SCALE_SMOOTH);
         loginbutton.setIcon(new ImageIcon(guest_0));
         loginbutton.setSize(100,50);
         loginbutton.setOpaque(false);
@@ -63,12 +68,22 @@ public class StartFrame extends JFrame {
 
             @Override
             public void mouseEntered(MouseEvent e) {
-                loginbutton.setIcon(new ImageIcon(guest_1));
+                if(currentuser==null){
+                    loginbutton.setIcon(new ImageIcon(guest_1));
+                }
+                else{
+                    loginbutton.setIcon(new ImageIcon(login_1));
+                }
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-                loginbutton.setIcon(new ImageIcon(guest_0));
+                if(currentuser==null){
+                    loginbutton.setIcon(new ImageIcon(guest_0));
+                }
+                else{
+                    loginbutton.setIcon(new ImageIcon(login_0));
+                }
             }
         });
 

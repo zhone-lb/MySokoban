@@ -1,16 +1,25 @@
 package view;
 
+import controller.user.User;
+
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
+
+import static controller.user.User.*;
 
 public class Loginframe extends JFrame {
     JTextField username,password,passwordagain;
     JButton signin,signup,abandon;
     JLabel title,usernamelabel,passwordlabel,passwordagainlabel;
+    public void clear(){
+        username.setText("");
+        password.setText("");
+        passwordagain.setText("");
+    }
     public Loginframe() {
+        User.getuserlist();
+
         this.setSize(540,360);
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         this.setLocation((int)((screenSize.getWidth()-this.getWidth())/2),
@@ -40,7 +49,6 @@ public class Loginframe extends JFrame {
         this.add(usernamelabel, usernamelabelset);
 
         username= new JTextField();
-        ;
         GridBagConstraints usernameset =new GridBagConstraints();
         usernameset.gridx=1;
         usernameset.gridy=1;
@@ -98,6 +106,23 @@ public class Loginframe extends JFrame {
         signinset.weightx = 1.0;
         signinset.weighty = 1.0;
         this.add(signin,signinset);
+        signin.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                int fla=User.checkuser(username.getText(),password.getText());
+                if(fla==-1){
+                    JOptionPane.showMessageDialog(null,"密码错误","提示",JOptionPane.PLAIN_MESSAGE);
+                }
+                else if(fla==1){
+                    currentuser=getuser(username.getText());
+                    Loginframe.this.setVisible(false);
+                    clear();
+
+                } else if(fla==0){
+                    JOptionPane.showMessageDialog(null,"找不到对象（，请注册","提示",JOptionPane.PLAIN_MESSAGE);
+                }
+            }
+        });
 
         signup=new JButton("注册");
         signup.setFont(new Font("微软雅黑",Font.BOLD,15));
@@ -110,8 +135,28 @@ public class Loginframe extends JFrame {
         signup.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                passwordagain.setVisible(true);
-                passwordagainlabel.setVisible(true);
+                if(!passwordagain.isVisible()){
+                    passwordagain.setVisible(true);
+                    passwordagainlabel.setVisible(true);
+                }
+                else{
+                    int fla=User.checkuser(username.getText(),password.getText());
+                    if(fla!=0){
+                        JOptionPane.showMessageDialog(null,"改用户已存在，请登录","提示",JOptionPane.PLAIN_MESSAGE);
+                    }
+                    else{
+                        String newpassword=password.getText(),newpasswordagain=passwordagain.getText();
+                        if(!newpassword.equals(newpasswordagain)){
+                            JOptionPane.showMessageDialog(null,"密码不一致","提示",JOptionPane.PLAIN_MESSAGE);
+                        }
+                        else{
+                            new User(username.getText(),newpassword,newpasswordagain);
+                            Loginframe.this.setVisible(false);
+                            clear();
+
+                        }
+                    }
+                }
             }
         });
 
@@ -127,6 +172,7 @@ public class Loginframe extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 Loginframe.this.setVisible(false);
+                clear();
             }
         });
     }
