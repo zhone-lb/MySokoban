@@ -1,7 +1,9 @@
 import controller.MapEditor;
 import controller.level.NormalFrame;
 import model.algorithm.Map;
+import view.StartFrame;
 
+import javax.swing.*;
 import java.awt.*;
 
 public class Main {
@@ -25,5 +27,6 @@ public class Main {
         NormalFrame frame = new NormalFrame(map);
         frame.activate();
         MapEditor.CreateFrame();
+        StartFrame.start();
     }
 }

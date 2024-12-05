@@ -36,7 +36,7 @@ public class NormalFrame extends JFrame implements Serializable, Activator {
 
 
 
-        Settings settings = new Settings();
+//        Settings settings = new Settings();
         userConfig = new UserConfig();
 
 
