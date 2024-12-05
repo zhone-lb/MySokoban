@@ -1,6 +1,8 @@
 import controller.level.NormalFrame;
 import model.algorithm.Map;
+import view.StartFrame;
 
+import javax.swing.*;
 import java.awt.*;
 
 public class Main {
@@ -23,6 +25,9 @@ public class Main {
         Map map = new Map(5,5,item,type);
         NormalFrame frame = new NormalFrame(map);
         frame.activate();
-
+        SwingUtilities.invokeLater(() -> {
+            StartFrame startframe = new StartFrame();
+            startframe.setVisible(true);
+        });
     }
 }

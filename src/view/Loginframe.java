@@ -132,6 +132,7 @@ public class Loginframe extends JFrame {
         signupset.weightx = 1.0;
         signupset.weighty = 1.0;
         this.add(signup,signupset);
+
         signup.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -141,21 +142,24 @@ public class Loginframe extends JFrame {
                 }
                 else{
                     int fla=User.checkuser(username.getText(),password.getText());
-                    if(fla!=0){
-                        JOptionPane.showMessageDialog(null,"改用户已存在，请登录","提示",JOptionPane.PLAIN_MESSAGE);
-                    }
-                    else{
-                        String newpassword=password.getText(),newpasswordagain=passwordagain.getText();
-                        if(!newpassword.equals(newpasswordagain)){
-                            JOptionPane.showMessageDialog(null,"密码不一致","提示",JOptionPane.PLAIN_MESSAGE);
+                    if(!username.getText().isEmpty()){
+                        if(fla!=0){
+                            JOptionPane.showMessageDialog(null,"改用户已存在，请登录","提示",JOptionPane.PLAIN_MESSAGE);
                         }
                         else{
-                            new User(username.getText(),newpassword,newpasswordagain);
-                            Loginframe.this.setVisible(false);
-                            clear();
+                            String newpassword=password.getText(),newpasswordagain=passwordagain.getText();
+                            if(!newpassword.equals(newpasswordagain)){
+                                JOptionPane.showMessageDialog(null,"密码不一致","提示",JOptionPane.PLAIN_MESSAGE);
+                            }
+                            else{
+                                new User(username.getText(),newpassword,newpasswordagain);
+                                Loginframe.this.setVisible(false);
+                                clear();
 
+                            }
                         }
                     }
+
                 }
             }
         });
