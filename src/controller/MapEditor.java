@@ -34,7 +34,7 @@ public class MapEditor {
         jFrame.add(table);
         table.setVisible(true);
         table.setBounds(20,40,350,200);
-        table.setBackground(new Color(100,20,100));
+//        table.setBackground(new Color(100,20,100));
 
         JLabel text1 = new JLabel("请输入横向格数");
         text1.setFont(new Font("微软雅黑",Font.BOLD,18));
@@ -95,6 +95,7 @@ public class MapEditor {
             jFrame.dispose();
         });
         if(map == null) return null;
+
         return null;
     }
     protected static int getInteger(String s) {
