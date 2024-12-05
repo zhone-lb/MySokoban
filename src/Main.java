@@ -1,6 +1,5 @@
-import controller.TestFrame;
 import controller.level.NormalFrame;
-import model.Map;
+import model.algorithm.Map;
 import view.StartFrame;
 
 import javax.swing.*;
@@ -10,6 +9,11 @@ public class Main {
     public static void main(String[] args) {
         System.out.println("hello");
         System.out.println("zhone-lb main");
+
+
+//        PathExplorer.dijkstra();
+
+
 //        TestFrame testFrame = new TestFrame();
         Point[] item = new Point[7];
         for (int i = 0; i < 5; i++) {
@@ -19,8 +23,8 @@ public class Main {
         item[6] = new Point(3,0);
         int[] type = {0,1,1,3,3,2,2};
         Map map = new Map(5,5,item,type);
-
         NormalFrame frame = new NormalFrame(map);
+        frame.activate();
         SwingUtilities.invokeLater(() -> {
             StartFrame startframe = new StartFrame();
             startframe.setVisible(true);
