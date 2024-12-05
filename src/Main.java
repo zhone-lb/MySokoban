@@ -1,3 +1,4 @@
+import controller.MapEditor;
 import controller.level.NormalFrame;
 import model.algorithm.Map;
 
@@ -23,5 +24,6 @@ public class Main {
         Map map = new Map(5,5,item,type);
         NormalFrame frame = new NormalFrame(map);
         frame.activate();
+        MapEditor.CreateFrame();
     }
 }
