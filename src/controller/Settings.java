@@ -2,11 +2,14 @@ package controller;
 
 import controller.level.NormalFrame;
 import model.config.UserConfig;
+import view.StartFrame;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.Serializable;
 
 public class Settings extends JFrame implements Serializable {
@@ -15,12 +18,23 @@ public class Settings extends JFrame implements Serializable {
     public JLabel title;
     public JLabel[] text;
     public JButton[] button;
+    static Settings settings;
+    public static void newsetting(){
+        settings = new Settings();
+    }
     public Settings() {
         setName("设置");
         setSize(600, 400);
         setLocationRelativeTo(null);
         setResizable(false);
-        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+//        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                StartFrame.closesettings();
+                settings.setVisible(false);
+            }
+        });
         setLayout(null);
         setFocusable(true);
         setVisible(true);

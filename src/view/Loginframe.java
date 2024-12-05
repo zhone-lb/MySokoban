@@ -117,6 +117,7 @@ public class Loginframe extends JFrame {
                     currentuser=getuser(username.getText());
                     Loginframe.this.setVisible(false);
                     clear();
+                    StartFrame.closeloginframe();
 
                 } else if(fla==0){
                     JOptionPane.showMessageDialog(null,"找不到对象（，请注册","提示",JOptionPane.PLAIN_MESSAGE);
@@ -152,10 +153,10 @@ public class Loginframe extends JFrame {
                                 JOptionPane.showMessageDialog(null,"密码不一致","提示",JOptionPane.PLAIN_MESSAGE);
                             }
                             else{
-                                new User(username.getText(),newpassword,newpasswordagain);
+                                new User(username.getText(),newpassword);
                                 Loginframe.this.setVisible(false);
                                 clear();
-
+                                StartFrame.closeloginframe();
                             }
                         }
                     }
@@ -177,6 +178,7 @@ public class Loginframe extends JFrame {
             public void mouseClicked(MouseEvent e) {
                 Loginframe.this.setVisible(false);
                 clear();
+                StartFrame.closeloginframe();
             }
         });
     }

@@ -1,4 +1,5 @@
 package view;
+import controller.Settings;
 import controller.user.*;
 
 import javax.swing.*;
@@ -8,9 +9,14 @@ import java.awt.event.*;
 import static controller.user.User.currentuser;
 
 public class StartFrame extends JFrame {
-    JLabel title;
+    static JLabel title;
     Loginframe loginframe;
-    public JButton loginbutton,settingbutton,normalgamebutton,spacialgamebutton;
+    static JButton loginbutton,settingbutton,normalgamebutton,spacialgamebutton;
+    static StartFrame startframe;
+    public static void start(){
+        startframe = new StartFrame();
+        startframe.setVisible(true);
+    }
     public StartFrame() {
 
         //frame
@@ -19,12 +25,19 @@ public class StartFrame extends JFrame {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         this.setLocation((int)((screenSize.getWidth()-this.getWidth())/2),
                 (int)((screenSize.getHeight()-this.getHeight())/2));
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                User.saveuserlist();
+                System.exit(0);
+            }
+        });
         this.setLayout(new GridBagLayout());
 
         //title
         title = new JLabel();
         title.setText("推箱子");
+        title.setFont(new Font("微软雅黑",Font.BOLD,120));
         GridBagConstraints titlelocation=new GridBagConstraints();
         titlelocation.gridx=5;
         titlelocation.gridy=0;
@@ -64,6 +77,7 @@ public class StartFrame extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 loginframe.setVisible(true);
+                startframe.setEnabled(false);
             }
 
             @Override
@@ -107,8 +121,8 @@ public class StartFrame extends JFrame {
         settingbutton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-//                setting();
-
+                Settings.newsetting();
+                startframe.setEnabled(false);
             }
 
             @Override
@@ -166,4 +180,14 @@ public class StartFrame extends JFrame {
 //        loginframe=null;
 //        this.setEnabled(true);
 //    }
+    public static void closeloginframe(){
+        if(currentuser!=null){
+            Image login_0 =(new ImageIcon("src/model/data/image/login_0.png")).getImage().getScaledInstance(120, 120, Image.SCALE_SMOOTH);
+            loginbutton.setIcon(new ImageIcon(login_0));
+        }
+        startframe.setEnabled(true);
+    }
+    public static void closesettings(){
+        startframe.setEnabled(true);
+    }
 }
