@@ -1,9 +1,9 @@
-import controller.MapEditor;
+import controller.editor.EditFrame;
+import controller.editor.MapEditor;
 import controller.level.NormalFrame;
 import model.algorithm.Map;
 import view.StartFrame;
 
-import javax.swing.*;
 import java.awt.*;
 
 public class Main {
@@ -23,10 +23,13 @@ public class Main {
         item[5] = new Point(0,1);
         item[6] = new Point(3,0);
         int[] type = {0,1,1,3,3,2,2};
-        Map map = new Map(5,5,item,type);
-        NormalFrame frame = new NormalFrame(map);
-        frame.activate();
-        MapEditor.CreateFrame();
-        StartFrame.start();
+        Map map = new Map(5,6,item,type);
+//        NormalFrame frame = new NormalFrame(map);
+//        frame.activate();
+//        MapEditor.CreateFrame();
+//        StartFrame.start();
+        MapEditor mapEditor = new MapEditor();
+        NormalFrame normalFrame = mapEditor.CreateFrame();
+        normalFrame.activate();
     }
 }

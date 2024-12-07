@@ -14,6 +14,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class NormalFrame extends JFrame implements Serializable, Activator {
     public int row, col, size, borderX, borderY;
@@ -30,7 +31,7 @@ public class NormalFrame extends JFrame implements Serializable, Activator {
 
 
 
-
+    public NormalFrame() {}
     public NormalFrame(Map originMap) {
         Init(originMap);
 
@@ -50,7 +51,7 @@ public class NormalFrame extends JFrame implements Serializable, Activator {
         row = map.row; col = map.col; size = 50;
         int tot = map.item.length;
         currentSite = 0;
-        item = new Item[tot];
+        item = new Item[map.item.length];
         past = new ArrayList<>();
         SwingUtilities.invokeLater(()->{
             for (int i = 0; i < tot; i++) {
@@ -79,12 +80,15 @@ public class NormalFrame extends JFrame implements Serializable, Activator {
             enableEvents(AWTEvent.KEY_EVENT_MASK);
             enableEvents(AWTEvent.MOUSE_EVENT_MASK);
             enableEvents(AWTEvent.COMPONENT_EVENT_MASK);
-            setLocation(200,100);
-            setSize(400,300);
+            setSize(1000,600);
+            setLocationRelativeTo(null);
             setLayout(null);
             setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            for (int i = 0; i < item.length; i++) if(map.type[i] == 0) add(item[i]);
+            for (int i = 0; i < item.length; i++) if(map.type[i] == 1) add(item[i]);
+            for (int i = 0; i < item.length; i++) if(map.type[i] == 2) add(item[i]);
+            for (int i = 0; i < item.length; i++) if(map.type[i] == 3) add(item[i]);
             for (int i = 0; i < item.length; i++) {
-                add(item[i]);
                 item[i].setBounds(0,0, size, size);    //在repaint生效
                 item[i].activate();
                 if(map.type[i] == 0) currentSite = i;
@@ -267,23 +271,23 @@ public class NormalFrame extends JFrame implements Serializable, Activator {
             column.setBounds(size*(col+1) + size + borderX, size/2 + borderY,(int)(size*row/2.0+0.5),size*(row+1));
             column.activate();
 
-            exited.setBounds((int)(size*(col+2+row/2.0-0.6))+borderX,borderY + size/2 + size/5,size/2,size/2);
+            exited.setBounds((int)(size*(col+2+row/2.0-0.1 -row/10.0))+borderX,borderY + size/2 + size/5,size*row/10,size*row/10);
             exited.activate();
 
-            reset.setBounds((int)(size*(col+2+row/2.0-1.15))+borderX,borderY + size/2 + size/5,size/2,size/2);
+            reset.setBounds((int)(size*(col+2+row/2.0-0.15 -row/5.0))+borderX,borderY + size/2 + size/5,size*row/10,size*row/10);
             reset.activate();
 
-            step.setBounds((int)(size*(col+2+0.1)) + borderX, borderY + size/2 + size/5, (int)(size*(col/2.0-1.3)),5*size/4);
+            step.setBounds((int)(size*(col+2+0.1)) + borderX, borderY + size/2 + size/5, (int)(size*(row/2.0-row/5.0-0.4)),row*size/4);
             step.activate();
             step.setText(Integer.toString(past.size()));
             step.setIconTextGap(-(int)(step.getWidth()*(past.size()<10?0.64:0.75)));
-            step.setFont(new Font("微软雅黑",Font.BOLD,(int)(size/2.0)));
+            step.setFont(new Font("微软雅黑",Font.BOLD,(int)(row*size/10.0)));
 
-            hint.setBounds((int)(size*(col+2+0.1)) + borderX, (int)(size*(row+1.5-0.6-0.2)) + borderY, (int)(size*(col/4.0-0.1)),3*size/5);
+            hint.setBounds((int)(size*(col+2+0.1)) + borderX, (int)(size*(row+1.5-3*row/25.0-0.2)) + borderY, (int)(size*(row/4.0-0.1)),3*row*size/25);
             hint.activate();
 
-            withdraw.setBounds((int)(size*(col+2+col/2.0-0.1 - (col/4.0-0.1))) + borderX, (int)(size*(row+1.5-0.6-0.2)) + borderY, (int)(size*(col/4.0-0.1)),3*size/5);
-            withdraw.activate();;
+            withdraw.setBounds((int)(size*(col+2+row/2.0-0.1 - (row/4.0-0.1))) + borderX, (int)(size*(row+1.5-3*row/25.0-0.2)) + borderY, (int)(size*(row/4.0-0.1)),3*row*size/25);
+            withdraw.activate();
 
             setEnabled(true);
             setFocusable(true);

@@ -1,24 +1,41 @@
-package controller;
+package controller.editor;
 
 import controller.level.NormalFrame;
 import model.algorithm.Map;
-import model.config.UserConfig;
+import view.character.*;
+import view.character.Box;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyEvent;
+import java.awt.event.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 public class MapEditor {
     public static Map map;
-    public static NormalFrame CreateFrame() {
+    public static Map finalMap;
+    public synchronized NormalFrame CreateFrame() {
         map = null;
-
         JFrame jFrame = new JFrame();
         jFrame.setName("设置");
         jFrame.setSize(400, 300);
         jFrame.setLocationRelativeTo(null);
         jFrame.setResizable(false);
-        jFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        jFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        jFrame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                finalMap = new Map(-1,-1);
+                jFrame.dispose();
+            }
+        });
         jFrame.setLayout(null);
         jFrame.setFocusable(true);
         jFrame.setVisible(true);
@@ -68,6 +85,8 @@ public class MapEditor {
         confirm.addActionListener(e->{
             if(getInteger(button1.getText()) > 0 && getInteger(button2.getText()) > 0) {
                 map = new Map(getInteger(button1.getText()), getInteger(button2.getText()));
+                EditFrame editFrame = new EditFrame(map);
+                editFrame.activate();
                 jFrame.dispose();
             }
             else {
@@ -86,17 +105,29 @@ public class MapEditor {
             }
         });
 
+
         JButton cancel = new JButton("取消");
         cancel.setFont(new Font("微软雅黑",Font.BOLD,18));
         table.add(cancel);
         cancel.setSize(40,40);
         cancel.setVisible(true);
         cancel.addActionListener(e->{
+            finalMap = new Map(-1,-1);
             jFrame.dispose();
         });
-        if(map == null) return null;
 
-        return null;
+        table.revalidate();
+        table.repaint();
+
+        finalMap = new Map(0,0);
+        while (finalMap.row == 0) {
+            try {
+                wait(300);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return (finalMap.row == -1 ? null : new NormalFrame(finalMap));
     }
     protected static int getInteger(String s) {
         int ret = 0;
@@ -105,5 +136,9 @@ public class MapEditor {
             ret = ret * 10 + (s.charAt(i) - '0');
         }
         return ret;
+    }
+
+    public static Map getFinalMap() {
+        return finalMap;
     }
 }
