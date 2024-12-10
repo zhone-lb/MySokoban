@@ -1,5 +1,7 @@
+import controller.Settings;
 import controller.editor.EditFrame;
 import controller.editor.MapEditor;
+import controller.level.MultiHero;
 import controller.level.NormalFrame;
 import model.algorithm.Map;
 import view.StartFrame;
@@ -22,14 +24,19 @@ public class Main {
         }
         item[5] = new Point(0,1);
         item[6] = new Point(3,0);
-        int[] type = {0,1,1,3,3,2,2};
+        int[] type = {0,1,1,3,3,0,2};
         Map map = new Map(5,6,item,type);
-//        NormalFrame frame = new NormalFrame(map);
+        NormalFrame frame = new MultiHero(map);
+        frame.activate();
+//        frame.revalidate();
 //        frame.activate();
 //        MapEditor.CreateFrame();
 //        StartFrame.start();
-        MapEditor mapEditor = new MapEditor();
-        NormalFrame normalFrame = mapEditor.CreateFrame();
-        normalFrame.activate();
+//        MapEditor mapEditor = new MapEditor();
+//        frame = mapEditor.ModifyFrame(frame);
+//        frame.activate();
+//        Settings settings = new Settings();
+//        NormalFrame normalFrame = mapEditor.CreateFrame();
+//        normalFrame.activate();
     }
 }

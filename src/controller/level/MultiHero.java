@@ -1,78 +1,38 @@
 package controller.level;
 
-import controller.Settings;
 import model.algorithm.Map;
 import model.algorithm.PathExplorer;
-import view.Activator;
-import view.character.*;
 import model.config.UserConfig;
-import view.character.Box;
+import view.Activator;
 import view.character.Button;
+import view.character.Item;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.FocusEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 
-public class NormalFrame extends JFrame implements Serializable, Activator {
-    public int row, col, size, borderX, borderY;
-    public Map map, originMap;
-    public Item[] item;
-    public Item background, column, reset, exited, hint, withdraw, step;
-    public int currentSite;
-    public boolean FullX;
-    public ArrayList<Integer> past;
-
-
-
-    public static UserConfig userConfig;
-
-
-
-    public NormalFrame() {}
-    public NormalFrame(Map originMap) {
-        Init(originMap);
-
-
-
-//        Settings settings = new Settings();
-//        userConfig = new UserConfig();
-
-
-
-
-
-
-    }
-    public void Init(Map myMap) {
-        map = myMap; originMap = new Map(map.row, map.col, map.item.clone(), map.type.clone());
-        row = map.row; col = map.col; size = 50;
-        int tot = map.item.length;
-        currentSite = 0;
-        item = new Item[map.item.length];
-        past = new ArrayList<>();
-        SwingUtilities.invokeLater(()->{
-            for (int i = 0; i < tot; i++) {
-                switch (map.type[i]) {
-                    case 0 -> item[i] = new Hero("src\\model\\data\\image\\Guide.png");
-                    case 1 -> item[i] = new Box("src\\model\\data\\image\\Box.jpg");
-                    case 2 -> item[i] = new Wall("src\\model\\data\\image\\Wall.png");
-                    case 3 -> item[i] = new Target("src\\model\\data\\image\\Target.png");
-                }
-            }
-            for (int i = 0; i < tot; i++) item[i].setId(i);
-        });
-    }
-
-    public void reset() {
-        map = new Map(originMap.row, originMap.col, originMap.item.clone(), originMap.type.clone());
-        past = new ArrayList<>();
+public class MultiHero extends NormalFrame implements Serializable, Activator {
+    ImageIcon currentHero, inactiveHero;
+    ArrayList<Integer> pastHero;
+    public MultiHero(Map originMap) {
+        super(originMap);
+        pastHero = new ArrayList<>();
         PathExplorer.Init(originMap);
-        repaint();
+        try {
+            currentHero = new ImageIcon(ImageIO.read(new File("src\\model\\data\\image\\Guide.png")));
+            inactiveHero = new ImageIcon(ImageIO.read(new File("src\\model\\data\\image\\background.png")));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
-
     @Override
     public void activate() {
         SwingUtilities.invokeLater(()->{
@@ -88,14 +48,23 @@ public class NormalFrame extends JFrame implements Serializable, Activator {
             for (int i = 0; i < item.length; i++) if(map.type[i] == 1) add(item[i]);
             for (int i = 0; i < item.length; i++) if(map.type[i] == 2) add(item[i]);
             for (int i = 0; i < item.length; i++) if(map.type[i] == 3) add(item[i]);
+
+            currentSite = -1;
             for (int i = 0; i < item.length; i++) {
                 item[i].setBounds(0,0, size, size);    //在repaint生效
                 item[i].activate();
-                if(map.type[i] == 0) currentSite = i;
+                if(map.type[i] == 0) {
+                    if(currentSite != -1) {
+                        item[currentSite].setCurrentImage(inactiveHero);
+                        item[currentSite].activate();
+                    }
+                    currentSite = i;
+                    item[currentSite].setCurrentImage(currentHero);
+                    item[currentSite].activate();
+                }
             }
-            PathExplorer.path(map);
 
-            exited = new Button("src\\model\\data\\image\\background.png","src\\model\\data\\image\\background.png");
+            exited = new view.character.Button("src\\model\\data\\image\\background.png","src\\model\\data\\image\\background.png");
             add(exited);
             exited.setBounds(0,0,size,size);
             exited.addMouseListener(new MouseAdapter() {
@@ -107,7 +76,7 @@ public class NormalFrame extends JFrame implements Serializable, Activator {
             });
             exited.activate();
 
-            reset = new Button("src\\model\\data\\image\\background.png","src\\model\\data\\image\\background.png");
+            reset = new view.character.Button("src\\model\\data\\image\\background.png","src\\model\\data\\image\\background.png");
             add(reset);
             reset.setBounds(0,0,size,size);
             reset.addMouseListener(new MouseAdapter() {
@@ -119,7 +88,7 @@ public class NormalFrame extends JFrame implements Serializable, Activator {
             });
             reset.activate();
 
-            hint = new Button("src\\model\\data\\image\\background.png","src\\model\\data\\image\\background.png");
+            hint = new view.character.Button("src\\model\\data\\image\\background.png","src\\model\\data\\image\\background.png");
             add(hint);
             hint.setBounds(0,0,size,size);
             hint.addMouseListener(new MouseAdapter() {
@@ -159,6 +128,7 @@ public class NormalFrame extends JFrame implements Serializable, Activator {
             column.activate();
 
 
+            PathExplorer.Init(originMap);
 
             setEnabled(true);
             setFocusable(true);
@@ -166,7 +136,6 @@ public class NormalFrame extends JFrame implements Serializable, Activator {
             repaint();
         });
     }
-
     public synchronized void update(int DIR) {
         if(item[currentSite].isMoving) return;
         int x = map.item[currentSite].x, y = map.item[currentSite].y;
@@ -174,12 +143,14 @@ public class NormalFrame extends JFrame implements Serializable, Activator {
 //            PathExplorer.put();
             if(!PathExplorer.getBlocked(x,y,DIR)) {
                 past.add(DIR);
+                pastHero.add(currentSite);
                 map.item[currentSite] = new Point(x+PathExplorer.dir[DIR][0], y+PathExplorer.dir[DIR][1]);
                 item[currentSite].move(PathExplorer.dir[DIR][0]*size, PathExplorer.dir[DIR][1]*size, UserConfig.GAME_SPEED, UserConfig.REFRESH_RATE);
                 PathExplorer.refresh(x,y,DIR,false);
             }
             else {
                 past.add(1 << 2 | DIR);
+                pastHero.add(currentSite);
                 int boxSite = getBoxSite(new Point(x+PathExplorer.dir[DIR][0], y+PathExplorer.dir[DIR][1]));
                 map.item[currentSite] = new Point(x+PathExplorer.dir[DIR][0], y+PathExplorer.dir[DIR][1]);
                 map.item[boxSite] = new Point(x+2*PathExplorer.dir[DIR][0], y+2*PathExplorer.dir[DIR][1]);
@@ -192,24 +163,17 @@ public class NormalFrame extends JFrame implements Serializable, Activator {
                 step.setIconTextGap(-(int) (step.getWidth() * (past.size() < 10 ? 0.64 : 0.75)));
             });
             checkSucceed();
-            checkFailed();
-        }
-    }
-
-    public void checkFailed() {
-        if(PathExplorer.isFailed()) {
-            System.out.println("You failed");
-        }
-    }
-    public void checkSucceed() {
-        if(PathExplorer.isFinished()) {
-            System.out.println("You win");
         }
     }
     public synchronized void withdraw() {
         if(past.isEmpty()) return;
         if(item[currentSite].isMoving) return;
         int DIR = past.getLast(); past.removeLast();
+        item[currentSite].setCurrentImage(inactiveHero);
+        item[currentSite].activate();
+        currentSite = pastHero.getLast(); pastHero.removeLast();
+        item[currentSite].setCurrentImage(currentHero);
+        item[currentSite].activate();
         SwingUtilities.invokeLater(()->{
             step.setText(Integer.toString(past.size()));
             step.setIconTextGap(-(int) (step.getWidth() * (past.size() < 10 ? 0.64 : 0.75)));
@@ -232,91 +196,32 @@ public class NormalFrame extends JFrame implements Serializable, Activator {
                 item[boxSite].move(PathExplorer.dir[DIR][0]*size, PathExplorer.dir[DIR][1]*size, UserConfig.GAME_SPEED, UserConfig.REFRESH_RATE);
                 PathExplorer.refresh2(x,y,DIR,true);
             }
-            checkFailed();
         }
     }
 
+    @Override
     public void Hint() {
-        update(PathExplorer.getHint(map.item[currentSite].x, map.item[currentSite].y));
-    }
 
-    protected int getBoxSite(Point p) {
-        for (int i = 0; i < item.length; i++) {
-            if(map.type[i] == 1 && map.item[i].equals(p)) return i;
-        }
-        return -1;
     }
 
     @Override
-    public synchronized void repaint() {
-        super.repaint();
-        SwingUtilities.invokeLater(()->{
-            Dimension d = getSize();
-            d.height = (int)(0.88*d.height); d.width = (int)(0.98*d.width);
-            size = (int)Math.min(d.width / (3+col+row/2.0), d.height / (row+2.0));
-            FullX = (d.width / (3+col+row/2.0) < d.height / (row+2.0));
-            borderX = (FullX ? 0 : (int)((d.width - size * (3+col+row/2.0))/2.0));
-            borderY = (FullX ? (int)((d.height - size * (row+2.0))/2.0) : 0);
-            System.out.println(borderX + " "+ borderY);
-//            size = Math.min(d.width / (col+2), d.height / (row+2));
-            for (int i = 0; i < item.length; i++) {
-                item[i].setBounds(map.item[i].x * size + size / 2 + size + borderX,map.item[i].y * size + size / 2 + size / 2 + borderY, size, size);
-                item[i].activate();
+    protected void processMouseEvent(MouseEvent e) {
+        super.processMouseEvent(e);
+        if(e.getID() == MouseEvent.MOUSE_CLICKED) {
+            int x = (e.getX()-size-size/2-borderX), y = (e.getY()-size/2 -size/2 -borderY - 30);
+            System.out.println(e.getPoint().toString()+x+" "+y+" "+size);
+            if(x >= 0 && x < col*size && y >= 0 && y < row*size) {
+                x /= size; y /= size;
+                for (int i = 0; i < item.length; i++) {
+                    if(map.item[i].equals(new Point(x,y)) && map.type[i] == 0) {
+                        item[currentSite].setCurrentImage(inactiveHero);
+                        item[currentSite].activate();
+                        currentSite = i;
+                        item[currentSite].setCurrentImage(currentHero);
+                        item[currentSite].activate();
+                    }
+                }
             }
-
-
-            background.setBounds(size + borderX, size/2 + borderY,size*(col+1),size*(row+1));
-            background.activate();
-
-            column.setBounds(size*(col+1) + size + borderX, size/2 + borderY,(int)(size*row/2.0+0.5),size*(row+1));
-            column.activate();
-
-            exited.setBounds((int)(size*(col+2+row/2.0-0.1 -row/10.0))+borderX,borderY + size/2 + size/5,size*row/10,size*row/10);
-            exited.activate();
-
-            reset.setBounds((int)(size*(col+2+row/2.0-0.15 -row/5.0))+borderX,borderY + size/2 + size/5,size*row/10,size*row/10);
-            reset.activate();
-
-            step.setBounds((int)(size*(col+2+0.1)) + borderX, borderY + size/2 + size/5, (int)(size*(row/2.0-row/5.0-0.4)),row*size/4);
-            step.activate();
-            step.setText(Integer.toString(past.size()));
-            step.setIconTextGap(-(int)(step.getWidth()*(past.size()<10?0.64:0.75)));
-            step.setFont(new Font("微软雅黑",Font.BOLD,(int)(row*size/10.0)));
-
-            hint.setBounds((int)(size*(col+2+0.1)) + borderX, (int)(size*(row+1.5-3*row/25.0-0.2)) + borderY, (int)(size*(row/4.0-0.1)),3*row*size/25);
-            hint.activate();
-
-            withdraw.setBounds((int)(size*(col+2+row/2.0-0.1 - (row/4.0-0.1))) + borderX, (int)(size*(row+1.5-3*row/25.0-0.2)) + borderY, (int)(size*(row/4.0-0.1)),3*row*size/25);
-            withdraw.activate();
-
-            setEnabled(true);
-            setFocusable(true);
-            setVisible(true);
-        });
-    }
-
-    @Override
-    protected void processFocusEvent(FocusEvent e) {
-        super.processFocusEvent(e);
-        currentSite = ((Hero) e.getSource()).getId();
-        System.out.println(currentSite);
-    }
-
-    @Override
-    protected void processKeyEvent(KeyEvent e) {
-        super.processKeyEvent(e);
-        if(e.getID() != KeyEvent.KEY_PRESSED) return;
-        if(e.getKeyCode() == UserConfig.MOVE_UP) update(PathExplorer.UP);
-        if(e.getKeyCode() == UserConfig.MOVE_DOWN) update(PathExplorer.DOWN);
-        if(e.getKeyCode() == UserConfig.MOVE_LEFT) update(PathExplorer.LEFT);
-        if(e.getKeyCode() == UserConfig.MOVE_RIGHT) update(PathExplorer.RIGHT);
-        if(e.getKeyCode() == UserConfig.HINT) Hint();
-        if(e.getKeyCode() == UserConfig.WITHDRAW) withdraw();
-    }
-
-    @Override
-    protected void processComponentEvent(ComponentEvent e) {
-        super.processComponentEvent(e);
-        repaint();
+        }
     }
 }
