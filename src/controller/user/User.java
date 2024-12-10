@@ -1,22 +1,24 @@
 package controller.user;
 
 import javax.swing.*;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
+
+import model.data.MyReader;
+import model.data.calcmd5;
+
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class User {
+public class User implements Serializable {
 //    static int idcnt=0;
 //    public static int currentuser=0;
 
     public String name;
     public String password;
     public String md5;
+    public boolean error=false;
     //    int id;
-    ArrayList<JFrame>  framelist;
+    ArrayList<JFrame> framelistsave;
     public static ArrayList<User> userlist=new ArrayList<>();
     public static User currentuser=null;
     public User(String name, String password) {
@@ -24,15 +26,21 @@ public class User {
         this.password = password;
         this.md5=null;
         userlist.add(this);
-//        Writer.write(this,"src/model/data/User/"+name+".data");
     }
     public User(String name, String password, String md5) {
 
         this.name = name;
         this.password = password;
         this.md5 = md5;
+        framelistsave= MyReader.read("src/model/data/User/" + name + "save.txt");
+        try {
+            if(framelistsave ==null||!calcmd5.calc(new FileInputStream("src/model/data/User/" + name + "save.txt")).equals(md5)){
+                error=true;
+            }
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
         userlist.add(this);
-//        Writer.write(this,"src/model/data/User/"+name+".data");
     }
     public static User getuser(String name){
         for(User x :userlist){
@@ -52,6 +60,7 @@ public class User {
             for(int i=0;i<n;i++){
                 new User(input.nextLine(),input.nextLine(),input.nextLine());
             }
+
             input.close();
         }catch(FileNotFoundException e){
             e.printStackTrace();

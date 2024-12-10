@@ -5,7 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 
-public class Writer {
+public class MyWriter {
     public static <T> void write(T myClass, String filename) {
         try {
             FileOutputStream fileOut = new FileOutputStream(filename);

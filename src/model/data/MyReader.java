@@ -5,7 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 
-public class Reader {
+public class MyReader {
     public static <T> T read(String filename) {
         T myClass = null;
         try {
@@ -16,10 +16,13 @@ public class Reader {
             ois.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
+            return null;
         } catch (IOException e) {
             e.printStackTrace();
+            return null;
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
+            return null;
         }
         return myClass;
     }

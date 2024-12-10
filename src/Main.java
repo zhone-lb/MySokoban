@@ -27,7 +27,7 @@ public class Main {
 //        NormalFrame frame = new NormalFrame(map);
 //        frame.activate();
 //        MapEditor.CreateFrame();
-//        StartFrame.start();
+        StartFrame.start();
         MapEditor mapEditor = new MapEditor();
         NormalFrame normalFrame = mapEditor.CreateFrame();
         normalFrame.activate();

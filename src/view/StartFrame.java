@@ -77,6 +77,8 @@ public class StartFrame extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 loginframe.setVisible(true);
+                loginframe.passwordagainlabel.setVisible(false);
+                loginframe.passwordagain.setVisible(false);
                 startframe.setEnabled(false);
             }
 
@@ -151,8 +153,8 @@ public class StartFrame extends JFrame {
         normalgamebutton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-//                normalgame();
-
+                LevelFrame.openlevelFrame();
+                startframe.setEnabled(false);
             }
         });
 
@@ -188,6 +190,9 @@ public class StartFrame extends JFrame {
         startframe.setEnabled(true);
     }
     public static void closesettings(){
+        startframe.setEnabled(true);
+    }
+    public static void colselevelframe(){
         startframe.setEnabled(true);
     }
 }
