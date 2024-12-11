@@ -195,7 +195,7 @@ public class PathExplorer {
         return ((a[x+dir[DIR][0]][y+dir[DIR][1]] & 2) != 0);
     }
 
-    protected static boolean inInterval(int x, int y) {
+    public static boolean inInterval(int x, int y) {
         return (0 <= x && x < col && 0 <= y && y < row);
     }
     protected static long getNum() {

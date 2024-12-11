@@ -4,6 +4,7 @@ import controller.editor.MapEditor;
 import controller.level.MultiHero;
 import controller.level.NormalFrame;
 import model.algorithm.Map;
+import model.data.Writer;
 import view.StartFrame;
 
 import java.awt.*;
@@ -38,5 +39,6 @@ public class Main {
 //        Settings settings = new Settings();
 //        NormalFrame normalFrame = mapEditor.CreateFrame();
 //        normalFrame.activate();
+        Writer.write(frame,"src\\model\\algorithm\\frame.txt");
     }
 }
