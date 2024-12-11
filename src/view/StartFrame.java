@@ -84,7 +84,7 @@ public class StartFrame extends JFrame {
 
             @Override
             public void mouseEntered(MouseEvent e) {
-                if(currentuser==null){
+                if(currentuser==-1){
                     loginbutton.setIcon(new ImageIcon(guest_1));
                 }
                 else{
@@ -94,7 +94,7 @@ public class StartFrame extends JFrame {
 
             @Override
             public void mouseExited(MouseEvent e) {
-                if(currentuser==null){
+                if(currentuser==-1){
                     loginbutton.setIcon(new ImageIcon(guest_0));
                 }
                 else{
@@ -183,7 +183,7 @@ public class StartFrame extends JFrame {
 //        this.setEnabled(true);
 //    }
     public static void closeloginframe(){
-        if(currentuser!=null){
+        if(currentuser!=-1){
             Image login_0 =(new ImageIcon("src/model/data/image/login_0.png")).getImage().getScaledInstance(120, 120, Image.SCALE_SMOOTH);
             loginbutton.setIcon(new ImageIcon(login_0));
         }

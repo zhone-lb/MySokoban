@@ -2,7 +2,9 @@ package controller.user;
 
 import javax.swing.*;
 
+import controller.level.NormalFrame;
 import model.data.MyReader;
+import model.data.MyWriter;
 import model.data.calcmd5;
 
 import java.io.*;
@@ -18,9 +20,9 @@ public class User implements Serializable {
     public String md5;
     public boolean error=false;
     //    int id;
-    ArrayList<JFrame> framelistsave;
+    public ArrayList<NormalFrame> framelistsave;
     public static ArrayList<User> userlist=new ArrayList<>();
-    public static User currentuser=null;
+    public static int currentuser=-1;
     public User(String name, String password) {
         this.name = name;
         this.password = password;
@@ -42,13 +44,13 @@ public class User implements Serializable {
         }
         userlist.add(this);
     }
-    public static User getuser(String name){
-        for(User x :userlist){
-            if(x.name.equals(name)){
-                return x;
+    public static int getuser(String name){
+        for(int i=0;i<userlist.size();i++){
+            if(userlist.get(i).name.equals(name)){
+                return i;
             }
         }
-        return null;
+        return -1;
     }
     public static void getuserlist() {
         File file=new File("src/model/data/User/userlist.txt");
@@ -72,6 +74,8 @@ public class User implements Serializable {
             for(int i=0;i<userlist.size();i++){
                 wr.write(userlist.get(i).name+"\n");
                 wr.write(userlist.get(i).password+"\n");
+                MyWriter.write(userlist.get(i).framelistsave,"src/model/data/User/" +userlist.get(i).name+ "save.txt");
+                userlist.get(i).md5=calcmd5.calc(new FileInputStream("src/model/data/User/" + userlist.get(i).name + "save.txt"));
                 wr.write(userlist.get(i).md5+"\n");
             }
             wr.close();

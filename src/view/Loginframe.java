@@ -114,7 +114,7 @@ public class Loginframe extends JFrame {
                     JOptionPane.showMessageDialog(null,"密码错误","提示",JOptionPane.PLAIN_MESSAGE);
                 }
                 else if(fla==1){
-                    currentuser=getuser(username.getText());
+                    User.currentuser=getuser(username.getText());
                     Loginframe.this.setVisible(false);
                     clear();
                     StartFrame.closeloginframe();

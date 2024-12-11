@@ -1,8 +1,9 @@
 package model.algorithm;
 
 import java.awt.Point;
+import java.io.Serializable;
 
-public class Map {
+public class Map implements Serializable {
     public int row, col;
     public Point[] item;
     public int[] type;
@@ -16,4 +17,5 @@ public class Map {
         this.item = item;
         this.type = type;
     }
+
 }
