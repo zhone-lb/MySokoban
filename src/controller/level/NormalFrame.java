@@ -4,6 +4,7 @@ import controller.Settings;
 import model.algorithm.Map;
 import model.algorithm.PathExplorer;
 import view.Activator;
+import view.LevelFrame;
 import view.character.*;
 import model.config.UserConfig;
 import view.character.Box;
@@ -16,7 +17,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class NormalFrame extends JFrame implements Serializable, Activator {
+public class NormalFrame extends JFrame implements Serializable, Activator,Cloneable {
     public int row, col, size, borderX, borderY;
     public Map map, originMap;
     public Item[] item;
@@ -39,9 +40,6 @@ public class NormalFrame extends JFrame implements Serializable, Activator {
 
 //        Settings settings = new Settings();
         userConfig = new UserConfig();
-
-
-
 
 
 
@@ -72,7 +70,6 @@ public class NormalFrame extends JFrame implements Serializable, Activator {
         PathExplorer.Init(originMap);
         repaint();
     }
-
     @Override
     public void activate() {
         SwingUtilities.invokeLater(()->{
@@ -83,7 +80,7 @@ public class NormalFrame extends JFrame implements Serializable, Activator {
             setSize(1000,600);
             setLocationRelativeTo(null);
             setLayout(null);
-            setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
             for (int i = 0; i < item.length; i++) if(map.type[i] == 0) add(item[i]);
             for (int i = 0; i < item.length; i++) if(map.type[i] == 1) add(item[i]);
             for (int i = 0; i < item.length; i++) if(map.type[i] == 2) add(item[i]);
@@ -101,9 +98,11 @@ public class NormalFrame extends JFrame implements Serializable, Activator {
             exited.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    super.mouseClicked(e);
-
+                    e.consume();
+                    dispose();
+                    LevelFrame.closenormalframe();
                 }
+
             });
             exited.activate();
 
@@ -317,5 +316,20 @@ public class NormalFrame extends JFrame implements Serializable, Activator {
     protected void processComponentEvent(ComponentEvent e) {
         super.processComponentEvent(e);
         repaint();
+    }
+    protected void processWindowEvent(WindowEvent e) {
+        super.processWindowEvent(e);
+        if (e.getID() == WindowEvent.WINDOW_CLOSING){
+        }
+
+    }
+    @Override
+    public NormalFrame clone(){
+        try{
+            return (NormalFrame)super.clone();
+        }catch(CloneNotSupportedException e){
+            e.printStackTrace();
+        }
+        return null;
     }
 }

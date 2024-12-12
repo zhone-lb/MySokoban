@@ -28,17 +28,18 @@ public class Main {
         Map map = new Map(5,6,item,type);
         NormalFrame frame = new NormalFrame(map);
 //        frame.activate();
+//        frame.activate();
 //        MapEditor.CreateFrame();
-//        StartFrame.start();
+        StartFrame.start();
 //        MapEditor mapEditor = new MapEditor();
 //        NormalFrame normalFrame = mapEditor.CreateFrame();
 //        normalFrame.activate();
-        User.getuserlist();
-        ArrayList<NormalFrame> List=new ArrayList<NormalFrame>();
-        for(int i=1;i<=5;++i){
-            List.add(frame);
-        }
-        User.userlist.get(User.getuser("admin")).framelistsave=List;
-        User.saveuserlist();
+//        User.getuserlist();
+//        ArrayList<NormalFrame> List=new ArrayList<NormalFrame>();
+//        for(int i=1;i<=5;++i){
+//            List.add(frame);
+//        }
+//        User.userlist.get(User.getuser("admin")).framelistsave=List;
+//        User.saveuserlist();
     }
 }

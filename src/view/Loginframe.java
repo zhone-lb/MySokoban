@@ -18,7 +18,6 @@ public class Loginframe extends JFrame {
         passwordagain.setText("");
     }
     public Loginframe() {
-        User.getuserlist();
 
         this.setSize(540,360);
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();

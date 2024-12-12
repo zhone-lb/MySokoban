@@ -35,6 +35,7 @@ public class User implements Serializable {
         this.password = password;
         this.md5 = md5;
         framelistsave= MyReader.read("src/model/data/User/" + name + "save.txt");
+//        if(framelistsave==null) System.out.println("???");
         try {
             if(framelistsave ==null||!calcmd5.calc(new FileInputStream("src/model/data/User/" + name + "save.txt")).equals(md5)){
                 error=true;
@@ -62,7 +63,7 @@ public class User implements Serializable {
             for(int i=0;i<n;i++){
                 new User(input.nextLine(),input.nextLine(),input.nextLine());
             }
-
+            System.out.println(userlist.size());
             input.close();
         }catch(FileNotFoundException e){
             e.printStackTrace();

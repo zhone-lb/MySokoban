@@ -2,6 +2,7 @@ package view;
 
 import controller.level.NormalFrame;
 import controller.user.User;
+import model.algorithm.Map;
 
 import javax.swing.*;
 import java.awt.*;
@@ -65,7 +66,7 @@ public class LevelFrame extends JFrame{
             @Override
             public void mouseClicked(MouseEvent e) {
                 if(JOptionPane.showConfirmDialog(null, "确认要重置吗？", "确认", JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION){
-                    nowlist=User.userlist.get(User.getuser("admin")).framelistsave;
+                    nowlist=(ArrayList<NormalFrame>) User.userlist.get(User.getuser("admin")).framelistsave.clone();
                 }
             }
         });
@@ -77,46 +78,131 @@ public class LevelFrame extends JFrame{
         rightpanel.setPreferredSize(new Dimension(this.getWidth()/4*3,this.getHeight()));
 //        rightpanel.setBackground(Color.YELLOW);
         rightpanel.setLayout(new GridBagLayout());
-        for(int i=1;i<=5;i++){
-            JButton game=new JButton();
-            game.setText("game"+i);
-            game.setFont(new Font("Times New Roman",Font.BOLD,40));
-            GridBagConstraints location=new GridBagConstraints();
-            location.gridx=0;
-            location.gridy=i;
-            location.weightx=1;
-            location.weighty=1;
-//            game.setOpaque(false);
-//            game.setContentAreaFilled(false);
-            game.setBorder(null);
-            game.setPreferredSize(new Dimension(this.getWidth()/5*3,this.getHeight()/6));
-            game.setBackground(Color.GREEN);
-            game.setVisible(true);
-            int finalI = i;
-            game.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseClicked(MouseEvent e) {
-                    nowlist.get(finalI).activate();
-                }
-            });
-            rightpanel.add(game,location);
 
-        }
+        JButton game1 = new JButton();
+        game1.setText("game1");
+        game1.setFont(new Font("Times New Roman", Font.BOLD, 40));
+        GridBagConstraints location1 = new GridBagConstraints();
+        location1.gridx = 0;
+        location1.gridy = 1;
+        location1.weightx = 1;
+        location1.weighty = 1;
+        game1.setBorder(null);
+        game1.setPreferredSize(new Dimension(this.getWidth() / 5 * 3, this.getHeight() / 6));
+        game1.setBackground(Color.GREEN);
+        game1.setVisible(true);
+        game1.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                nowlist.get(0).activate();
+                setEnabled(false);
+            }
+        });
+        rightpanel.add(game1, location1);
+
+        JButton game2 = new JButton();
+        game2.setText("game2");
+        game2.setFont(new Font("Times New Roman", Font.BOLD, 40));
+        GridBagConstraints location2 = new GridBagConstraints();
+        location2.gridx = 0;
+        location2.gridy = 2;
+        location2.weightx = 1;
+        location2.weighty = 1;
+        game2.setBorder(null);
+        game2.setPreferredSize(new Dimension(this.getWidth() / 5 * 3, this.getHeight() / 6));
+        game2.setBackground(Color.GREEN);
+        game2.setVisible(true);
+        game2.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                nowlist.get(1).activate();
+                setEnabled(false);
+            }
+        });
+        rightpanel.add(game2, location2);
+
+        JButton game3 = new JButton();
+        game3.setText("game3");
+        game3.setFont(new Font("Times New Roman", Font.BOLD, 40));
+        GridBagConstraints location3 = new GridBagConstraints();
+        location3.gridx = 0;
+        location3.gridy = 3;
+        location3.weightx = 1;
+        location3.weighty = 1;
+        game3.setBorder(null);
+        game3.setPreferredSize(new Dimension(this.getWidth() / 5 * 3, this.getHeight() / 6));
+        game3.setBackground(Color.GREEN);
+        game3.setVisible(true);
+        game3.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                nowlist.get(2).activate();
+                setEnabled(false);
+            }
+        });
+        rightpanel.add(game3, location3);
+
+        JButton game4 = new JButton();
+        game4.setText("game4");
+        game4.setFont(new Font("Times New Roman", Font.BOLD, 40));
+        GridBagConstraints location4 = new GridBagConstraints();
+        location4.gridx = 0;
+        location4.gridy = 4;
+        location4.weightx = 1;
+        location4.weighty = 1;
+        game4.setBorder(null);
+        game4.setPreferredSize(new Dimension(this.getWidth() / 5 * 3, this.getHeight() / 6));
+        game4.setBackground(Color.GREEN);
+        game4.setVisible(true);
+        game4.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                nowlist.get(3).activate();
+                setEnabled(false);
+            }
+        });
+        rightpanel.add(game4, location4);
+
+        JButton game5 = new JButton();
+        game5.setText("game5");
+        game5.setFont(new Font("Times New Roman", Font.BOLD, 40));
+        GridBagConstraints location5 = new GridBagConstraints();
+        location5.gridx = 0;
+        location5.gridy = 5;
+        location5.weightx = 1;
+        location5.weighty = 1;
+        game5.setBorder(null);
+        game5.setPreferredSize(new Dimension(this.getWidth() / 5 * 3, this.getHeight() / 6));
+        game5.setBackground(Color.GREEN);
+        game5.setVisible(true);
+        game5.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                nowlist.get(4).activate();
+                setEnabled(false);
+            }
+        });
+        rightpanel.add(game5, location5);
+
         this.add(rightpanel,BorderLayout.EAST);
     }
     public static void openlevelFrame() {
         levelframe=new LevelFrame();
-        if(User.currentuser==-1) nowlist=User.userlist.get(User.getuser("admin")).framelistsave;
-        else if(User.userlist.get(User.currentuser).error==true){
+        nowlist=new ArrayList<>();
+        System.out.println(User.getuser("admin"));
+        if(User.currentuser==-1) nowlist=(ArrayList<NormalFrame>)User.userlist.get(User.getuser("admin")).framelistsave.clone();
+        else if(User.userlist.get(User.currentuser).error){
             if(JOptionPane.showConfirmDialog(null, "存档不存在或已被损坏，确认将重置存档", "确认", JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION){
-                nowlist=User.userlist.get(User.getuser("admin")).framelistsave;
+                nowlist=(ArrayList<NormalFrame>)User.userlist.get(User.getuser("admin")).framelistsave.clone();
             }
             else{
                 return;
             }
         }
-        else nowlist=User.userlist.get(User.currentuser).framelistsave;
+        else nowlist=(ArrayList<NormalFrame>)User.userlist.get(User.currentuser).framelistsave.clone();
         levelframe.setVisible(true);
     }
-
+    public static void closenormalframe() {
+        levelframe.setEnabled(true);
+    }
 }

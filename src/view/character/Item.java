@@ -51,8 +51,7 @@ public abstract class Item extends JLabel implements Serializable, Activator {
 
 
     public void scale(int width, int height) {
-        BufferedImage bufferedImage = (BufferedImage)(currentImage.getImage());
-        setIcon(new ImageIcon(bufferedImage.getScaledInstance(width,height,Image.SCALE_DEFAULT)));
+        setIcon(new ImageIcon((currentImage.getImage()).getScaledInstance(width,height,Image.SCALE_DEFAULT)));
         setBounds(getX(),getY(),width,height);
     }
 

@@ -15,6 +15,7 @@ public class StartFrame extends JFrame {
     static StartFrame startframe;
     public static void start(){
         startframe = new StartFrame();
+        User.getuserlist();
         startframe.setVisible(true);
     }
     public StartFrame() {
