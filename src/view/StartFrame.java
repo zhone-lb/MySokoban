@@ -7,6 +7,8 @@ import java.awt.*;
 import java.awt.event.*;
 
 import static controller.user.User.currentuser;
+import static controller.user.User.userlist;
+import static view.LevelFrame.nowlist;
 
 public class StartFrame extends JFrame {
     static JLabel title;
@@ -29,7 +31,8 @@ public class StartFrame extends JFrame {
         this.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-//                User.saveuserlist();
+                if(currentuser!=-1) userlist.get(currentuser).framelistsave=nowlist;
+                User.saveuserlist();
                 System.exit(0);
             }
         });

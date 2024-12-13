@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public class LevelFrame extends JFrame{
     public static LevelFrame levelframe;
-    static ArrayList<NormalFrame> nowlist;
+    public static ArrayList<NormalFrame> nowlist;
     JPanel leftpanel,rightpanel;
 
     public LevelFrame() {
@@ -49,10 +49,10 @@ public class LevelFrame extends JFrame{
             @Override
             public void mouseClicked(MouseEvent e) {
                 StartFrame.closelevelframe();
-                if(User.currentuser!=-1&&JOptionPane.showConfirmDialog(null, "是否要保存此次游玩数据？", "确认", JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION){
-                    User.userlist.get(User.currentuser).framelistsave=(ArrayList<NormalFrame>) nowlist.clone();
-                    User.saveuserlist();
-                }
+//                if(User.currentuser!=-1&&JOptionPane.showConfirmDialog(null, "是否要保存此次游玩数据？", "确认", JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION){
+//                    User.userlist.get(User.currentuser).framelistsave=(ArrayList<NormalFrame>) nowlist.clone();
+//                    User.saveuserlist();
+//                }
                 levelframe.setVisible(false);
             }
         });
