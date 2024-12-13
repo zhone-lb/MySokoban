@@ -29,7 +29,7 @@ public class StartFrame extends JFrame {
         this.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                User.saveuserlist();
+//                User.saveuserlist();
                 System.exit(0);
             }
         });
@@ -193,7 +193,7 @@ public class StartFrame extends JFrame {
     public static void closesettings(){
         startframe.setEnabled(true);
     }
-    public static void colselevelframe(){
+    public static void closelevelframe(){
         startframe.setEnabled(true);
     }
 }

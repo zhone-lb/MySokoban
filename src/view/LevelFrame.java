@@ -2,7 +2,6 @@ package view;
 
 import controller.level.NormalFrame;
 import controller.user.User;
-import model.algorithm.Map;
 
 import javax.swing.*;
 import java.awt.*;
@@ -49,7 +48,11 @@ public class LevelFrame extends JFrame{
         back.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                StartFrame.colselevelframe();
+                StartFrame.closelevelframe();
+                if(User.currentuser!=-1&&JOptionPane.showConfirmDialog(null, "是否要保存此次游玩数据？", "确认", JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION){
+                    User.userlist.get(User.currentuser).framelistsave=(ArrayList<NormalFrame>) nowlist.clone();
+                    User.saveuserlist();
+                }
                 levelframe.setVisible(false);
             }
         });
@@ -196,6 +199,7 @@ public class LevelFrame extends JFrame{
                 nowlist=(ArrayList<NormalFrame>)User.userlist.get(User.getuser("admin")).framelistsave.clone();
             }
             else{
+                StartFrame.closelevelframe();;
                 return;
             }
         }

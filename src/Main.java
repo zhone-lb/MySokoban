@@ -30,16 +30,19 @@ public class Main {
 //        frame.activate();
 //        frame.activate();
 //        MapEditor.CreateFrame();
-        StartFrame.start();
+//        StartFrame.start();
 //        MapEditor mapEditor = new MapEditor();
 //        NormalFrame normalFrame = mapEditor.CreateFrame();
 //        normalFrame.activate();
-//        User.getuserlist();
-//        ArrayList<NormalFrame> List=new ArrayList<NormalFrame>();
-//        for(int i=1;i<=5;++i){
-//            List.add(frame);
-//        }
-//        User.userlist.get(User.getuser("admin")).framelistsave=List;
-//        User.saveuserlist();
+        User.getuserlist();
+        ArrayList<NormalFrame> List=new ArrayList<NormalFrame>();
+        for(int i=1;i<=2;++i){
+//            List.add(new NormalFrame(map));
+            NormalFrame framee = new NormalFrame(map);
+            framee.activate();
+        }
+
+        User.userlist.get(User.getuser("admin")).framelistsave=List;
+        User.saveuserlist();
     }
 }

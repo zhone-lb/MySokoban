@@ -4,6 +4,7 @@ import controller.Settings;
 import model.algorithm.Map;
 import model.algorithm.PathExplorer;
 import view.Activator;
+import view.LevelFrame;
 import view.character.*;
 import model.config.UserConfig;
 import view.character.Box;
@@ -121,6 +122,7 @@ public class NormalFrame extends JFrame implements Serializable, Activator {
                 public void mouseClicked(MouseEvent e) {
                     super.mouseClicked(e);
                     setVisible(false);
+                    LevelFrame.closenormalframe();
                 }
             });
             exited.activate();
