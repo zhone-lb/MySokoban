@@ -72,6 +72,7 @@ public class NormalFrame extends JFrame implements Serializable, Activator,Clone
         map = new Map(originMap.row, originMap.col, originMap.item.clone(), originMap.type.clone());
         past = new ArrayList<>();
         PathExplorer.Init(originMap);
+        PathExplorer.path(originMap);
         repaint();
     }
     @Override
@@ -98,6 +99,7 @@ public class NormalFrame extends JFrame implements Serializable, Activator,Clone
 //            for (int i = 0; i < tot; i++) item[i].setId(i);
             if(isActivated) {
                 setVisible(true);
+                PathExplorer.path(map);
                 repaint();
                 return;
             }
@@ -352,6 +354,7 @@ public class NormalFrame extends JFrame implements Serializable, Activator,Clone
         super.processWindowEvent(e);
         if(e.getID() == WindowEvent.WINDOW_CLOSING) {
             setVisible(false);
+            LevelFrame.closenormalframe();
         }
     }
 }
