@@ -37,7 +37,7 @@ public class Main {
 //        User.getuserlist();
 //        ArrayList<NormalFrame> List=new ArrayList<NormalFrame>();
 //        for(int i=1;i<=5;++i){
-//            List.add(new NormalFrame(new Map(5,6,item,type)));
+//            List.add(frame.clone());
 ////            NormalFrame framee = new NormalFrame(map);
 ////            framee.activate();
 //        }

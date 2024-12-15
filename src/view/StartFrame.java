@@ -32,7 +32,7 @@ public class StartFrame extends JFrame {
             @Override
             public void windowClosing(WindowEvent e) {
                 if(currentuser!=-1) userlist.get(currentuser).framelistsave=nowlist;
-                User.saveuserlist();
+//                User.saveuserlist();
                 System.exit(0);
             }
         });

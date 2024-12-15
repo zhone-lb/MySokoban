@@ -49,10 +49,12 @@ public class LevelFrame extends JFrame{
             @Override
             public void mouseClicked(MouseEvent e) {
                 StartFrame.closelevelframe();
-//                if(User.currentuser!=-1&&JOptionPane.showConfirmDialog(null, "是否要保存此次游玩数据？", "确认", JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION){
-//                    User.userlist.get(User.currentuser).framelistsave=(ArrayList<NormalFrame>) nowlist.clone();
-//                    User.saveuserlist();
-//                }
+                if(User.currentuser!=-1&&JOptionPane.showConfirmDialog(null, "是否要保存此次游玩数据？", "确认", JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION){
+                    for(int i=0;i<nowlist.size();++i){
+                        User.userlist.get(User.currentuser).framelistsave.set(i,nowlist.get(i).clone());
+                    }
+                    User.saveuserlist();
+                }
                 levelframe.setVisible(false);
             }
         });
@@ -68,8 +70,11 @@ public class LevelFrame extends JFrame{
         restart.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if(JOptionPane.showConfirmDialog(null, "确认要重置吗？", "确认", JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION){
-                    nowlist=(ArrayList<NormalFrame>) User.userlist.get(User.getuser("admin")).framelistsave.clone();
+                if(JOptionPane.showConfirmDialog(null, "确认要重置吗？", "确认", JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION) {
+                    for (int i = 0; i < User.userlist.get(User.getuser("admin")).framelistsave.size(); ++i) {
+                        nowlist.add(User.userlist.get(User.getuser("admin")).framelistsave.get(i).clone());
+
+                    }
                 }
             }
         });
@@ -192,18 +197,29 @@ public class LevelFrame extends JFrame{
     public static void openlevelFrame() {
         levelframe=new LevelFrame();
         nowlist=new ArrayList<>();
+        nowlist.clear();
         System.out.println(User.getuser("admin"));
-        if(User.currentuser==-1) nowlist=(ArrayList<NormalFrame>)User.userlist.get(User.getuser("admin")).framelistsave.clone();
+        if(User.currentuser==-1){
+            for(int i=0;i<User.userlist.get(User.getuser("admin")).framelistsave.size();++i){
+                nowlist.add(User.userlist.get(User.getuser("admin")).framelistsave.get(i).clone());
+            }
+        }
         else if(User.userlist.get(User.currentuser).error){
             if(JOptionPane.showConfirmDialog(null, "存档不存在或已被损坏，确认将重置存档", "确认", JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION){
-                nowlist=(ArrayList<NormalFrame>)User.userlist.get(User.getuser("admin")).framelistsave.clone();
+                for(int i=0;i<User.userlist.get(User.getuser("admin")).framelistsave.size();++i){
+                    nowlist.add(User.userlist.get(User.getuser("admin")).framelistsave.get(i).clone());
+                }
             }
             else{
                 StartFrame.closelevelframe();;
                 return;
             }
         }
-        else nowlist=(ArrayList<NormalFrame>)User.userlist.get(User.currentuser).framelistsave.clone();
+        else{
+            for(int i=0;i<User.userlist.get(User.currentuser).framelistsave.size();++i){
+                nowlist.add(User.userlist.get(User.currentuser).framelistsave.get(i).clone());
+            }
+        }
         levelframe.setVisible(true);
     }
     public static void closenormalframe() {
