@@ -17,5 +17,8 @@ public class Map implements Serializable {
         this.item = item;
         this.type = type;
     }
-
+    @Override
+    public Map clone() {
+        return new Map(row,col,item.clone(),type.clone());
+    }
 }

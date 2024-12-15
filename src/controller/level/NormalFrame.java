@@ -4,7 +4,6 @@ import controller.Settings;
 import model.algorithm.Map;
 import model.algorithm.PathExplorer;
 import view.Activator;
-import view.LevelFrame;
 import view.character.*;
 import model.config.UserConfig;
 import view.character.Box;
@@ -17,7 +16,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class NormalFrame extends JFrame implements Serializable, Activator {
+public class NormalFrame extends JFrame implements Serializable, Activator,Cloneable {
     public int row, col, size, borderX, borderY;
     public Map map, originMap;
     public Item[] item;
@@ -48,7 +47,7 @@ public class NormalFrame extends JFrame implements Serializable, Activator {
 
     }
     public void Init(Map myMap) {
-        map = myMap; originMap = new Map(map.row, map.col, map.item.clone(), map.type);
+        map = myMap; originMap = map.clone();
         row = map.row; col = map.col; size = 50;
         int tot = map.item.length;
         currentSite = 0;
@@ -73,6 +72,13 @@ public class NormalFrame extends JFrame implements Serializable, Activator {
         past = new ArrayList<>();
         PathExplorer.Init(originMap);
         repaint();
+    }
+    @Override
+    public NormalFrame clone() {
+        NormalFrame frame = new NormalFrame(map.clone());
+        frame.originMap = originMap.clone();
+        for (int i = 0; i < past.size(); i++) frame.past.add(past.get(i));
+        return frame;
     }
 
     @Override
@@ -122,7 +128,6 @@ public class NormalFrame extends JFrame implements Serializable, Activator {
                 public void mouseClicked(MouseEvent e) {
                     super.mouseClicked(e);
                     setVisible(false);
-                    LevelFrame.closenormalframe();
                 }
             });
             exited.activate();
