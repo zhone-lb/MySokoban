@@ -27,8 +27,9 @@ public class Main {
         item[6] = new Point(3,0);
         int[] type = {0,1,1,3,3,0,2};
         Map map = new Map(5,6,item,type);
-        NormalFrame frame = new MultiHero(map);
-        frame.activate();
+        MapEditor mapEditor = new MapEditor();
+        NormalFrame[] frame = new NormalFrame[5];
+        for (int i = 0; i < 5; i++) frame[i] = mapEditor.CreateFrame();
 //        frame.revalidate();
 //        frame.activate();
 //        MapEditor.CreateFrame();
@@ -39,6 +40,6 @@ public class Main {
 //        Settings settings = new Settings();
 //        NormalFrame normalFrame = mapEditor.CreateFrame();
 //        normalFrame.activate();
-        Writer.write(frame,"src\\model\\algorithm\\frame.txt");
+//        Writer.write(frame,"src\\model\\algorithm\\frame.txt");
     }
 }

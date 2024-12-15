@@ -25,12 +25,14 @@ public class EditFrame extends NormalFrame {
         col = originMap.col;
         a = new int[col][row];
         map = originMap;
-        for (int i = 0; i < map.item.length; i++) {
-            switch (map.type[i]) {
-                case 0 -> a[map.item[i].x][map.item[i].y] |= 1;
-                case 1 -> a[map.item[i].x][map.item[i].y] |= 2;
-                case 2 -> a[map.item[i].x][map.item[i].y] |= 4;
-                case 3 -> a[map.item[i].x][map.item[i].y] |= 8;
+        if(map.item != null) {
+            for (int i = 0; i < map.item.length; i++) {
+                switch (map.type[i]) {
+                    case 0 -> a[map.item[i].x][map.item[i].y] |= 1;
+                    case 1 -> a[map.item[i].x][map.item[i].y] |= 2;
+                    case 2 -> a[map.item[i].x][map.item[i].y] |= 4;
+                    case 3 -> a[map.item[i].x][map.item[i].y] |= 8;
+                }
             }
         }
     }
