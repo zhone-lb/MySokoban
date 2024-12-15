@@ -36,8 +36,9 @@ public class Main {
 //        normalFrame.activate();
 //        User.getuserlist();
 //        ArrayList<NormalFrame> List=new ArrayList<NormalFrame>();
+//        MapEditor mapEditor =new MapEditor();
 //        for(int i=1;i<=5;++i){
-//            List.add(frame.clone());
+//            List.add(mapEditor.CreateFrame());
 ////            NormalFrame framee = new NormalFrame(map);
 ////            framee.activate();
 //        }
