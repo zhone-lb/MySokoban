@@ -79,7 +79,7 @@ public class MapEditor {
         button1.setSize(40,40);
         button1.setVisible(true);
 
-        JLabel text2 = new JLabel("请输入横向格数");
+        JLabel text2 = new JLabel("请输入纵向格数");
         text2.setFont(new Font("微软雅黑",Font.BOLD,18));
         table.add(text2);
         text2.setSize(40,40);

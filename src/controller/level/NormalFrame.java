@@ -99,7 +99,7 @@ public class NormalFrame extends JFrame implements Serializable, Activator,Clone
 //            for (int i = 0; i < tot; i++) item[i].setId(i);
             if(isActivated) {
                 setVisible(true);
-                PathExplorer.path(map);
+                PathExplorer.path(originMap);
                 repaint();
                 return;
             }
@@ -198,6 +198,7 @@ public class NormalFrame extends JFrame implements Serializable, Activator,Clone
 
     public synchronized void update(int DIR) {
         if(item[currentSite].isMoving) return;
+        if(PathExplorer.isFinished()) return;
         int x = map.item[currentSite].x, y = map.item[currentSite].y;
         if(PathExplorer.isValid(x,y,DIR)) {
 //            PathExplorer.put();
@@ -227,12 +228,30 @@ public class NormalFrame extends JFrame implements Serializable, Activator,Clone
 
     public void checkFailed() {
         if(PathExplorer.isFailed()) {
-            System.out.println("You failed");
+            JDialog dialog = new JDialog(this);
+            dialog.setLayout(new FlowLayout());
+            dialog.setSize(200,100);
+            dialog.setLocationRelativeTo(this);
+            dialog.setVisible(true);
+            JLabel error = new JLabel("无路可走了，请回退");
+            error.setFont(new Font("微软雅黑",Font.BOLD,18));
+            dialog.add(error);
+            error.setSize(40,40);
+            error.setVisible(true);
         }
     }
     public void checkSucceed() {
         if(PathExplorer.isFinished()) {
-            System.out.println("You win");
+            JDialog dialog = new JDialog(this);
+            dialog.setLayout(new FlowLayout());
+            dialog.setSize(200,100);
+            dialog.setLocationRelativeTo(this);
+            dialog.setVisible(true);
+            JLabel error = new JLabel("你赢了！");
+            error.setFont(new Font("微软雅黑",Font.BOLD,18));
+            dialog.add(error);
+            error.setSize(40,40);
+            error.setVisible(true);
         }
     }
     public synchronized void withdraw() {
@@ -266,6 +285,7 @@ public class NormalFrame extends JFrame implements Serializable, Activator,Clone
     }
 
     public void Hint() {
+        if(PathExplorer.isFailed() || PathExplorer.isFinished()) return;
         update(PathExplorer.getHint(map.item[currentSite].x, map.item[currentSite].y));
     }
 
