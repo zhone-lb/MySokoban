@@ -21,6 +21,20 @@ import java.util.concurrent.Future;
 public class MapEditor {
     public static Map map;
     public static Map finalMap;
+    public synchronized NormalFrame ModifyFrame(NormalFrame frame) {
+        map = null;
+        finalMap = new Map(0,0);
+        EditFrame editFrame = new EditFrame(frame.originMap);
+        editFrame.activate();
+        while (finalMap.row == 0) {
+            try {
+                wait(300);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return (finalMap.row == -1 ? frame : new NormalFrame(finalMap));
+    }
     public synchronized NormalFrame CreateFrame() {
         map = null;
         JFrame jFrame = new JFrame();

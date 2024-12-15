@@ -24,6 +24,17 @@ public class EditFrame extends NormalFrame {
         row = originMap.row;
         col = originMap.col;
         a = new int[col][row];
+        map = originMap;
+        if(map.item != null) {
+            for (int i = 0; i < map.item.length; i++) {
+                switch (map.type[i]) {
+                    case 0 -> a[map.item[i].x][map.item[i].y] |= 1;
+                    case 1 -> a[map.item[i].x][map.item[i].y] |= 2;
+                    case 2 -> a[map.item[i].x][map.item[i].y] |= 4;
+                    case 3 -> a[map.item[i].x][map.item[i].y] |= 8;
+                }
+            }
+        }
     }
 
     @Override
@@ -67,8 +78,8 @@ public class EditFrame extends NormalFrame {
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     super.mouseClicked(e);
-                    synchronized (MapEditor.finalMap) {
-                        MapEditor.finalMap = getMap(a);
+                    synchronized (controller.editor.MapEditor.finalMap) {
+                        controller.editor.MapEditor.finalMap = getMap(a);
                     }
                     dispose();
                 }
@@ -82,8 +93,8 @@ public class EditFrame extends NormalFrame {
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     super.mouseClicked(e);
-                    synchronized (MapEditor.finalMap) {
-                        MapEditor.finalMap = new Map(-1, -1);
+                    synchronized (controller.editor.MapEditor.finalMap) {
+                        controller.editor.MapEditor.finalMap = new Map(-1, -1);
                     }
                     dispose();
                 }
@@ -179,7 +190,7 @@ public class EditFrame extends NormalFrame {
         SwingUtilities.invokeLater(()->{
             Init(getMap(a));
             Dimension d = getSize();
-            d.height = (int)(0.88*d.height); d.width = (int)(0.98*d.width);
+            d.height = (int)(0.88*d.height); d.width = (int)(1.00*d.width);
             size = (int)Math.min(d.width / (3+col+row/2.0), d.height / (row+2.0));
             FullX = (d.width / (3+col+row/2.0) < d.height / (row+2.0));
             borderX = (FullX ? 0 : (int)((d.width - size * (3+col+row/2.0))/2.0));
@@ -293,7 +304,7 @@ public class EditFrame extends NormalFrame {
     @Override
     protected void processWindowEvent(WindowEvent e) {
         if(e.getID() == WindowEvent.WINDOW_CLOSING) {
-            MapEditor.finalMap = new Map(-1,-1);
+            controller.editor.MapEditor.finalMap = new Map(-1,-1);
             dispose();
         }
     }
