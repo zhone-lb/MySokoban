@@ -144,7 +144,7 @@ public class Loginframe extends JFrame {
                     int fla=User.checkuser(username.getText(),password.getText());
                     if(!username.getText().isEmpty()){
                         if(fla!=0){
-                            JOptionPane.showMessageDialog(null,"改用户已存在，请登录","提示",JOptionPane.PLAIN_MESSAGE);
+                            JOptionPane.showMessageDialog(null,"该用户已存在，请登录","提示",JOptionPane.PLAIN_MESSAGE);
                         }
                         else{
                             String newpassword=password.getText(),newpasswordagain=passwordagain.getText();
@@ -153,6 +153,7 @@ public class Loginframe extends JFrame {
                             }
                             else{
                                 new User(username.getText(),newpassword);
+                                User.currentuser=getuser(username.getText());
                                 Loginframe.this.setVisible(false);
                                 clear();
                                 StartFrame.closeloginframe();

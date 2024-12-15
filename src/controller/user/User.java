@@ -26,8 +26,13 @@ public class User implements Serializable {
     public User(String name, String password) {
         this.name = name;
         this.password = password;
-        this.md5=null;
+        this.framelistsave=new ArrayList<>();
+        for(int i=0;i<userlist.get(getuser("admin")).framelistsave.size();i++){
+            this.framelistsave.add(userlist.get(getuser("admin")).framelistsave.get(i).clone());
+        }
         userlist.add(this);
+        saveuserlist();
+
     }
     public User(String name, String password, String md5) {
 
