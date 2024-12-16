@@ -178,7 +178,7 @@ public class LevelFrame extends JFrame{
         game2.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                nowlist.get(0).activate();
+                nowlist.get(1).activate();
                 setEnabled(false);
             }
             @Override
@@ -212,7 +212,7 @@ public class LevelFrame extends JFrame{
         game3.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                nowlist.get(0).activate();
+                nowlist.get(2).activate();
                 setEnabled(false);
             }
             @Override
@@ -246,7 +246,7 @@ public class LevelFrame extends JFrame{
         game4.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                nowlist.get(0).activate();
+                nowlist.get(3).activate();
                 setEnabled(false);
             }
             @Override
@@ -280,7 +280,7 @@ public class LevelFrame extends JFrame{
         game5.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                nowlist.get(0).activate();
+                nowlist.get(4).activate();
                 setEnabled(false);
             }
             @Override
