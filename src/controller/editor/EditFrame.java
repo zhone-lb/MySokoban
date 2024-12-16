@@ -49,14 +49,14 @@ public class EditFrame extends NormalFrame {
             setLayout(null);
             setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
-            Highlight = new Item("src\\model\\data\\image\\background.png") {};
+            Highlight = new Item("src\\model\\data\\image\\Highlight.png") {};
             add(Highlight);
             Highlight.setBounds(0,0,size,size);
             Highlight.activate();
             Highlight.setVisible(false);
 
             alter = new Button[4];
-            alter[0] = new Button("src\\model\\data\\image\\background.png","src\\model\\data\\image\\background.png");
+            alter[0] = new Button("src\\model\\data\\image\\hero0.png","src\\model\\data\\image\\hero0.png");
             add(alter[0]);
             alter[0].setBounds(0,0,size,size);
             alter[0].activate();
@@ -71,7 +71,7 @@ public class EditFrame extends NormalFrame {
             });
 
 
-            hint = new Button("src\\model\\data\\image\\background.png","src\\model\\data\\image\\background.png");
+            hint = new Button("src\\model\\data\\image\\done.png","src\\model\\data\\image\\done.png");
             add(hint);
             hint.setBounds(0,0,size,size);
             hint.addMouseListener(new MouseAdapter() {
@@ -86,7 +86,7 @@ public class EditFrame extends NormalFrame {
             });
             hint.activate();
 
-            withdraw = new Button("src\\model\\data\\image\\background.png","src\\model\\data\\image\\background.png");
+            withdraw = new Button("src\\model\\data\\image\\cancel.png","src\\model\\data\\image\\cancel.png");
             add(withdraw);
             withdraw.setBounds(0,0,size,size);
             withdraw.addMouseListener(new MouseAdapter() {
@@ -102,7 +102,7 @@ public class EditFrame extends NormalFrame {
             withdraw.activate();
 
 
-            alter[1] = new Button("src\\model\\data\\image\\background.png","src\\model\\data\\image\\background.png");
+            alter[1] = new Button("src\\model\\data\\image\\Box.jpg","src\\model\\data\\image\\Box.jpg");
             add(alter[1]);
             alter[1].setBounds(0,0,size,size);
             alter[1].activate();
@@ -116,7 +116,7 @@ public class EditFrame extends NormalFrame {
                 }
             });
 
-            alter[2] = new Button("src\\model\\data\\image\\background.png","src\\model\\data\\image\\background.png");
+            alter[2] = new Button("src\\model\\data\\image\\wall.png","src\\model\\data\\image\\wall.png");
             add(alter[2]);
             alter[2].setBounds(0,0,size,size);
             alter[2].activate();
@@ -130,7 +130,7 @@ public class EditFrame extends NormalFrame {
                 }
             });
 
-            alter[3] = new Button("src\\model\\data\\image\\background.png","src\\model\\data\\image\\background.png");
+            alter[3] = new Button("src\\model\\data\\image\\Target.png","src\\model\\data\\image\\Target.png");
             add(alter[3]);
             alter[3].setBounds(0,0,size,size);
             alter[3].activate();

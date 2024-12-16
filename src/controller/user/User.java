@@ -52,8 +52,12 @@ public class User implements Serializable {
         try {
             if(framelistsave ==null||!calcmd5.calc(new FileInputStream("src/model/data/User/" + name + "save.txt")).equals(md5)){
                 error=true;
+                framelistsave=new ArrayList<>();
             }
-            if(specialList == null) error=true;
+            if(specialList == null){
+//                error=true;
+                specialList=new ArrayList<>();
+            }
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }

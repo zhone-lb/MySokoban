@@ -63,7 +63,7 @@ public class NormalFrame extends JFrame implements Serializable, Activator,Clone
         SwingUtilities.invokeLater(()->{
             for (int i = 0; i < 4; i++) {
                 try {
-                    HeroDirImage[i] = new ImageIcon(ImageIO.read(new File("src\\model\\data\\image\\Guide.png")));
+                    HeroDirImage[i] = new ImageIcon(ImageIO.read(new File("src\\model\\data\\image\\hero"+i+".png")));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -136,7 +136,7 @@ public class NormalFrame extends JFrame implements Serializable, Activator,Clone
             }
             PathExplorer.path(map);
 
-            exited = new Button("src\\model\\data\\image\\background.png","src\\model\\data\\image\\background.png");
+            exited = new Button("src\\model\\data\\image\\cancel.png","src\\model\\data\\image\\cancel.png");
             add(exited);
             exited.setBounds(0,0,size,size);
             exited.addMouseListener(new MouseAdapter() {
@@ -149,7 +149,7 @@ public class NormalFrame extends JFrame implements Serializable, Activator,Clone
             });
             exited.activate();
 
-            reset = new Button("src\\model\\data\\image\\background.png","src\\model\\data\\image\\background.png");
+            reset = new Button("src\\model\\data\\image\\restart_0.png","src\\model\\data\\image\\restart_0.png");
             add(reset);
             reset.setBounds(0,0,size,size);
             reset.addMouseListener(new MouseAdapter() {
@@ -161,7 +161,7 @@ public class NormalFrame extends JFrame implements Serializable, Activator,Clone
             });
             reset.activate();
 
-            hint = new Button("src\\model\\data\\image\\background.png","src\\model\\data\\image\\background.png");
+            hint = new Button("src\\model\\data\\image\\done.png","src\\model\\data\\image\\done.png");
             add(hint);
             hint.setBounds(0,0,size,size);
             hint.addMouseListener(new MouseAdapter() {
@@ -173,7 +173,7 @@ public class NormalFrame extends JFrame implements Serializable, Activator,Clone
             });
             hint.activate();
 
-            withdraw = new Button("src\\model\\data\\image\\background.png","src\\model\\data\\image\\background.png");
+            withdraw = new Button("src\\model\\data\\image\\undo.png","src\\model\\data\\image\\undo.png");
             add(withdraw);
             withdraw.setBounds(0,0,size,size);
             withdraw.addMouseListener(new MouseAdapter() {

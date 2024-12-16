@@ -34,19 +34,25 @@ public class LevelFrame extends JFrame{
         leftpanel.setOpaque(false);
         leftpanel.setLayout(new GridBagLayout());
         JLabel title=new JLabel();
-        title.setPreferredSize(new Dimension(this.getWidth()/10,this.getHeight()/6*3));
+        title.setPreferredSize(new Dimension(108, 360));
+        Image titleimage =(new ImageIcon("src/model/data/image/leveltitle.png")).getImage().getScaledInstance(108, 360, Image.SCALE_SMOOTH);
+        title.setIcon(new ImageIcon(titleimage));
+        title.setBorder(null);
         GridBagConstraints titlelocation=new GridBagConstraints();
         titlelocation.gridx=0;
         titlelocation.gridy=1;
         titlelocation.weightx=1;
         titlelocation.weighty=3;
-//        titlelocation.ipadx=1;
-//        titlelocation.ipady=1;
-        title.setBorder(BorderFactory.createLineBorder(Color.RED));
         leftpanel.add(title,titlelocation);
         JButton back=new JButton();
         back.setText("返回");
-        back.setPreferredSize(new Dimension(this.getWidth()/10,this.getHeight()/6));
+        back.setPreferredSize((new Dimension(150,150)));
+        Image backimage_0 =(new ImageIcon("src/model/data/image/back_0.png")).getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH);
+        Image backimage_1 =(new ImageIcon("src/model/data/image/back_1.png")).getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH);
+        back.setIcon(new ImageIcon(backimage_0));
+        back.setOpaque(false);
+        back.setContentAreaFilled(false);
+        back.setBorder(null);
         GridBagConstraints backlocation=new GridBagConstraints();
         backlocation.gridx=1;
         backlocation.gridy=0;
@@ -64,11 +70,25 @@ public class LevelFrame extends JFrame{
                 }
                 levelframe.setVisible(false);
             }
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                back.setIcon(new ImageIcon(backimage_1));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                back.setIcon(new ImageIcon(backimage_0));
+            }
         });
         leftpanel.add(back,backlocation);
         JButton restart=new JButton();
-        restart.setText("重置");
-        restart.setPreferredSize(new Dimension(this.getWidth()/10,this.getHeight()/6));
+        restart.setPreferredSize(new Dimension(150,150));
+        Image restartimage_0 =(new ImageIcon("src/model/data/image/restart_0.png")).getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH);
+        Image restartimage_1 =(new ImageIcon("src/model/data/image/restart_1.png")).getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH);
+        restart.setIcon(new ImageIcon(restartimage_0));
+        restart.setOpaque(false);
+        restart.setContentAreaFilled(false);
+        restart.setBorder(null);
         GridBagConstraints restartlocation=new GridBagConstraints();
         restartlocation.gridx=1;
         restartlocation.gridy=3;
@@ -84,6 +104,15 @@ public class LevelFrame extends JFrame{
                     }
                 }
             }
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                restart.setIcon(new ImageIcon(restartimage_1));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                restart.setIcon(new ImageIcon(restartimage_0));
+            }
         });
         leftpanel.add(restart,restartlocation);
 
@@ -96,8 +125,12 @@ public class LevelFrame extends JFrame{
         rightpanel.setLayout(new GridBagLayout());
 
         JButton game1 = new JButton();
-        game1.setText("game1");
-        game1.setFont(new Font("Times New Roman", Font.BOLD, 40));
+        Image game1_0 =(new ImageIcon("src/model/data/image/game1_0.png")).getImage().getScaledInstance(650, 120, Image.SCALE_SMOOTH);
+        Image game1_1 =(new ImageIcon("src/model/data/image/game1_1.png")).getImage().getScaledInstance(650, 120, Image.SCALE_SMOOTH);
+        game1.setIcon(new ImageIcon(game1_0));
+        game1.setOpaque(false);
+        game1.setContentAreaFilled(false);
+        game1.setBorder(null);
         GridBagConstraints location1 = new GridBagConstraints();
         location1.gridx = 0;
         location1.gridy = 1;
@@ -113,12 +146,25 @@ public class LevelFrame extends JFrame{
                 nowlist.get(0).activate();
                 setEnabled(false);
             }
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                game1.setIcon(new ImageIcon(game1_1));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                game1.setIcon(new ImageIcon(game1_0));
+            }
         });
         rightpanel.add(game1, location1);
 
         JButton game2 = new JButton();
-        game2.setText("game2");
-        game2.setFont(new Font("Times New Roman", Font.BOLD, 40));
+        Image game2_0 =(new ImageIcon("src/model/data/image/game2_0.png")).getImage().getScaledInstance(650, 120, Image.SCALE_SMOOTH);
+        Image game2_1 =(new ImageIcon("src/model/data/image/game2_1.png")).getImage().getScaledInstance(650, 120, Image.SCALE_SMOOTH);
+        game2.setIcon(new ImageIcon(game2_0));
+        game2.setOpaque(false);
+        game2.setContentAreaFilled(false);
+        game2.setBorder(null);
         GridBagConstraints location2 = new GridBagConstraints();
         location2.gridx = 0;
         location2.gridy = 2;
@@ -131,16 +177,28 @@ public class LevelFrame extends JFrame{
         game2.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                nowlist.get(1).activate();
+                nowlist.get(0).activate();
                 setEnabled(false);
             }
-        });
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                game2.setIcon(new ImageIcon(game2_1));
+            }
 
+            @Override
+            public void mouseExited(MouseEvent e) {
+                game2.setIcon(new ImageIcon(game2_0));
+            }
+        });
         rightpanel.add(game2, location2);
 
         JButton game3 = new JButton();
-        game3.setText("game3");
-        game3.setFont(new Font("Times New Roman", Font.BOLD, 40));
+        Image game3_0 =(new ImageIcon("src/model/data/image/game3_0.png")).getImage().getScaledInstance(650, 120, Image.SCALE_SMOOTH);
+        Image game3_1 =(new ImageIcon("src/model/data/image/game3_1.png")).getImage().getScaledInstance(650, 120, Image.SCALE_SMOOTH);
+        game3.setIcon(new ImageIcon(game3_0));
+        game3.setOpaque(false);
+        game3.setContentAreaFilled(false);
+        game3.setBorder(null);
         GridBagConstraints location3 = new GridBagConstraints();
         location3.gridx = 0;
         location3.gridy = 3;
@@ -153,15 +211,28 @@ public class LevelFrame extends JFrame{
         game3.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                nowlist.get(2).activate();
+                nowlist.get(0).activate();
                 setEnabled(false);
+            }
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                game3.setIcon(new ImageIcon(game3_1));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                game3.setIcon(new ImageIcon(game3_0));
             }
         });
         rightpanel.add(game3, location3);
 
         JButton game4 = new JButton();
-        game4.setText("game4");
-        game4.setFont(new Font("Times New Roman", Font.BOLD, 40));
+        Image game4_0 =(new ImageIcon("src/model/data/image/game4_0.png")).getImage().getScaledInstance(650, 120, Image.SCALE_SMOOTH);
+        Image game4_1 =(new ImageIcon("src/model/data/image/game4_1.png")).getImage().getScaledInstance(650, 120, Image.SCALE_SMOOTH);
+        game4.setIcon(new ImageIcon(game4_0));
+        game4.setOpaque(false);
+        game4.setContentAreaFilled(false);
+        game4.setBorder(null);
         GridBagConstraints location4 = new GridBagConstraints();
         location4.gridx = 0;
         location4.gridy = 4;
@@ -174,15 +245,28 @@ public class LevelFrame extends JFrame{
         game4.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                nowlist.get(3).activate();
+                nowlist.get(0).activate();
                 setEnabled(false);
+            }
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                game4.setIcon(new ImageIcon(game4_1));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                game4.setIcon(new ImageIcon(game4_0));
             }
         });
         rightpanel.add(game4, location4);
 
         JButton game5 = new JButton();
-        game5.setText("game5");
-        game5.setFont(new Font("Times New Roman", Font.BOLD, 40));
+        Image game5_0 =(new ImageIcon("src/model/data/image/game5_0.png")).getImage().getScaledInstance(650, 120, Image.SCALE_SMOOTH);
+        Image game5_1 =(new ImageIcon("src/model/data/image/game5_1.png")).getImage().getScaledInstance(650, 120, Image.SCALE_SMOOTH);
+        game5.setIcon(new ImageIcon(game5_0));
+        game5.setOpaque(false);
+        game5.setContentAreaFilled(false);
+        game5.setBorder(null);
         GridBagConstraints location5 = new GridBagConstraints();
         location5.gridx = 0;
         location5.gridy = 5;
@@ -195,8 +279,17 @@ public class LevelFrame extends JFrame{
         game5.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                nowlist.get(4).activate();
+                nowlist.get(0).activate();
                 setEnabled(false);
+            }
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                game5.setIcon(new ImageIcon(game5_1));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                game5.setIcon(new ImageIcon(game5_0));
             }
         });
         rightpanel.add(game5, location5);
@@ -211,7 +304,6 @@ public class LevelFrame extends JFrame{
         this.add(backpanel);
     }
     public static void openlevelFrame() {
-        levelframe=new LevelFrame();
         nowlist=new ArrayList<>();
         System.out.println(User.getuser("admin"));
         if(User.currentuser==-1){
