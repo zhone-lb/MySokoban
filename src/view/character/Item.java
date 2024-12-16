@@ -49,7 +49,6 @@ public abstract class Item extends JLabel implements Serializable, Activator {
         revalidate();
     }
 
-
     public void scale(int width, int height) {
         setIcon(new ImageIcon((currentImage.getImage()).getScaledInstance(width,height,Image.SCALE_DEFAULT)));
         setBounds(getX(),getY(),width,height);
@@ -110,5 +109,9 @@ public abstract class Item extends JLabel implements Serializable, Activator {
 
     public int getId() {
         return id;
+    }
+
+    public void setCurrentImage(ImageIcon currentImage) {
+        this.currentImage = currentImage;
     }
 }

@@ -1,8 +1,12 @@
+import controller.Settings;
 import controller.editor.EditFrame;
 import controller.editor.MapEditor;
+import controller.level.Game_2048;
+import controller.level.MultiHero;
 import controller.level.NormalFrame;
 import controller.user.User;
 import model.algorithm.Map;
+import model.data.Writer;
 import view.StartFrame;
 
 import java.awt.*;
@@ -24,7 +28,7 @@ public class Main {
         }
         item[5] = new Point(0,1);
         item[6] = new Point(3,0);
-        int[] type = {0,1,1,3,3,2,2};
+        int[] type = {-1,1,2,4,8,4096,4096};
         Map map = new Map(5,6,item,type);
         NormalFrame frame = new NormalFrame(map);
 //        frame.activate();

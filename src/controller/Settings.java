@@ -6,10 +6,7 @@ import view.StartFrame;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.*;
 import java.io.Serializable;
 
 public class Settings extends JFrame implements Serializable {
@@ -18,6 +15,7 @@ public class Settings extends JFrame implements Serializable {
     public JLabel title;
     public JLabel[] text;
     public JButton[] button;
+    public JTextField[] textField;
     static Settings settings;
     public static void newsetting(){
         settings = new Settings();
@@ -41,7 +39,8 @@ public class Settings extends JFrame implements Serializable {
         requestFocus();
         index = -1;
         text = new JLabel[8];
-        button = new JButton[8];
+        button = new JButton[6];
+        textField = new JTextField[2];
 
         title = new JLabel("设置");
         title.setFont(new Font("微软雅黑",Font.BOLD,35));
@@ -163,31 +162,64 @@ public class Settings extends JFrame implements Serializable {
         text[6].setSize(60,40);
         text[6].setVisible(true);
 
-        button[6] = new JButton(Integer.toString(UserConfig.REFRESH_RATE));
-        button[6].setFont(new Font("微软雅黑",Font.BOLD,17));
-        table.add(button[6]);
-        button[6].setSize(90,40);
-        button[6].setVisible(true);
-        button[6].setFocusable(false);
-        button[6].addActionListener(e -> {
-            button[6].setText("请键入");
-            index = 6;
+        textField[0] = new JTextField(Integer.toString(UserConfig.REFRESH_RATE));
+        textField[0].setFont(new Font("微软雅黑",Font.BOLD,17));
+        table.add(textField[0]);
+        textField[0].setSize(90,40);
+        textField[0].setVisible(true);
+        textField[0].setFocusable(false);
+        textField[0].addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                super.focusLost(e);
+                if(Integer.getInteger(textField[0].getText()) == null) {
+                    JDialog dialog = new JDialog();
+                    dialog.setLayout(new FlowLayout());
+                    dialog.setSize(200,100);
+                    dialog.setLocationRelativeTo(null);
+                    dialog.setVisible(true);
+                    JLabel error = new JLabel("非法输入，请重试");
+                    error.setFont(new Font("微软雅黑",Font.BOLD,18));
+                    dialog.add(error);
+                    error.setSize(40,40);
+                    error.setVisible(true);
+                    textField[0].setText(Integer.toString(UserConfig.REFRESH_RATE));
+                }
+                else NormalFrame.userConfig.setMyREFRESH_RATE(Integer.getInteger(textField[0].getText()));
+            }
         });
+
         text[7] = new JLabel("动画时长");
         text[7].setFont(new Font("微软雅黑",Font.BOLD,17));
         table.add(text[7]);
         text[7].setSize(60,40);
         text[7].setVisible(true);
 
-        button[7] = new JButton(Integer.toString(UserConfig.GAME_SPEED));
-        button[7].setFont(new Font("微软雅黑",Font.BOLD,17));
-        table.add(button[7]);
-        button[7].setSize(90,40);
-        button[7].setVisible(true);
-        button[7].setFocusable(false);
-        button[7].addActionListener(e -> {
-            button[7].setText("请键入");
-            index = 7;
+        textField[1] = new JTextField(Integer.toString(UserConfig.GAME_SPEED));
+        textField[1].setFont(new Font("微软雅黑",Font.BOLD,17));
+        table.add(textField[1]);
+        textField[1].setSize(90,40);
+        textField[1].setVisible(true);
+        textField[1].setFocusable(false);
+        textField[1].addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                super.focusLost(e);
+                if(Integer.getInteger(textField[1].getText()) == null) {
+                    JDialog dialog = new JDialog();
+                    dialog.setLayout(new FlowLayout());
+                    dialog.setSize(200,100);
+                    dialog.setLocationRelativeTo(null);
+                    dialog.setVisible(true);
+                    JLabel error = new JLabel("非法输入，请重试");
+                    error.setFont(new Font("微软雅黑",Font.BOLD,18));
+                    dialog.add(error);
+                    error.setSize(40,40);
+                    error.setVisible(true);
+                    textField[1].setText(Integer.toString(UserConfig.GAME_SPEED));
+                }
+                else NormalFrame.userConfig.setMyGAME_SPEED(Integer.getInteger(textField[1].getText()));
+            }
         });
     }
 

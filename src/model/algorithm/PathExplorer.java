@@ -148,14 +148,14 @@ public class PathExplorer {
         return (
                     (
                         inInterval(x+dir[DIR][0],y+dir[DIR][1]) &&
-                        (a[x+dir[DIR][0]][y+dir[DIR][1]] & 6) == 0
+                        (a[x+dir[DIR][0]][y+dir[DIR][1]] & 7) == 0
                     )
                 ||
                     (
                         inInterval(x+dir[DIR][0],y+dir[DIR][1]) &&
                         inInterval(x+2*dir[DIR][0],y+2*dir[DIR][1]) &&
-                        (a[x+dir[DIR][0]][y+dir[DIR][1]] & 4) == 0 &&
-                        (a[x+2*dir[DIR][0]][y+2*dir[DIR][1]] & 6) == 0
+                        (a[x+dir[DIR][0]][y+dir[DIR][1]] & 5) == 0 &&
+                        (a[x+2*dir[DIR][0]][y+2*dir[DIR][1]] & 7) == 0
                     )
                );
     }
@@ -177,7 +177,7 @@ public class PathExplorer {
             a[x+dir[DIR][0]][y+dir[DIR][1]] ^= 2; a[x+2*dir[DIR][0]][y+2*dir[DIR][1]] ^= 2;
         }
 //        put();
-        System.out.println("the number of rest steps is "+f.get(getNum()));
+//        System.out.println("the number of rest steps is "+f.get(getNum()));
     }
     public static void refresh2(int x,int y,int DIR,boolean isBlocked) {
 //        System.out.println(x+" "+y+" "+DIR+" "+isBlocked);
@@ -189,13 +189,13 @@ public class PathExplorer {
             a[x+dir[DIR^3][0]][y+dir[DIR^3][1]] ^= 2; a[x][y] ^= 2;
         }
 //        put();
-        System.out.println("the number of rest steps is "+f.get(getNum()));
+//        System.out.println("the number of rest steps is "+f.get(getNum()));
     }
     public static boolean getBlocked(int x, int y, int DIR) {
         return ((a[x+dir[DIR][0]][y+dir[DIR][1]] & 2) != 0);
     }
 
-    protected static boolean inInterval(int x, int y) {
+    public static boolean inInterval(int x, int y) {
         return (0 <= x && x < col && 0 <= y && y < row);
     }
     protected static long getNum() {
@@ -211,7 +211,8 @@ public class PathExplorer {
         return ans;
     }
     public static void Init(Map map) {
-        a = new int[col][row];
+        row = map.row; col = map.col;
+        a = new int[map.col][map.row];
         for (int i = 0; i < map.item.length; i++) {
             switch (map.type[i]) {
                 case 0 -> a[map.item[i].x][map.item[i].y] |= 1;
