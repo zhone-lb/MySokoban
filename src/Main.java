@@ -36,11 +36,11 @@ public class Main {
 //        frame.activate();
 //        frame.activate();
 //        MapEditor.CreateFrame();
-//        StartFrame.start();
+        StartFrame.start();
 //        MapEditor mapEditor = new MapEditor();
 //        NormalFrame normalFrame = mapEditor.CreateFrame();
 //        normalFrame.activate();
-        User.getuserlist();
+//        User.getuserlist();
 //        ArrayList<NormalFrame> List=new ArrayList<NormalFrame>();
 //        MapEditor mapEditor =new MapEditor();
 //        NormalFrame frame=mapEditor.CreateFrame();
@@ -59,11 +59,11 @@ public class Main {
 //        User.userlist.get(User.getuser("admin")).specialList = new ArrayList<>();
 //        User.userlist.get(User.getuser("admin")).specialList.add(frame);
 //        User.userlist.get(User.getuser("admin")).userConfig = new UserConfig();
-        for (int i = 0; i < User.userlist.get(User.getuser("admin")).framelistsave.size(); i++) {
-            User.userlist.get(User.getuser("admin")).framelistsave.get(i).activate();
-        }
-        User.userlist.get(User.getuser("admin")).specialList.get(0).activate();
-//        User.saveuserlist();
-
+//        for (int i = 0; i < User.userlist.get(User.getuser("admin")).framelistsave.size(); i++) {
+//            User.userlist.get(User.getuser("admin")).framelistsave.get(i).activate();
+//        }
+//        User.userlist.get(User.getuser("admin")).specialList.get(0).activate();
+////        User.saveuserlist();
+//
     }
 }

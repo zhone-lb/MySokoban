@@ -7,6 +7,7 @@ import java.awt.event.*;
 
 import static controller.user.User.currentuser;
 import static controller.user.User.userlist;
+import static view.LevelFrame.levelframe;
 import static view.LevelFrame.nowlist;
 public class StartFrame extends JFrame {
     static JLabel title;
@@ -16,6 +17,7 @@ public class StartFrame extends JFrame {
     JPanel toppanel,bottompanel;
     public static void start(){
         startframe = new StartFrame();
+        levelframe=new LevelFrame();
         User.getuserlist();
         startframe.setVisible(true);
     }
