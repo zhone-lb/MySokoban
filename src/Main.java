@@ -62,16 +62,31 @@ public class Main {
 //        for (int i = 0; i < 9; i++) User.userlist.get(User.getuser("admin")).specialList.add(null);
 //
 //
-//        Point[] item = new Point[7];
-//        for (int i = 0; i < 5; i++) {
-//            item[i] = new Point(i,i);
-//        }
-//        item[5] = new Point(0,1);
-//        item[6] = new Point(3,0);
-//        int[] type = {-1,1,2,4,8,4096,4096};
-//        Map map = new Map(5,6,item,type);
-//        NormalFrame frame = new Game_2048(map);
-
+//        Point[] item = new Point[8];
+//        item[0] = new Point(0,0);
+//        item[1] = new Point(1,0);
+//        item[2] = new Point(2,0);
+//        item[3] = new Point(0,1);
+//        item[4] = new Point(1,1);
+//        item[5] = new Point(0,2);
+//        item[6] = new Point(1,2);
+//        item[7] = new Point(2,2);
+//        int[] type = {3,3,4,1,2,3,3,1};
+//        Map map = new Map(3,3,item,type);
+//        NormalFrame frame3 = new MultiHero(map);
+//
+//        Point[] item = new Point[8];
+//        item[0] = new Point(0,0);
+//        item[1] = new Point(1,0);
+//        item[2] = new Point(2,0);
+//        item[3] = new Point(0,1);
+//        item[4] = new Point(1,1);
+//        item[5] = new Point(0,2);
+//        item[6] = new Point(1,2);
+//        item[7] = new Point(2,2);
+//        int[] type = {3,3,4,1,2,3,3,1};
+//        map = new Map(3,3,item,type);
+//        NormalFrame frame4 = new MultiHero(map);
 
 
 
