@@ -8,13 +8,18 @@ import view.character.*;
 import view.character.Box;
 import view.character.Button;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Game_2048 extends NormalFrame implements Serializable, Activator {
+    public ImageIcon[] NumIcon;
+
     public Game_2048(Map originMap) {
         Init(originMap);
     }
@@ -29,6 +34,15 @@ public class Game_2048 extends NormalFrame implements Serializable, Activator {
         for (int i = 0; i < map.item.length; i++) {
             a[map.item[i].x][map.item[i].y] |= map.type[i];
         }
+        NumIcon = new ImageIcon[13];
+        for (int i = 0; i < 13; i++) {
+            try {
+                if(i%2 == 0) NumIcon[i] = new ImageIcon(ImageIO.read(new File("src\\model\\data\\image\\background.png")));
+                else NumIcon[i] = new ImageIcon(ImageIO.read(new File("src\\model\\data\\image\\Guide.png")));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
         SwingUtilities.invokeLater(()->{
             for (int i = 0; i < tot; i++) {
                 if(map.type[i] < 0) item[i] = new Hero("src\\model\\data\\image\\Guide.png");
@@ -41,7 +55,7 @@ public class Game_2048 extends NormalFrame implements Serializable, Activator {
     public void reset() {
         map = new Map(originMap.row, originMap.col, originMap.item.clone(), originMap.type.clone());
         past = new ArrayList<>();
-        PathExplorer.Init(originMap);
+
         repaint();
     }
 
@@ -142,45 +156,59 @@ public class Game_2048 extends NormalFrame implements Serializable, Activator {
         return (0 <= x && x < col && 0 <= y && y < row);
     }
     public boolean isValid(int x,int y,int DIR) {
-        return inInterval(x+dir[DIR][0],y+dir[DIR][1]);
+        return (inInterval(x+dir[DIR][0],y+dir[DIR][1]) && a[x+dir[DIR][0]][y+dir[DIR][1]] != 4096);
+    }
+    public boolean getBlocked(int x, int y, int DIR) {
+        return (a[x+dir[DIR][0]][y+dir[DIR][1]] != 0);
+    }
+    public int log(int x) {
+        for (int i = 0; i < 12; i++) {
+            if((1 << i) == x) return i;
+        }
+        return 12;
     }
 
     public synchronized void update(int DIR) {
         if(item[currentSite].isMoving) return;
         int x = map.item[currentSite].x, y = map.item[currentSite].y;
-        if(PathExplorer.isValid(x,y,DIR)) {
+        if(isValid(x,y,DIR)) {
 //            PathExplorer.put();
-            if(!PathExplorer.getBlocked(x,y,DIR)) {
+            if(!getBlocked(x,y,DIR)) {
                 past.add(DIR);
                 map.item[currentSite] = new Point(x+PathExplorer.dir[DIR][0], y+PathExplorer.dir[DIR][1]);
                 item[currentSite].move(PathExplorer.dir[DIR][0]*size, PathExplorer.dir[DIR][1]*size, UserConfig.GAME_SPEED, UserConfig.REFRESH_RATE);
-                PathExplorer.refresh(x,y,DIR,false);
+                a[x+dir[DIR][0]][y+dir[DIR][1]] = a[x][y]; a[x][y] = 0;
+            }
+            else if(a[x][y] != -a[x+dir[DIR][0]][y+dir[DIR][1]]) {
+                if(isValid(x+dir[DIR][0],y+dir[DIR][1],DIR) && a[x+2*dir[DIR][0]][y+2*dir[DIR][1]] == 0) {
+                    past.add(1 << 2 | DIR);
+                    int boxSite = getBoxSite(new Point(x+PathExplorer.dir[DIR][0], y+PathExplorer.dir[DIR][1]));
+                    map.item[currentSite] = new Point(x+PathExplorer.dir[DIR][0], y+PathExplorer.dir[DIR][1]);
+                    map.item[boxSite] = new Point(x+2*PathExplorer.dir[DIR][0], y+2*PathExplorer.dir[DIR][1]);
+                    item[currentSite].move(PathExplorer.dir[DIR][0]*size, PathExplorer.dir[DIR][1]*size, UserConfig.GAME_SPEED, UserConfig.REFRESH_RATE);
+                    item[boxSite].move(PathExplorer.dir[DIR][0]*size, PathExplorer.dir[DIR][1]*size, UserConfig.GAME_SPEED, UserConfig.REFRESH_RATE);
+                    a[x+2*dir[DIR][0]][y+2*dir[DIR][1]] = a[x+dir[DIR][0]][y+dir[DIR][1]]; a[x+dir[DIR][0]][y+dir[DIR][1]] = a[x][y]; a[x][y] = 0;
+                }
             }
             else {
-                past.add(1 << 2 | DIR);
+                past.add(1 << 3 | DIR);
                 int boxSite = getBoxSite(new Point(x+PathExplorer.dir[DIR][0], y+PathExplorer.dir[DIR][1]));
                 map.item[currentSite] = new Point(x+PathExplorer.dir[DIR][0], y+PathExplorer.dir[DIR][1]);
-                map.item[boxSite] = new Point(x+2*PathExplorer.dir[DIR][0], y+2*PathExplorer.dir[DIR][1]);
+                map.type[boxSite] = 0; item[boxSite].setCurrentImage(NumIcon[12]); item[boxSite].activate();
                 item[currentSite].move(PathExplorer.dir[DIR][0]*size, PathExplorer.dir[DIR][1]*size, UserConfig.GAME_SPEED, UserConfig.REFRESH_RATE);
-                item[boxSite].move(PathExplorer.dir[DIR][0]*size, PathExplorer.dir[DIR][1]*size, UserConfig.GAME_SPEED, UserConfig.REFRESH_RATE);
-                PathExplorer.refresh(x,y,DIR,true);
+                map.type[currentSite] = map.type[currentSite] * 2; item[currentSite].setCurrentImage(NumIcon[log(-map.type[currentSite])]); item[currentSite].activate();
+                a[x+dir[DIR][0]][y+dir[DIR][1]] = a[x][y] * 2; a[x][y] = 0;
             }
             SwingUtilities.invokeLater(()->{
                 step.setText(Integer.toString(past.size()));
                 step.setIconTextGap(-(int) (step.getWidth() * (past.size() < 10 ? 0.64 : 0.75)));
             });
             checkSucceed();
-            checkFailed();
         }
     }
 
-    public void checkFailed() {
-        if(PathExplorer.isFailed()) {
-            System.out.println("You failed");
-        }
-    }
     public void checkSucceed() {
-        if(PathExplorer.isFinished()) {
+        if(map.type[currentSite] == 2048) {
             System.out.println("You win");
         }
     }
@@ -192,25 +220,29 @@ public class Game_2048 extends NormalFrame implements Serializable, Activator {
             step.setText(Integer.toString(past.size()));
             step.setIconTextGap(-(int) (step.getWidth() * (past.size() < 10 ? 0.64 : 0.75)));
         });
-        boolean isBlocked = ((DIR & 4) != 0);
+        int temp = DIR;
         DIR &= 3; DIR ^= 3;
         int x = map.item[currentSite].x, y = map.item[currentSite].y;
-        if(PathExplorer.isValid2(x,y,DIR)) {
-//            PathExplorer.put();
-            if(!isBlocked) {
-                map.item[currentSite] = new Point(x+PathExplorer.dir[DIR][0], y+PathExplorer.dir[DIR][1]);
-                item[currentSite].move(PathExplorer.dir[DIR][0]*size, PathExplorer.dir[DIR][1]*size, UserConfig.GAME_SPEED, UserConfig.REFRESH_RATE);
-                PathExplorer.refresh2(x,y,DIR,false);
-            }
-            else {
-                int boxSite = getBoxSite(new Point(x+PathExplorer.dir[DIR^3][0], y+PathExplorer.dir[DIR^3][1]));
-                map.item[currentSite] = new Point(x+PathExplorer.dir[DIR][0], y+PathExplorer.dir[DIR][1]);
-                map.item[boxSite] = new Point(x, y);
-                item[currentSite].move(PathExplorer.dir[DIR][0]*size, PathExplorer.dir[DIR][1]*size, UserConfig.GAME_SPEED, UserConfig.REFRESH_RATE);
-                item[boxSite].move(PathExplorer.dir[DIR][0]*size, PathExplorer.dir[DIR][1]*size, UserConfig.GAME_SPEED, UserConfig.REFRESH_RATE);
-                PathExplorer.refresh2(x,y,DIR,true);
-            }
-            checkFailed();
+        if((temp & 4) != 0) {
+            int boxSite = getBoxSite(new Point(x+PathExplorer.dir[DIR^3][0], y+PathExplorer.dir[DIR^3][1]));
+            map.item[currentSite] = new Point(x+PathExplorer.dir[DIR][0], y+PathExplorer.dir[DIR][1]);
+            map.item[boxSite] = new Point(x, y);
+            item[currentSite].move(PathExplorer.dir[DIR][0]*size, PathExplorer.dir[DIR][1]*size, UserConfig.GAME_SPEED, UserConfig.REFRESH_RATE);
+            item[boxSite].move(PathExplorer.dir[DIR][0]*size, PathExplorer.dir[DIR][1]*size, UserConfig.GAME_SPEED, UserConfig.REFRESH_RATE);
+            a[x+2*dir[DIR][0]][y+2*dir[DIR][1]] = a[x+dir[DIR][0]][y+dir[DIR][1]]; a[x+dir[DIR][0]][y+dir[DIR][1]] = a[x][y]; a[x][y] = 0;
+        }
+        else if((temp & 8) != 0) {
+            int boxSite = getBoxSite(new Point(x,y));
+            map.item[currentSite] = new Point(x+PathExplorer.dir[DIR][0], y+PathExplorer.dir[DIR][1]);
+            map.type[boxSite] = -map.type[currentSite]/2; item[boxSite].setCurrentImage(NumIcon[log(map.type[boxSite])]); item[boxSite].activate();
+            map.type[currentSite] = map.type[currentSite]/2; item[currentSite].setCurrentImage(NumIcon[log(-map.type[currentSite])]); item[currentSite].activate();
+            item[currentSite].move(PathExplorer.dir[DIR][0]*size, PathExplorer.dir[DIR][1]*size, UserConfig.GAME_SPEED, UserConfig.REFRESH_RATE);
+            a[x+dir[DIR][0]][y+dir[DIR][1]] = a[x][y] / 2; a[x][y] = -a[x][y] / 2;
+        }
+        else {
+            map.item[currentSite] = new Point(x+PathExplorer.dir[DIR][0], y+PathExplorer.dir[DIR][1]);
+            item[currentSite].move(PathExplorer.dir[DIR][0]*size, PathExplorer.dir[DIR][1]*size, UserConfig.GAME_SPEED, UserConfig.REFRESH_RATE);
+            a[x+dir[DIR][0]][y+dir[DIR][1]] = a[x][y]; a[x][y] = 0;
         }
     }
 
@@ -219,7 +251,13 @@ public class Game_2048 extends NormalFrame implements Serializable, Activator {
 
     protected int getBoxSite(Point p) {
         for (int i = 0; i < item.length; i++) {
-            if(map.type[i] == 1 && map.item[i].equals(p)) return i;
+            if(map.type[i] >= 0 && map.item[i].equals(p)) return i;
+        }
+        for (int i = 0; i < col; i++) {
+            for (int j = 0; j < row; j++) {
+                System.out.printf("%d ",a[i][j]);
+            }
+            System.out.println();
         }
         return -1;
     }

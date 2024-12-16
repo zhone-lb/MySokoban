@@ -9,9 +9,12 @@ import model.config.UserConfig;
 import view.character.Box;
 import view.character.Button;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,6 +24,7 @@ public class NormalFrame extends JFrame implements Serializable, Activator {
     public Map map, originMap;
     public Item[] item;
     public Item background, column, reset, exited, hint, withdraw, step;
+    public ImageIcon[] HeroDirImage;
     public int currentSite;
     public boolean FullX;
     public ArrayList<Integer> past;
@@ -52,8 +56,16 @@ public class NormalFrame extends JFrame implements Serializable, Activator {
         int tot = map.item.length;
         currentSite = 0;
         item = new Item[map.item.length];
+        HeroDirImage = new ImageIcon[4];
         past = new ArrayList<>();
         SwingUtilities.invokeLater(()->{
+            for (int i = 0; i < 4; i++) {
+                try {
+                    HeroDirImage[i] = new ImageIcon(ImageIO.read(new File("src\\model\\data\\image\\Guide.png")));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
             for (int i = 0; i < tot; i++) {
                 switch (map.type[i]) {
                     case 0 -> item[i] = new Hero("src\\model\\data\\image\\Guide.png");
@@ -170,6 +182,7 @@ public class NormalFrame extends JFrame implements Serializable, Activator {
     public synchronized void update(int DIR) {
         if(item[currentSite].isMoving) return;
         int x = map.item[currentSite].x, y = map.item[currentSite].y;
+        HeroFacing(DIR);
         if(PathExplorer.isValid(x,y,DIR)) {
 //            PathExplorer.put();
             if(!PathExplorer.getBlocked(x,y,DIR)) {
@@ -210,6 +223,7 @@ public class NormalFrame extends JFrame implements Serializable, Activator {
         if(past.isEmpty()) return;
         if(item[currentSite].isMoving) return;
         int DIR = past.getLast(); past.removeLast();
+        HeroFacing(DIR);
         SwingUtilities.invokeLater(()->{
             step.setText(Integer.toString(past.size()));
             step.setIconTextGap(-(int) (step.getWidth() * (past.size() < 10 ? 0.64 : 0.75)));
@@ -245,6 +259,13 @@ public class NormalFrame extends JFrame implements Serializable, Activator {
             if(map.type[i] == 1 && map.item[i].equals(p)) return i;
         }
         return -1;
+    }
+
+    public void HeroFacing(int DIR) {
+        SwingUtilities.invokeLater(()->{
+            item[currentSite].setCurrentImage(HeroDirImage[DIR]);
+            item[currentSite].activate();
+        });
     }
 
     @Override

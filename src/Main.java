@@ -1,6 +1,7 @@
 import controller.Settings;
 import controller.editor.EditFrame;
 import controller.editor.MapEditor;
+import controller.level.Game_2048;
 import controller.level.MultiHero;
 import controller.level.NormalFrame;
 import model.algorithm.Map;
@@ -25,11 +26,10 @@ public class Main {
         }
         item[5] = new Point(0,1);
         item[6] = new Point(3,0);
-        int[] type = {0,1,1,3,3,0,2};
+        int[] type = {-1,1,2,4,8,4096,4096};
         Map map = new Map(5,6,item,type);
-        MapEditor mapEditor = new MapEditor();
-        NormalFrame[] frame = new NormalFrame[5];
-        for (int i = 0; i < 5; i++) frame[i] = mapEditor.CreateFrame();
+        Game_2048 game = new Game_2048(map);
+        game.activate();
 //        frame.revalidate();
 //        frame.activate();
 //        MapEditor.CreateFrame();
