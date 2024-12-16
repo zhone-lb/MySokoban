@@ -24,19 +24,19 @@ public class Main {
 
 
 //        TestFrame testFrame = new TestFrame();
-        Point[] item = new Point[7];
-        for (int i = 0; i < 5; i++) {
-            item[i] = new Point(i,i);
-        }
-        item[5] = new Point(0,1);
-        item[6] = new Point(3,0);
-        int[] type = {-1,1,2,4,8,4096,4096};
-        Map map = new Map(5,6,item,type);
-        NormalFrame frame = new Game_2048(map);
+//        Point[] item = new Point[7];
+//        for (int i = 0; i < 5; i++) {
+//            item[i] = new Point(i,i);
+//        }
+//        item[5] = new Point(0,1);
+//        item[6] = new Point(3,0);
+//        int[] type = {-1,1,2,4,8,4096,4096};
+//        Map map = new Map(5,6,item,type);
+//        NormalFrame frame = new Game_2048(map);
 //        frame.activate();
 //        frame.activate();
 //        MapEditor.CreateFrame();
-//        StartFrame.start();
+        StartFrame.start();
 //        MapEditor mapEditor = new MapEditor();
 //        NormalFrame normalFrame = mapEditor.CreateFrame();
 //        normalFrame.activate();
@@ -58,8 +58,35 @@ public class Main {
 //        for (int i = 0; i < User.userlist.get(User.getuser("admin")).framelistsave.size(); i++) {
 //            User.userlist.get(User.getuser("admin")).framelistsave.set(i,mapEditor.CreateFrame());
 //        }
-        User.userlist.get(User.getuser("admin")).specialList = new ArrayList<>();
-        for (int i = 0; i < 9; i++) User.userlist.get(User.getuser("admin")).specialList.add(null);
+//        User.userlist.get(User.getuser("admin")).specialList = new ArrayList<>();
+//        for (int i = 0; i < 9; i++) User.userlist.get(User.getuser("admin")).specialList.add(null);
+//
+//
+//        Point[] item = new Point[7];
+//        for (int i = 0; i < 5; i++) {
+//            item[i] = new Point(i,i);
+//        }
+//        item[5] = new Point(0,1);
+//        item[6] = new Point(3,0);
+//        int[] type = {-1,1,2,4,8,4096,4096};
+//        Map map = new Map(5,6,item,type);
+//        NormalFrame frame = new Game_2048(map);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 //        User.userlist.get(User.getuser("admin")).specialList.add(frame);
 //        User.userlist.get(User.getuser("admin")).userConfig = new UserConfig();
@@ -71,7 +98,7 @@ public class Main {
 //        }
 //        User.userlist.get(User.getuser("admin")).specialList.get(0).activate();
 //        User.userlist.get(User.getuser("admin")).framelistsave.set(2,mapEditor.ModifyFrame(User.userlist.get(User.getuser("admin")).framelistsave.get(2)));
-        User.saveuserlist();
+//        User.saveuserlist();
 
     }
 }

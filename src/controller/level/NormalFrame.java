@@ -25,6 +25,8 @@ public class NormalFrame extends JFrame implements Serializable, Activator,Clone
     public Map map, originMap;
     public Item[] item;
     public Item background, column, reset, exited, hint, withdraw, step;
+    public Item HighLight;
+    public Point HPos;
     public ImageIcon[] HeroDirImage;
     public int currentSite;
     public boolean FullX, isActivated;
@@ -125,6 +127,14 @@ public class NormalFrame extends JFrame implements Serializable, Activator,Clone
             setLocationRelativeTo(null);
             setLayout(null);
             setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+
+            HighLight = new Item("src\\model\\data\\image\\Highlight.png") {};
+            add(HighLight);
+            HighLight.setBounds(0,0,size, size);
+            HighLight.activate();
+            HighLight.setVisible(false);
+            HPos = new Point(0,0);
+
             for (int i = 0; i < item.length; i++) if(map.type[i] == 0) add(item[i]);
             for (int i = 0; i < item.length; i++) if(map.type[i] == 1) add(item[i]);
             for (int i = 0; i < item.length; i++) if(map.type[i] == 2) add(item[i]);
@@ -190,6 +200,7 @@ public class NormalFrame extends JFrame implements Serializable, Activator,Clone
             step.setBounds(0,0,size,size);
             step.activate();
 
+
             background = new Item("src\\model\\data\\image\\background.png") {};
             add(background);
             background.setBounds(0,0,size*(col+1), size*(row+1));
@@ -216,6 +227,7 @@ public class NormalFrame extends JFrame implements Serializable, Activator,Clone
         if(PathExplorer.isFinished()) return;
         int x = map.item[currentSite].x, y = map.item[currentSite].y;
         HeroFacing(DIR);
+        if(HighLight.isVisible() && HPos.equals(new Point(x+PathExplorer.dir[DIR][0], y+PathExplorer.dir[DIR][1]))) HighLight.setVisible(false);
         if(PathExplorer.isValid(x,y,DIR)) {
 //            PathExplorer.put();
             if(!PathExplorer.getBlocked(x,y,DIR)) {
@@ -283,6 +295,7 @@ public class NormalFrame extends JFrame implements Serializable, Activator,Clone
         DIR &= 3; DIR ^= 3;
         int x = map.item[currentSite].x, y = map.item[currentSite].y;
         HeroFacing(DIR);
+        HighLight.setVisible(false);
         if(PathExplorer.isValid2(x,y,DIR)) {
 //            PathExplorer.put();
             if(!isBlocked) {
@@ -304,7 +317,12 @@ public class NormalFrame extends JFrame implements Serializable, Activator,Clone
 
     public void Hint() {
         if(PathExplorer.isFailed() || PathExplorer.isFinished()) return;
-        update(PathExplorer.getHint(map.item[currentSite].x, map.item[currentSite].y));
+        int DIR = PathExplorer.getHint(map.item[currentSite].x, map.item[currentSite].y);
+        int x = map.item[currentSite].x, y = map.item[currentSite].y;
+        HPos = new Point(x+PathExplorer.dir[DIR][0], y+PathExplorer.dir[DIR][1]);
+        HighLight.setBounds(HPos.x  * size + size / 2 + size + borderX,HPos.y * size + size / 2 + size / 2 + borderY, size, size);
+        HighLight.activate();
+//        update(PathExplorer.getHint(map.item[currentSite].x, map.item[currentSite].y));
     }
 
     protected int getBoxSite(Point p) {
@@ -363,6 +381,11 @@ public class NormalFrame extends JFrame implements Serializable, Activator,Clone
 
             withdraw.setBounds((int)(size*(col+2+row/2.0-0.1 - (row/4.0-0.1))) + borderX, (int)(size*(row+1.5-3*row/25.0-0.2)) + borderY, (int)(size*(row/4.0-0.1)),3*row*size/25);
             withdraw.activate();
+
+            if(HighLight.isVisible()) {
+                HighLight.setBounds(HPos.x  * size + size / 2 + size + borderX,HPos.y * size + size / 2 + size / 2 + borderY, size, size);
+                HighLight.activate();
+            }
 
             setEnabled(true);
             setFocusable(true);
