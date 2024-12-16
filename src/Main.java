@@ -33,7 +33,6 @@ public class Main {
         int[] type = {-1,1,2,4,8,4096,4096};
         Map map = new Map(5,6,item,type);
         NormalFrame frame = new Game_2048(map);
-//        SpecialFrame specialFrame = new SpecialFrame();
 //        frame.activate();
 //        frame.activate();
 //        MapEditor.CreateFrame();
@@ -44,8 +43,9 @@ public class Main {
         User.getuserlist();
 //        ArrayList<NormalFrame> List=new ArrayList<NormalFrame>();
 //        MapEditor mapEditor =new MapEditor();
+//        NormalFrame frame=mapEditor.CreateFrame();
 //        for(int i=1;i<=5;++i){
-//            List.add(mapEditor.CreateFrame());
+//            List.add(frame.clone());
 ////            NormalFrame framee = new NormalFrame(map);
 ////            framee.activate();
 //        }

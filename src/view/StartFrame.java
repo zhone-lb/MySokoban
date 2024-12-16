@@ -157,16 +157,17 @@ public class StartFrame extends JFrame {
 
         //normalgamebutton
         normalgamebutton = new JButton();
-        Image modle0icon_0 =(new ImageIcon("src/model/data/image/modle0_0.png")).getImage().getScaledInstance(160, 80, Image.SCALE_SMOOTH);
-        Image modle0icon_1 =(new ImageIcon("src/model/data/image/modle0_1.png")).getImage().getScaledInstance(160, 80, Image.SCALE_SMOOTH);
-        normalgamebutton.setText("普通模式");
+        Image mode0icon_0 =(new ImageIcon("src/model/data/image/mode0_0.png")).getImage().getScaledInstance(260, 120, Image.SCALE_SMOOTH);
+        Image mode0icon_1 =(new ImageIcon("src/model/data/image/mode0_1.png")).getImage().getScaledInstance(260, 120, Image.SCALE_SMOOTH);
+        normalgamebutton.setIcon(new ImageIcon(mode0icon_0));
         GridBagConstraints normalgamebuttonlocation=new GridBagConstraints();
+        normalgamebutton.setOpaque(false);
+        normalgamebutton.setContentAreaFilled(false);
+        normalgamebutton.setBorder(null);
         normalgamebuttonlocation.gridx=5;
         normalgamebuttonlocation.gridy=4;
         normalgamebuttonlocation.weightx = 2.0;
         normalgamebuttonlocation.weighty = 2.0;
-        normalgamebuttonlocation.ipadx = 100;
-        normalgamebuttonlocation.ipady = 100;
 //        normalgamebuttonlocation.fill=GridBagConstraints.BOTH;
         toppanel.add(normalgamebutton,normalgamebuttonlocation);
         normalgamebutton.addMouseListener(new MouseAdapter() {
@@ -175,18 +176,29 @@ public class StartFrame extends JFrame {
                 LevelFrame.openlevelFrame();
                 startframe.setEnabled(false);
             }
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                normalgamebutton.setIcon(new ImageIcon(mode0icon_1));
+            }
+            @Override
+            public void mouseExited(MouseEvent e) {
+                normalgamebutton.setIcon(new ImageIcon(mode0icon_0));
+            }
         });
 
         //spacialgamebutton
         spacialgamebutton = new JButton();
-        spacialgamebutton.setText("特殊模式");
+        Image mode1icon_0 =(new ImageIcon("src/model/data/image/mode1_0.png")).getImage().getScaledInstance(260, 120, Image.SCALE_SMOOTH);
+        Image mode1icon_1 =(new ImageIcon("src/model/data/image/mode1_1.png")).getImage().getScaledInstance(260, 120, Image.SCALE_SMOOTH);
+        spacialgamebutton.setIcon(new ImageIcon(mode1icon_0));
         GridBagConstraints spacialgamebuttonlocation=new GridBagConstraints();
+        spacialgamebutton.setOpaque(false);
+        spacialgamebutton.setContentAreaFilled(false);
+        spacialgamebutton.setBorder(null);
         spacialgamebuttonlocation.gridx=7;
         spacialgamebuttonlocation.gridy=4;
         spacialgamebuttonlocation.weightx = 2.0;
         spacialgamebuttonlocation.weighty = 2.0;
-        spacialgamebuttonlocation.ipadx = 100;
-        spacialgamebuttonlocation.ipady = 100;
 //        spacialgamebuttonlocation.fill=GridBagConstraints.BOTH;
         toppanel.add(spacialgamebutton,spacialgamebuttonlocation);
         spacialgamebutton.addMouseListener(new MouseAdapter() {
@@ -194,6 +206,14 @@ public class StartFrame extends JFrame {
             public void mouseClicked(MouseEvent e) {
 //                spacialgame();
 
+            }
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                spacialgamebutton.setIcon(new ImageIcon(mode1icon_1));
+            }
+            @Override
+            public void mouseExited(MouseEvent e) {
+                spacialgamebutton.setIcon(new ImageIcon(mode1icon_0));
             }
         });
         this.add(toppanel);
