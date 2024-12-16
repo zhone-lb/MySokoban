@@ -1,6 +1,7 @@
 package controller;
 
 import controller.level.NormalFrame;
+import controller.user.User;
 import model.config.UserConfig;
 import view.StartFrame;
 
@@ -185,7 +186,7 @@ public class Settings extends JFrame implements Serializable {
                     error.setVisible(true);
                     textField[0].setText(Integer.toString(UserConfig.REFRESH_RATE));
                 }
-                else NormalFrame.userConfig.setMyREFRESH_RATE(Integer.getInteger(textField[0].getText()));
+                else User.userlist.get(User.currentuser).userConfig.setMyREFRESH_RATE(Integer.getInteger(textField[0].getText()));
             }
         });
 
@@ -218,7 +219,7 @@ public class Settings extends JFrame implements Serializable {
                     error.setVisible(true);
                     textField[1].setText(Integer.toString(UserConfig.GAME_SPEED));
                 }
-                else NormalFrame.userConfig.setMyGAME_SPEED(Integer.getInteger(textField[1].getText()));
+                else User.userlist.get(User.currentuser).userConfig.setMyGAME_SPEED(Integer.getInteger(textField[1].getText()));
             }
         });
     }
@@ -229,8 +230,33 @@ public class Settings extends JFrame implements Serializable {
         if(e.getID() != KeyEvent.KEY_PRESSED || index == -1) return;
         switch (index) {
             case 0 -> {
-                NormalFrame.userConfig.setMyMOVE_UP(e.getKeyCode());
+                User.userlist.get(User.currentuser).userConfig.setMyMOVE_UP(e.getKeyCode());
                 button[index].setText(KeyEvent.getKeyText(UserConfig.MOVE_UP));
+                index = -1;
+            }
+            case 1 -> {
+                User.userlist.get(User.currentuser).userConfig.setMyMOVE_DOWN(e.getKeyCode());
+                button[index].setText(KeyEvent.getKeyText(UserConfig.MOVE_DOWN));
+                index = -1;
+            }
+            case 2 -> {
+                User.userlist.get(User.currentuser).userConfig.setMyMOVE_LEFT(e.getKeyCode());
+                button[index].setText(KeyEvent.getKeyText(UserConfig.MOVE_LEFT));
+                index = -1;
+            }
+            case 3 -> {
+                User.userlist.get(User.currentuser).userConfig.setMyMOVE_RIGHT(e.getKeyCode());
+                button[index].setText(KeyEvent.getKeyText(UserConfig.MOVE_RIGHT));
+                index = -1;
+            }
+            case 4 -> {
+                User.userlist.get(User.currentuser).userConfig.setMyHINT(e.getKeyCode());
+                button[index].setText(KeyEvent.getKeyText(UserConfig.HINT));
+                index = -1;
+            }
+            case 5 -> {
+                User.userlist.get(User.currentuser).userConfig.setMyWITHDRAW(e.getKeyCode());
+                button[index].setText(KeyEvent.getKeyText(UserConfig.WITHDRAW));
                 index = -1;
             }
         }

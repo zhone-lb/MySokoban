@@ -149,6 +149,13 @@ public class Game_2048 extends NormalFrame implements Serializable, Activator {
         });
     }
 
+    @Override
+    public NormalFrame clone() {
+        Game_2048 frame = new Game_2048(map);
+        frame.past = new ArrayList<>();
+        for (int i = 0; i < past.size(); i++) frame.past.add(past.get(i));
+        return frame;
+    }
 
     public int[][] a;
     public final int[][] dir = {{-1,0},{0,-1},{0,1},{1,0}};
