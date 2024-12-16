@@ -21,12 +21,14 @@ import java.util.ArrayList;
 
 public class MultiHero extends NormalFrame implements Serializable, Activator {
     ImageIcon currentHero, inactiveHero;
+    public ImageIcon[] HeroDirImage;
     ArrayList<Integer> pastHero;
     public MultiHero(Map originMap) {
         super(originMap);
         pastHero = new ArrayList<>();
         PathExplorer.Init(originMap);
         try {
+            for (int i = 0; i < 4; i++) HeroDirImage[i] = new ImageIcon(ImageIO.read(new File("src\\model\\data\\image\\Guide.png")));
             currentHero = new ImageIcon(ImageIO.read(new File("src\\model\\data\\image\\Guide.png")));
             inactiveHero = new ImageIcon(ImageIO.read(new File("src\\model\\data\\image\\background.png")));
         } catch (IOException e) {
@@ -139,6 +141,7 @@ public class MultiHero extends NormalFrame implements Serializable, Activator {
     public synchronized void update(int DIR) {
         if(item[currentSite].isMoving) return;
         int x = map.item[currentSite].x, y = map.item[currentSite].y;
+        HeroFacing(DIR);
         if(PathExplorer.isValid(x,y,DIR)) {
 //            PathExplorer.put();
             if(!PathExplorer.getBlocked(x,y,DIR)) {
@@ -181,6 +184,7 @@ public class MultiHero extends NormalFrame implements Serializable, Activator {
         boolean isBlocked = ((DIR & 4) != 0);
         DIR &= 3; DIR ^= 3;
         int x = map.item[currentSite].x, y = map.item[currentSite].y;
+        HeroFacing(DIR);
         if(PathExplorer.isValid2(x,y,DIR)) {
 //            PathExplorer.put();
             if(!isBlocked) {

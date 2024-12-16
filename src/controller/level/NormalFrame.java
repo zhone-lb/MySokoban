@@ -112,6 +112,7 @@ public class NormalFrame extends JFrame implements Serializable, Activator,Clone
             if(isActivated) {
                 setVisible(true);
                 PathExplorer.path(originMap);
+                PathExplorer.Init(map);
                 repaint();
                 return;
             }
@@ -205,6 +206,8 @@ public class NormalFrame extends JFrame implements Serializable, Activator,Clone
             setFocusable(true);
             setVisible(true);
             repaint();
+
+            checkSucceed();
         });
     }
 
@@ -270,8 +273,8 @@ public class NormalFrame extends JFrame implements Serializable, Activator,Clone
     public synchronized void withdraw() {
         if(past.isEmpty()) return;
         if(item[currentSite].isMoving) return;
+        if(PathExplorer.isFinished()) return;
         int DIR = past.getLast(); past.removeLast();
-        HeroFacing(DIR);
         SwingUtilities.invokeLater(()->{
             step.setText(Integer.toString(past.size()));
             step.setIconTextGap(-(int) (step.getWidth() * (past.size() < 10 ? 0.64 : 0.75)));
@@ -279,6 +282,7 @@ public class NormalFrame extends JFrame implements Serializable, Activator,Clone
         boolean isBlocked = ((DIR & 4) != 0);
         DIR &= 3; DIR ^= 3;
         int x = map.item[currentSite].x, y = map.item[currentSite].y;
+        HeroFacing(DIR);
         if(PathExplorer.isValid2(x,y,DIR)) {
 //            PathExplorer.put();
             if(!isBlocked) {
@@ -396,7 +400,7 @@ public class NormalFrame extends JFrame implements Serializable, Activator,Clone
         super.processWindowEvent(e);
         if(e.getID() == WindowEvent.WINDOW_CLOSING) {
             setVisible(false);
-            LevelFrame.closenormalframe();
+            if(LevelFrame.levelframe != null) LevelFrame.closenormalframe();
         }
     }
 }

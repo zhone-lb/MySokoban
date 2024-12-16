@@ -140,6 +140,7 @@ public class StartFrame extends JFrame {
         settingbutton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
+                if(currentuser == -1) return;
                 Settings.newsetting();
                 startframe.setEnabled(false);
             }
@@ -204,8 +205,8 @@ public class StartFrame extends JFrame {
         spacialgamebutton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-//                spacialgame();
-
+                SpecialFrame specialFrame = new SpecialFrame();
+                startframe.setEnabled(false);
             }
             @Override
             public void mouseEntered(MouseEvent e) {
@@ -229,11 +230,18 @@ public class StartFrame extends JFrame {
             loginbutton.setIcon(new ImageIcon(login_0));
         }
         startframe.setEnabled(true);
+        startframe.requestFocus();
     }
     public static void closesettings(){
         startframe.setEnabled(true);
+        startframe.requestFocus();
     }
     public static void closelevelframe(){
         startframe.setEnabled(true);
+        startframe.requestFocus();
+    }
+    public static void closespecialframe() {
+        startframe.setEnabled(true);
+        startframe.requestFocus();
     }
 }

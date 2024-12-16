@@ -239,5 +239,6 @@ public class LevelFrame extends JFrame{
     }
     public static void closenormalframe() {
         levelframe.setEnabled(true);
+        levelframe.requestFocus();
     }
 }

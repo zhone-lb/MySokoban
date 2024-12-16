@@ -16,7 +16,6 @@ public class Settings extends JFrame implements Serializable {
     public JLabel title;
     public JLabel[] text;
     public JButton[] button;
-    public JTextField[] textField;
     static Settings settings;
     public static void newsetting(){
         settings = new Settings();
@@ -40,8 +39,7 @@ public class Settings extends JFrame implements Serializable {
         requestFocus();
         index = -1;
         text = new JLabel[8];
-        button = new JButton[6];
-        textField = new JTextField[2];
+        button = new JButton[8];
 
         title = new JLabel("设置");
         title.setFont(new Font("微软雅黑",Font.BOLD,35));
@@ -163,30 +161,20 @@ public class Settings extends JFrame implements Serializable {
         text[6].setSize(60,40);
         text[6].setVisible(true);
 
-        textField[0] = new JTextField(Integer.toString(UserConfig.REFRESH_RATE));
-        textField[0].setFont(new Font("微软雅黑",Font.BOLD,17));
-        table.add(textField[0]);
-        textField[0].setSize(90,40);
-        textField[0].setVisible(true);
-        textField[0].setFocusable(false);
-        textField[0].addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusLost(FocusEvent e) {
-                super.focusLost(e);
-                if(Integer.getInteger(textField[0].getText()) == null) {
-                    JDialog dialog = new JDialog();
-                    dialog.setLayout(new FlowLayout());
-                    dialog.setSize(200,100);
-                    dialog.setLocationRelativeTo(null);
-                    dialog.setVisible(true);
-                    JLabel error = new JLabel("非法输入，请重试");
-                    error.setFont(new Font("微软雅黑",Font.BOLD,18));
-                    dialog.add(error);
-                    error.setSize(40,40);
-                    error.setVisible(true);
-                    textField[0].setText(Integer.toString(UserConfig.REFRESH_RATE));
-                }
-                else User.userlist.get(User.currentuser).userConfig.setMyREFRESH_RATE(Integer.getInteger(textField[0].getText()));
+        button[6] = new JButton(UserConfig.REFRESH_RATE == 5 ? "高" : "低" );
+        button[6].setFont(new Font("微软雅黑",Font.BOLD,17));
+        table.add(button[6]);
+        button[6].setSize(90,40);
+        button[6].setVisible(true);
+        button[6].setFocusable(false);
+        button[6].addActionListener(e -> {
+            if(UserConfig.REFRESH_RATE == 5) {
+                button[6].setText("低");
+                User.userlist.get(User.currentuser).userConfig.setMyREFRESH_RATE(10);
+            }
+            else {
+                button[6].setText("高");
+                User.userlist.get(User.currentuser).userConfig.setMyREFRESH_RATE(5);
             }
         });
 
@@ -196,30 +184,20 @@ public class Settings extends JFrame implements Serializable {
         text[7].setSize(60,40);
         text[7].setVisible(true);
 
-        textField[1] = new JTextField(Integer.toString(UserConfig.GAME_SPEED));
-        textField[1].setFont(new Font("微软雅黑",Font.BOLD,17));
-        table.add(textField[1]);
-        textField[1].setSize(90,40);
-        textField[1].setVisible(true);
-        textField[1].setFocusable(false);
-        textField[1].addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusLost(FocusEvent e) {
-                super.focusLost(e);
-                if(Integer.getInteger(textField[1].getText()) == null) {
-                    JDialog dialog = new JDialog();
-                    dialog.setLayout(new FlowLayout());
-                    dialog.setSize(200,100);
-                    dialog.setLocationRelativeTo(null);
-                    dialog.setVisible(true);
-                    JLabel error = new JLabel("非法输入，请重试");
-                    error.setFont(new Font("微软雅黑",Font.BOLD,18));
-                    dialog.add(error);
-                    error.setSize(40,40);
-                    error.setVisible(true);
-                    textField[1].setText(Integer.toString(UserConfig.GAME_SPEED));
-                }
-                else User.userlist.get(User.currentuser).userConfig.setMyGAME_SPEED(Integer.getInteger(textField[1].getText()));
+        button[7] = new JButton(UserConfig.GAME_SPEED == 200 ? "短" : "长");
+        button[7].setFont(new Font("微软雅黑",Font.BOLD,17));
+        table.add(button[7]);
+        button[7].setSize(90,40);
+        button[7].setVisible(true);
+        button[7].setFocusable(false);
+        button[7].addActionListener(e -> {
+            if(UserConfig.GAME_SPEED == 200) {
+                button[7].setText("长");
+                User.userlist.get(User.currentuser).userConfig.setMyGAME_SPEED(600);
+            }
+            else {
+                button[7].setText("短");
+                User.userlist.get(User.currentuser).userConfig.setMyGAME_SPEED(200);
             }
         });
     }

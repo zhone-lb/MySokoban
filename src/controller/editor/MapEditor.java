@@ -37,6 +37,7 @@ public class MapEditor {
     }
     public synchronized NormalFrame CreateFrame() {
         map = null;
+        System.out.println(SwingUtilities.isEventDispatchThread());
         JFrame jFrame = new JFrame();
         jFrame.setName("设置");
         jFrame.setSize(400, 300);
@@ -67,7 +68,7 @@ public class MapEditor {
         table.setBounds(20,40,350,200);
 //        table.setBackground(new Color(100,20,100));
 
-        JLabel text1 = new JLabel("请输入横向格数");
+        JLabel text1 = new JLabel("请输入行数");
         text1.setFont(new Font("微软雅黑",Font.BOLD,18));
         table.add(text1);
         text1.setSize(40,40);
@@ -79,7 +80,7 @@ public class MapEditor {
         button1.setSize(40,40);
         button1.setVisible(true);
 
-        JLabel text2 = new JLabel("请输入纵向格数");
+        JLabel text2 = new JLabel("请输入列数");
         text2.setFont(new Font("微软雅黑",Font.BOLD,18));
         table.add(text2);
         text2.setSize(40,40);

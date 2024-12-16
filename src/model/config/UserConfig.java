@@ -11,7 +11,7 @@ public class UserConfig implements Serializable {
     public static int HINT = KeyEvent.VK_T;
     public static int WITHDRAW = KeyEvent.VK_Z;
     public static int REFRESH_RATE = 5;
-    public static int GAME_SPEED = 300;
+    public static int GAME_SPEED = 200;
     protected int myMOVE_UP,myMOVE_DOWN,myMOVE_LEFT,myMOVE_RIGHT;
     protected int myREFRESH_RATE,myGAME_SPEED,myHINT,myWITHDRAW;
     public UserConfig() {
@@ -19,7 +19,7 @@ public class UserConfig implements Serializable {
         myMOVE_DOWN = KeyEvent.VK_DOWN;
         myMOVE_LEFT = KeyEvent.VK_LEFT;
         myMOVE_RIGHT = KeyEvent.VK_RIGHT;
-        myGAME_SPEED = 300;
+        myGAME_SPEED = 200;
         myHINT = KeyEvent.VK_T;
         myREFRESH_RATE = 5;
         myWITHDRAW = KeyEvent.VK_Z;
