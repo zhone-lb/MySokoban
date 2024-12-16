@@ -55,7 +55,7 @@ public class User implements Serializable {
                 framelistsave=new ArrayList<>();
             }
             if(specialList == null){
-                error=true;
+//                error=true;
                 specialList=new ArrayList<>();
             }
         } catch (FileNotFoundException e) {
