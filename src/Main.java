@@ -6,7 +6,7 @@ import controller.level.MultiHero;
 import controller.level.NormalFrame;
 import controller.user.User;
 import model.algorithm.Map;
-import model.data.Writer;
+import model.data.MyWriter;
 import view.StartFrame;
 
 import java.awt.*;
@@ -30,7 +30,7 @@ public class Main {
         item[6] = new Point(3,0);
         int[] type = {-1,1,2,4,8,4096,4096};
         Map map = new Map(5,6,item,type);
-        NormalFrame frame = new NormalFrame(map);
+//        NormalFrame frame = new NormalFrame(map);
 //        frame.activate();
 //        frame.activate();
 //        MapEditor.CreateFrame();
@@ -41,8 +41,9 @@ public class Main {
 //        User.getuserlist();
 //        ArrayList<NormalFrame> List=new ArrayList<NormalFrame>();
 //        MapEditor mapEditor =new MapEditor();
+//        NormalFrame frame=mapEditor.CreateFrame();
 //        for(int i=1;i<=5;++i){
-//            List.add(mapEditor.CreateFrame());
+//            List.add(frame.clone());
 ////            NormalFrame framee = new NormalFrame(map);
 ////            framee.activate();
 //        }

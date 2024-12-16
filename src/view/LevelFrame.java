@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public class LevelFrame extends JFrame{
     public static LevelFrame levelframe;
     public static ArrayList<NormalFrame> nowlist;
-    JPanel leftpanel,rightpanel;
+    JPanel leftpanel,rightpanel,allpanel,backpanel;
 
     public LevelFrame() {
         this.setSize(1080,720);
@@ -20,11 +20,18 @@ public class LevelFrame extends JFrame{
         this.setLocation((int)((screenSize.getWidth()-this.getWidth())/2),
                 (int)((screenSize.getHeight()-this.getHeight())/2));
         this.setUndecorated(true);
-
-        this.setLayout(new BorderLayout());
+        this.setLayout(null);
+        JLabel background=new JLabel();
+//        this.getContentPane().setBackground(Color.YELLOW);
+        Image backimage =(new ImageIcon("src/model/data/image//levelback.png")).getImage().getScaledInstance(1080, 720, Image.SCALE_SMOOTH);
+        background.setIcon(new ImageIcon(backimage));
+        backpanel=new JPanel();
+        backpanel.add(background);
+        allpanel=new JPanel();
+        allpanel.setLayout(new BorderLayout());
         leftpanel=new JPanel();
         leftpanel.setPreferredSize(new Dimension(this.getWidth()/4,this.getHeight()));
-        leftpanel.setBackground(Color.BLUE);
+        leftpanel.setOpaque(false);
         leftpanel.setLayout(new GridBagLayout());
         JLabel title=new JLabel();
         title.setPreferredSize(new Dimension(this.getWidth()/10,this.getHeight()/6*3));
@@ -80,9 +87,10 @@ public class LevelFrame extends JFrame{
         });
         leftpanel.add(restart,restartlocation);
 
-        this.add(leftpanel,BorderLayout.WEST);
+        allpanel.add(leftpanel,BorderLayout.WEST);
 
         rightpanel=new JPanel();
+        rightpanel.setOpaque(false);
         rightpanel.setPreferredSize(new Dimension(this.getWidth()/4*3,this.getHeight()));
 //        rightpanel.setBackground(Color.YELLOW);
         rightpanel.setLayout(new GridBagLayout());
@@ -127,6 +135,7 @@ public class LevelFrame extends JFrame{
                 setEnabled(false);
             }
         });
+
         rightpanel.add(game2, location2);
 
         JButton game3 = new JButton();
@@ -192,12 +201,18 @@ public class LevelFrame extends JFrame{
         });
         rightpanel.add(game5, location5);
 
-        this.add(rightpanel,BorderLayout.EAST);
+        allpanel.add(rightpanel,BorderLayout.EAST);
+        allpanel.setOpaque(false);
+        backpanel.setSize(this.getWidth(),this.getHeight());
+        backpanel.setLocation(0,0);
+        allpanel.setSize(this.getWidth(),this.getHeight());
+        allpanel.setLocation(0,0);
+        this.add(allpanel);
+        this.add(backpanel);
     }
     public static void openlevelFrame() {
         levelframe=new LevelFrame();
         nowlist=new ArrayList<>();
-        nowlist.clear();
         System.out.println(User.getuser("admin"));
         if(User.currentuser==-1){
             for(int i=0;i<User.userlist.get(User.getuser("admin")).framelistsave.size();++i){
