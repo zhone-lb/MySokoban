@@ -6,7 +6,9 @@ import controller.level.MultiHero;
 import controller.level.NormalFrame;
 import controller.user.User;
 import model.algorithm.Map;
+import model.config.UserConfig;
 import model.data.MyWriter;
+import view.SpecialFrame;
 import view.StartFrame;
 
 import java.awt.*;
@@ -30,15 +32,15 @@ public class Main {
         item[6] = new Point(3,0);
         int[] type = {-1,1,2,4,8,4096,4096};
         Map map = new Map(5,6,item,type);
-//        NormalFrame frame = new NormalFrame(map);
+        NormalFrame frame = new Game_2048(map);
 //        frame.activate();
 //        frame.activate();
 //        MapEditor.CreateFrame();
-        StartFrame.start();
+//        StartFrame.start();
 //        MapEditor mapEditor = new MapEditor();
 //        NormalFrame normalFrame = mapEditor.CreateFrame();
 //        normalFrame.activate();
-//        User.getuserlist();
+        User.getuserlist();
 //        ArrayList<NormalFrame> List=new ArrayList<NormalFrame>();
 //        MapEditor mapEditor =new MapEditor();
 //        NormalFrame frame=mapEditor.CreateFrame();
@@ -48,7 +50,20 @@ public class Main {
 ////            framee.activate();
 //        }
 //
-//        User.userlist.get(User.getuser("admin")).framelistsave=List;
+//        MapEditor mapEditor = new MapEditor();
+//        User.userlist.get(User.getuser("admin")).framelistsave = new ArrayList<>();
+//        for (int i = 0; i < 5; i++) User.userlist.get(User.getuser("admin")).framelistsave.add(mapEditor.CreateFrame());
+//        for (int i = 0; i < User.userlist.get(User.getuser("admin")).framelistsave.size(); i++) {
+//            User.userlist.get(User.getuser("admin")).framelistsave.set(i,mapEditor.CreateFrame());
+//        }
+//        User.userlist.get(User.getuser("admin")).specialList = new ArrayList<>();
+//        User.userlist.get(User.getuser("admin")).specialList.add(frame);
+//        User.userlist.get(User.getuser("admin")).userConfig = new UserConfig();
+        for (int i = 0; i < User.userlist.get(User.getuser("admin")).framelistsave.size(); i++) {
+            User.userlist.get(User.getuser("admin")).framelistsave.get(i).activate();
+        }
+        User.userlist.get(User.getuser("admin")).specialList.get(0).activate();
 //        User.saveuserlist();
+
     }
 }

@@ -205,6 +205,17 @@ public class MultiHero extends NormalFrame implements Serializable, Activator {
     }
 
     @Override
+    public NormalFrame clone() {
+        MultiHero frame = new MultiHero(map.clone());
+        frame.originMap = originMap.clone();
+        frame.pastHero = new ArrayList<>();
+        frame.past = new ArrayList<>();
+        for (int i = 0; i < past.size(); i++) frame.past.add(past.get(i));
+        for (int i = 0; i < pastHero.size(); i++) frame.pastHero.add(pastHero.get(i));
+        return frame;
+    }
+
+    @Override
     protected void processMouseEvent(MouseEvent e) {
         super.processMouseEvent(e);
         if(e.getID() == MouseEvent.MOUSE_CLICKED) {
