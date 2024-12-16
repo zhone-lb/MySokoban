@@ -202,6 +202,10 @@ public class SpecialFrame extends JFrame {
         setEnabled(true);
         setResizable(false);
         setVisible(true);
+
+        for (int i = 0; i < 9; i++) {
+            button[i].activate();
+        }
     }
 
     @Override
@@ -216,7 +220,13 @@ public class SpecialFrame extends JFrame {
                     User.userlist.get(User.currentuser).specialList.add(frames.get(i).clone());
                 }
             }
-            dispose();
+//            if(User.currentuser!=-1&&JOptionPane.showConfirmDialog(null, "是否要保存此次游玩数据？", "确认", JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION){
+//                for(int i=0;i<frames.size();++i){
+//                    User.userlist.get(User.currentuser).framelistsave.set(i,frames.get(i).clone());
+//                }
+//                User.saveuserlist();
+//            }
+           setVisible(false);
         }
     }
 }

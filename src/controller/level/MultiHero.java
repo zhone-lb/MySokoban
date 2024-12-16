@@ -10,10 +10,7 @@ import view.character.Item;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.FocusEvent;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
@@ -27,6 +24,7 @@ public class MultiHero extends NormalFrame implements Serializable, Activator {
         super(originMap);
         pastHero = new ArrayList<>();
         PathExplorer.Init(originMap);
+        isActivated = false;
         try {
             for (int i = 0; i < 4; i++) HeroDirImage[i] = new ImageIcon(ImageIO.read(new File("src\\model\\data\\image\\Guide.png")));
             currentHero = new ImageIcon(ImageIO.read(new File("src\\model\\data\\image\\Guide.png")));
@@ -38,14 +36,21 @@ public class MultiHero extends NormalFrame implements Serializable, Activator {
     @Override
     public void activate() {
         SwingUtilities.invokeLater(()->{
+            if(isActivated) {
+                setVisible(true);
+                PathExplorer.Init(map);
+                repaint();
+                return;
+            }
             size = 50;
+            isActivated = true;
             enableEvents(AWTEvent.KEY_EVENT_MASK);
             enableEvents(AWTEvent.MOUSE_EVENT_MASK);
             enableEvents(AWTEvent.COMPONENT_EVENT_MASK);
             setSize(1000,600);
             setLocationRelativeTo(null);
             setLayout(null);
-            setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
             for (int i = 0; i < item.length; i++) if(map.type[i] == 0) add(item[i]);
             for (int i = 0; i < item.length; i++) if(map.type[i] == 1) add(item[i]);
             for (int i = 0; i < item.length; i++) if(map.type[i] == 2) add(item[i]);
@@ -73,7 +78,7 @@ public class MultiHero extends NormalFrame implements Serializable, Activator {
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     super.mouseClicked(e);
-
+                    setVisible(false);
                 }
             });
             exited.activate();
@@ -237,6 +242,14 @@ public class MultiHero extends NormalFrame implements Serializable, Activator {
                     }
                 }
             }
+        }
+    }
+
+    @Override
+    protected void processWindowEvent(WindowEvent e) {
+        super.processWindowEvent(e);
+        if(e.getID() == WindowEvent.WINDOW_CLOSING) {
+            setVisible(false);
         }
     }
 }

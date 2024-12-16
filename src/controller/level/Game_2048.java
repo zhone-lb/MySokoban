@@ -28,6 +28,7 @@ public class Game_2048 extends NormalFrame implements Serializable, Activator {
         row = map.row; col = map.col; size = 50;
         int tot = map.item.length;
         currentSite = 0;
+        isActivated = false;
         item = new Item[map.item.length];
         past = new ArrayList<>();
         a = new int[col][row];
@@ -62,7 +63,13 @@ public class Game_2048 extends NormalFrame implements Serializable, Activator {
     @Override
     public void activate() {
         SwingUtilities.invokeLater(()->{
+            if(isActivated) {
+                setVisible(true);
+                repaint();
+                return;
+            }
             size = 50;
+            isActivated = true;
             enableEvents(AWTEvent.KEY_EVENT_MASK);
             enableEvents(AWTEvent.MOUSE_EVENT_MASK);
             enableEvents(AWTEvent.COMPONENT_EVENT_MASK);
@@ -267,54 +274,6 @@ public class Game_2048 extends NormalFrame implements Serializable, Activator {
             System.out.println();
         }
         return -1;
-    }
-
-    @Override
-    public synchronized void repaint() {
-        super.repaint();
-        SwingUtilities.invokeLater(()->{
-            Dimension d = getSize();
-            d.height = (int)(0.88*d.height); d.width = (int)(0.98*d.width);
-            size = (int)Math.min(d.width / (3+col+row/2.0), d.height / (row+2.0));
-            FullX = (d.width / (3+col+row/2.0) < d.height / (row+2.0));
-            borderX = (FullX ? 0 : (int)((d.width - size * (3+col+row/2.0))/2.0));
-            borderY = (FullX ? (int)((d.height - size * (row+2.0))/2.0) : 0);
-            System.out.println(borderX + " "+ borderY);
-//            size = Math.min(d.width / (col+2), d.height / (row+2));
-            for (int i = 0; i < item.length; i++) {
-                item[i].setBounds(map.item[i].x * size + size / 2 + size + borderX,map.item[i].y * size + size / 2 + size / 2 + borderY, size, size);
-                item[i].activate();
-            }
-
-
-            background.setBounds(size + borderX, size/2 + borderY,size*(col+1),size*(row+1));
-            background.activate();
-
-            column.setBounds(size*(col+1) + size + borderX, size/2 + borderY,(int)(size*row/2.0+0.5),size*(row+1));
-            column.activate();
-
-            exited.setBounds((int)(size*(col+2+row/2.0-0.1 -row/10.0))+borderX,borderY + size/2 + size/5,size*row/10,size*row/10);
-            exited.activate();
-
-            reset.setBounds((int)(size*(col+2+row/2.0-0.15 -row/5.0))+borderX,borderY + size/2 + size/5,size*row/10,size*row/10);
-            reset.activate();
-
-            step.setBounds((int)(size*(col+2+0.1)) + borderX, borderY + size/2 + size/5, (int)(size*(row/2.0-row/5.0-0.4)),row*size/4);
-            step.activate();
-            step.setText(Integer.toString(past.size()));
-            step.setIconTextGap(-(int)(step.getWidth()*(past.size()<10?0.64:0.75)));
-            step.setFont(new Font("微软雅黑",Font.BOLD,(int)(row*size/10.0)));
-
-            hint.setBounds((int)(size*(col+2+0.1)) + borderX, (int)(size*(row+1.5-3*row/25.0-0.2)) + borderY, (int)(size*(row/4.0-0.1)),3*row*size/25);
-            hint.activate();
-
-            withdraw.setBounds((int)(size*(col+2+row/2.0-0.1 - (row/4.0-0.1))) + borderX, (int)(size*(row+1.5-3*row/25.0-0.2)) + borderY, (int)(size*(row/4.0-0.1)),3*row*size/25);
-            withdraw.activate();
-
-            setEnabled(true);
-            setFocusable(true);
-            setVisible(true);
-        });
     }
 
     @Override
