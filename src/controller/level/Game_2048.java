@@ -56,7 +56,10 @@ public class Game_2048 extends NormalFrame implements Serializable, Activator {
     public void reset() {
         map = new Map(originMap.row, originMap.col, originMap.item.clone(), originMap.type.clone());
         past = new ArrayList<>();
-
+        a = new int[col][row];
+        for (int i = 0; i < map.item.length; i++) {
+            a[map.item[i].x][map.item[i].y] |= map.type[i];
+        }
         repaint();
     }
 
@@ -76,7 +79,7 @@ public class Game_2048 extends NormalFrame implements Serializable, Activator {
             setSize(1000,600);
             setLocationRelativeTo(null);
             setLayout(null);
-            setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
             for (int i = 0; i < item.length; i++) add(item[i]);
             for (int i = 0; i < item.length; i++) {
                 item[i].setBounds(0,0, size, size);    //在repaint生效
@@ -91,7 +94,7 @@ public class Game_2048 extends NormalFrame implements Serializable, Activator {
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     super.mouseClicked(e);
-
+                    setVisible(false);
                 }
             });
             exited.activate();
@@ -147,7 +150,10 @@ public class Game_2048 extends NormalFrame implements Serializable, Activator {
             column.setBounds(0,0,size*(col+1), size*(row+1));
             column.activate();
 
-
+            HighLight = new Item() {};
+            add(HighLight);
+            HighLight.setVisible(false);
+            HPos = new Point(-1,-1);
 
             setEnabled(true);
             setFocusable(true);
@@ -222,8 +228,17 @@ public class Game_2048 extends NormalFrame implements Serializable, Activator {
     }
 
     public void checkSucceed() {
-        if(map.type[currentSite] == 2048) {
-            System.out.println("You win");
+        if(map.type[currentSite] == -2048) {
+            JDialog dialog = new JDialog(this);
+            dialog.setLayout(new FlowLayout());
+            dialog.setSize(200,100);
+            dialog.setLocationRelativeTo(this);
+            dialog.setVisible(true);
+            JLabel error = new JLabel("你赢了！");
+            error.setFont(new Font("微软雅黑",Font.BOLD,18));
+            dialog.add(error);
+            error.setSize(40,40);
+            error.setVisible(true);
         }
     }
     public synchronized void withdraw() {
@@ -299,5 +314,13 @@ public class Game_2048 extends NormalFrame implements Serializable, Activator {
     protected void processComponentEvent(ComponentEvent e) {
         super.processComponentEvent(e);
         repaint();
+    }
+
+    @Override
+    protected void processWindowEvent(WindowEvent e) {
+        super.processWindowEvent(e);
+        if(e.getID() == WindowEvent.WINDOW_CLOSING) {
+            setVisible(false);
+        }
     }
 }

@@ -18,7 +18,6 @@ import java.util.ArrayList;
 
 public class MultiHero extends NormalFrame implements Serializable, Activator {
     ImageIcon currentHero, inactiveHero;
-    public ImageIcon[] HeroDirImage;
     ArrayList<Integer> pastHero;
     public MultiHero(Map originMap) {
         super(originMap);
@@ -26,7 +25,6 @@ public class MultiHero extends NormalFrame implements Serializable, Activator {
         PathExplorer.Init(originMap);
         isActivated = false;
         try {
-            for (int i = 0; i < 4; i++) HeroDirImage[i] = new ImageIcon(ImageIO.read(new File("src\\model\\data\\image\\Guide.png")));
             currentHero = new ImageIcon(ImageIO.read(new File("src\\model\\data\\image\\Guide.png")));
             inactiveHero = new ImageIcon(ImageIO.read(new File("src\\model\\data\\image\\background.png")));
         } catch (IOException e) {
@@ -133,6 +131,11 @@ public class MultiHero extends NormalFrame implements Serializable, Activator {
             add(column);
             column.setBounds(0,0,size*(col+1), size*(row+1));
             column.activate();
+
+            HighLight = new Item() {};
+            add(HighLight);
+            HighLight.setVisible(false);
+            HPos = new Point(-1,-1);
 
 
             PathExplorer.Init(originMap);
