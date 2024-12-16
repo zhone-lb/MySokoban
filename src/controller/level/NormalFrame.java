@@ -70,7 +70,7 @@ public class NormalFrame extends JFrame implements Serializable, Activator,Clone
             }
             for (int i = 0; i < tot; i++) {
                 switch (map.type[i]) {
-                    case 0 -> item[i] = new Hero("src\\model\\data\\image\\Guide.png");
+                    case 0 -> item[i] = new Hero("src\\model\\data\\image\\hero2.png");
                     case 1 -> item[i] = new Box("src\\model\\data\\image\\Box.jpg");
                     case 2 -> item[i] = new Wall("src\\model\\data\\image\\Wall.png");
                     case 3 -> item[i] = new Target("src\\model\\data\\image\\Target.png");
@@ -161,7 +161,7 @@ public class NormalFrame extends JFrame implements Serializable, Activator,Clone
             });
             reset.activate();
 
-            hint = new Button("src\\model\\data\\image\\done.png","src\\model\\data\\image\\done.png");
+            hint = new Button("src\\model\\data\\image\\hint.png","src\\model\\data\\image\\hint.png");
             add(hint);
             hint.setBounds(0,0,size,size);
             hint.addMouseListener(new MouseAdapter() {
@@ -190,12 +190,12 @@ public class NormalFrame extends JFrame implements Serializable, Activator,Clone
             step.setBounds(0,0,size,size);
             step.activate();
 
-            background = new Item("src\\model\\data\\image\\background.png") {};
+            background = new Item("src\\model\\data\\image\\normalbackground.png") {};
             add(background);
             background.setBounds(0,0,size*(col+1), size*(row+1));
             background.activate();
 
-            column = new Item("src\\model\\data\\image\\background.png") {};
+            column = new Item("src\\model\\data\\image\\woodground.jpg") {};
             add(column);
             column.setBounds(0,0,size*(col+1), size*(row+1));
             column.activate();

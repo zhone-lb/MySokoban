@@ -63,8 +63,9 @@ public class LevelFrame extends JFrame{
             public void mouseClicked(MouseEvent e) {
                 StartFrame.closelevelframe();
                 if(User.currentuser!=-1&&JOptionPane.showConfirmDialog(null, "是否要保存此次游玩数据？", "确认", JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION){
+                    User.userlist.get(User.currentuser).framelistsave.clear();
                     for(int i=0;i<nowlist.size();++i){
-                        User.userlist.get(User.currentuser).framelistsave.set(i,nowlist.get(i).clone());
+                        User.userlist.get(User.currentuser).framelistsave.add(nowlist.get(i).clone());
                     }
                     User.saveuserlist();
                 }
