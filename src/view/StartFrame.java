@@ -1,7 +1,6 @@
 package view;
 import controller.Settings;
 import controller.user.*;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -9,12 +8,12 @@ import java.awt.event.*;
 import static controller.user.User.currentuser;
 import static controller.user.User.userlist;
 import static view.LevelFrame.nowlist;
-
 public class StartFrame extends JFrame {
     static JLabel title;
     Loginframe loginframe;
     static JButton loginbutton,settingbutton,normalgamebutton,spacialgamebutton;
     static StartFrame startframe;
+    JPanel toppanel,bottompanel;
     public static void start(){
         startframe = new StartFrame();
         User.getuserlist();
@@ -36,12 +35,27 @@ public class StartFrame extends JFrame {
                 System.exit(0);
             }
         });
-        this.setLayout(new GridBagLayout());
+        this.setResizable(false);
+        this.setLayout(null);
+        toppanel = new JPanel();
+        toppanel.setLayout(new GridBagLayout());
+        toppanel.setOpaque(false);
+        toppanel.setSize(this.getWidth(),this.getHeight());
+        toppanel.setLocation(0,-30);
+        bottompanel = new JPanel();
+        bottompanel.setSize(this.getWidth(),this.getHeight());
+        bottompanel.setLocation(0,-30);
 
+        JLabel background=new JLabel();
+//        this.getContentPane().setBackground(Color.YELLOW);
+        Image back =(new ImageIcon("src/model/data/image//back.png")).getImage().getScaledInstance(1080, 720, Image.SCALE_SMOOTH);
+        background.setIcon(new ImageIcon(back));
+        bottompanel.add(background);
         //title
         title = new JLabel();
-        title.setText("推箱子");
-        title.setFont(new Font("微软雅黑",Font.BOLD,120));
+        title.setText("推 箱 子");
+        title.setForeground(new Color(173, 216, 230));
+        title.setFont(new Font("华文彩云",Font.BOLD,150));
         GridBagConstraints titlelocation=new GridBagConstraints();
         titlelocation.gridx=5;
         titlelocation.gridy=0;
@@ -52,7 +66,7 @@ public class StartFrame extends JFrame {
         titlelocation.fill=GridBagConstraints.BOTH;
         title.setHorizontalAlignment(JLabel.CENTER); // 设置水平居中
         title.setVerticalAlignment(JLabel.CENTER);
-        this.add(title,titlelocation);
+        toppanel.add(title,titlelocation);
 //        title.setLocation((int)((this.getWidth()-title.getWidth())/2),
 //                (int)((this.getHeight()/3-title.getHeight())/2));
 //        title.setFont(new Font("Songti SC", Font.BOLD, 80));
@@ -76,7 +90,7 @@ public class StartFrame extends JFrame {
         loginbuttonlocation.weightx = 1.0;
         loginbuttonlocation.weighty = 1.0;
 //        loginbuttonlocation.fill=GridBagConstraints.BOTH;
-        this.add(loginbutton,loginbuttonlocation);
+        toppanel.add(loginbutton,loginbuttonlocation);
         loginbutton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -106,7 +120,6 @@ public class StartFrame extends JFrame {
                 }
             }
         });
-
         //settingbutton
         settingbutton = new JButton();
         Image settingicon_0 =(new ImageIcon("src/model/data/image/setting.png")).getImage().getScaledInstance(120, 120, Image.SCALE_SMOOTH);
@@ -123,7 +136,7 @@ public class StartFrame extends JFrame {
         settingbuttonlocation.weightx = 1.0;
         settingbuttonlocation.weighty = 1.0;
 //        settingbuttonlocation.fill=GridBagConstraints.BOTH;
-        this.add(settingbutton,settingbuttonlocation);
+        toppanel.add(settingbutton,settingbuttonlocation);
         settingbutton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -144,6 +157,8 @@ public class StartFrame extends JFrame {
 
         //normalgamebutton
         normalgamebutton = new JButton();
+        Image modle0icon_0 =(new ImageIcon("src/model/data/image/modle0_0.png")).getImage().getScaledInstance(160, 80, Image.SCALE_SMOOTH);
+        Image modle0icon_1 =(new ImageIcon("src/model/data/image/modle0_1.png")).getImage().getScaledInstance(160, 80, Image.SCALE_SMOOTH);
         normalgamebutton.setText("普通模式");
         GridBagConstraints normalgamebuttonlocation=new GridBagConstraints();
         normalgamebuttonlocation.gridx=5;
@@ -153,7 +168,7 @@ public class StartFrame extends JFrame {
         normalgamebuttonlocation.ipadx = 100;
         normalgamebuttonlocation.ipady = 100;
 //        normalgamebuttonlocation.fill=GridBagConstraints.BOTH;
-        this.add(normalgamebutton,normalgamebuttonlocation);
+        toppanel.add(normalgamebutton,normalgamebuttonlocation);
         normalgamebutton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -173,7 +188,7 @@ public class StartFrame extends JFrame {
         spacialgamebuttonlocation.ipadx = 100;
         spacialgamebuttonlocation.ipady = 100;
 //        spacialgamebuttonlocation.fill=GridBagConstraints.BOTH;
-        this.add(spacialgamebutton,spacialgamebuttonlocation);
+        toppanel.add(spacialgamebutton,spacialgamebuttonlocation);
         spacialgamebutton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -181,6 +196,8 @@ public class StartFrame extends JFrame {
 
             }
         });
+        this.add(toppanel);
+        this.add(bottompanel);
     }
 //    public void loginframeclose{
 //        loginframe=null;
