@@ -18,7 +18,6 @@ public class Loginframe extends JFrame {
         passwordagain.setText("");
     }
     public Loginframe() {
-        User.getuserlist();
 
         this.setSize(540,360);
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -114,7 +113,7 @@ public class Loginframe extends JFrame {
                     JOptionPane.showMessageDialog(null,"密码错误","提示",JOptionPane.PLAIN_MESSAGE);
                 }
                 else if(fla==1){
-                    currentuser=getuser(username.getText());
+                    User.currentuser=getuser(username.getText());
                     Loginframe.this.setVisible(false);
                     clear();
                     StartFrame.closeloginframe();
@@ -145,7 +144,7 @@ public class Loginframe extends JFrame {
                     int fla=User.checkuser(username.getText(),password.getText());
                     if(!username.getText().isEmpty()){
                         if(fla!=0){
-                            JOptionPane.showMessageDialog(null,"改用户已存在，请登录","提示",JOptionPane.PLAIN_MESSAGE);
+                            JOptionPane.showMessageDialog(null,"该用户已存在，请登录","提示",JOptionPane.PLAIN_MESSAGE);
                         }
                         else{
                             String newpassword=password.getText(),newpasswordagain=passwordagain.getText();
@@ -154,6 +153,7 @@ public class Loginframe extends JFrame {
                             }
                             else{
                                 new User(username.getText(),newpassword);
+                                User.currentuser=getuser(username.getText());
                                 Loginframe.this.setVisible(false);
                                 clear();
                                 StartFrame.closeloginframe();

@@ -78,8 +78,8 @@ public class EditFrame extends NormalFrame {
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     super.mouseClicked(e);
-                    synchronized (MapEditor.finalMap) {
-                        MapEditor.finalMap = getMap(a);
+                    synchronized (controller.editor.MapEditor.finalMap) {
+                        controller.editor.MapEditor.finalMap = getMap(a);
                     }
                     dispose();
                 }
@@ -93,8 +93,8 @@ public class EditFrame extends NormalFrame {
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     super.mouseClicked(e);
-                    synchronized (MapEditor.finalMap) {
-                        MapEditor.finalMap = new Map(-1, -1);
+                    synchronized (controller.editor.MapEditor.finalMap) {
+                        controller.editor.MapEditor.finalMap = new Map(-1, -1);
                     }
                     dispose();
                 }
@@ -304,7 +304,7 @@ public class EditFrame extends NormalFrame {
     @Override
     protected void processWindowEvent(WindowEvent e) {
         if(e.getID() == WindowEvent.WINDOW_CLOSING) {
-            MapEditor.finalMap = new Map(-1,-1);
+            controller.editor.MapEditor.finalMap = new Map(-1,-1);
             dispose();
         }
     }

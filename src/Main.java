@@ -4,11 +4,13 @@ import controller.editor.MapEditor;
 import controller.level.Game_2048;
 import controller.level.MultiHero;
 import controller.level.NormalFrame;
+import controller.user.User;
 import model.algorithm.Map;
 import model.data.Writer;
 import view.StartFrame;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) {
@@ -28,18 +30,24 @@ public class Main {
         item[6] = new Point(3,0);
         int[] type = {-1,1,2,4,8,4096,4096};
         Map map = new Map(5,6,item,type);
-        Game_2048 game = new Game_2048(map);
-        game.activate();
-//        frame.revalidate();
+        NormalFrame frame = new NormalFrame(map);
+//        frame.activate();
 //        frame.activate();
 //        MapEditor.CreateFrame();
-//        StartFrame.start();
+        StartFrame.start();
 //        MapEditor mapEditor = new MapEditor();
-//        frame = mapEditor.ModifyFrame(frame);
-//        frame.activate();
-//        Settings settings = new Settings();
 //        NormalFrame normalFrame = mapEditor.CreateFrame();
 //        normalFrame.activate();
-//        Writer.write(frame,"src\\model\\algorithm\\frame.txt");
+//        User.getuserlist();
+//        ArrayList<NormalFrame> List=new ArrayList<NormalFrame>();
+//        MapEditor mapEditor =new MapEditor();
+//        for(int i=1;i<=5;++i){
+//            List.add(mapEditor.CreateFrame());
+////            NormalFrame framee = new NormalFrame(map);
+////            framee.activate();
+//        }
+//
+//        User.userlist.get(User.getuser("admin")).framelistsave=List;
+//        User.saveuserlist();
     }
 }

@@ -4,6 +4,7 @@ import controller.Settings;
 import model.algorithm.Map;
 import model.algorithm.PathExplorer;
 import view.Activator;
+import view.LevelFrame;
 import view.character.*;
 import model.config.UserConfig;
 import view.character.Box;
@@ -19,14 +20,14 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class NormalFrame extends JFrame implements Serializable, Activator {
+public class NormalFrame extends JFrame implements Serializable, Activator,Cloneable {
     public int row, col, size, borderX, borderY;
     public Map map, originMap;
     public Item[] item;
     public Item background, column, reset, exited, hint, withdraw, step;
     public ImageIcon[] HeroDirImage;
     public int currentSite;
-    public boolean FullX;
+    public boolean FullX, isActivated;
     public ArrayList<Integer> past;
 
 
@@ -51,10 +52,11 @@ public class NormalFrame extends JFrame implements Serializable, Activator {
 
     }
     public void Init(Map myMap) {
-        map = myMap; originMap = new Map(map.row, map.col, map.item.clone(), map.type.clone());
+        map = myMap; originMap = map.clone();
         row = map.row; col = map.col; size = 50;
         int tot = map.item.length;
         currentSite = 0;
+        isActivated = false;
         item = new Item[map.item.length];
         HeroDirImage = new ImageIcon[4];
         past = new ArrayList<>();
@@ -82,20 +84,46 @@ public class NormalFrame extends JFrame implements Serializable, Activator {
         map = new Map(originMap.row, originMap.col, originMap.item.clone(), originMap.type.clone());
         past = new ArrayList<>();
         PathExplorer.Init(originMap);
+        PathExplorer.path(originMap);
         repaint();
+    }
+    @Override
+    public NormalFrame clone() {
+        NormalFrame frame = new NormalFrame(map.clone());
+        frame.originMap = originMap.clone();
+        for (int i = 0; i < past.size(); i++) frame.past.add(past.get(i));
+        return frame;
     }
 
     @Override
     public void activate() {
         SwingUtilities.invokeLater(()->{
+//            item = new Item[map.item.length];
+//            int tot = map.item.length;
+//            for (int i = 0; i < tot; i++) {
+//                switch (map.type[i]) {
+//                    case 0 -> item[i] = new Hero("src\\model\\data\\image\\Guide.png");
+//                    case 1 -> item[i] = new Box("src\\model\\data\\image\\Box.jpg");
+//                    case 2 -> item[i] = new Wall("src\\model\\data\\image\\Wall.png");
+//                    case 3 -> item[i] = new Target("src\\model\\data\\image\\Target.png");
+//                }
+//            }
+//            for (int i = 0; i < tot; i++) item[i].setId(i);
+            if(isActivated) {
+                setVisible(true);
+                PathExplorer.path(originMap);
+                repaint();
+                return;
+            }
             size = 50;
+            isActivated = true;
             enableEvents(AWTEvent.KEY_EVENT_MASK);
             enableEvents(AWTEvent.MOUSE_EVENT_MASK);
             enableEvents(AWTEvent.COMPONENT_EVENT_MASK);
             setSize(1000,600);
             setLocationRelativeTo(null);
             setLayout(null);
-            setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
             for (int i = 0; i < item.length; i++) if(map.type[i] == 0) add(item[i]);
             for (int i = 0; i < item.length; i++) if(map.type[i] == 1) add(item[i]);
             for (int i = 0; i < item.length; i++) if(map.type[i] == 2) add(item[i]);
@@ -114,7 +142,8 @@ public class NormalFrame extends JFrame implements Serializable, Activator {
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     super.mouseClicked(e);
-
+                    setVisible(false);
+                    LevelFrame.closenormalframe();
                 }
             });
             exited.activate();
@@ -181,6 +210,7 @@ public class NormalFrame extends JFrame implements Serializable, Activator {
 
     public synchronized void update(int DIR) {
         if(item[currentSite].isMoving) return;
+        if(PathExplorer.isFinished()) return;
         int x = map.item[currentSite].x, y = map.item[currentSite].y;
         HeroFacing(DIR);
         if(PathExplorer.isValid(x,y,DIR)) {
@@ -211,12 +241,30 @@ public class NormalFrame extends JFrame implements Serializable, Activator {
 
     public void checkFailed() {
         if(PathExplorer.isFailed()) {
-            System.out.println("You failed");
+            JDialog dialog = new JDialog(this);
+            dialog.setLayout(new FlowLayout());
+            dialog.setSize(200,100);
+            dialog.setLocationRelativeTo(this);
+            dialog.setVisible(true);
+            JLabel error = new JLabel("无路可走了，请回退");
+            error.setFont(new Font("微软雅黑",Font.BOLD,18));
+            dialog.add(error);
+            error.setSize(40,40);
+            error.setVisible(true);
         }
     }
     public void checkSucceed() {
         if(PathExplorer.isFinished()) {
-            System.out.println("You win");
+            JDialog dialog = new JDialog(this);
+            dialog.setLayout(new FlowLayout());
+            dialog.setSize(200,100);
+            dialog.setLocationRelativeTo(this);
+            dialog.setVisible(true);
+            JLabel error = new JLabel("你赢了！");
+            error.setFont(new Font("微软雅黑",Font.BOLD,18));
+            dialog.add(error);
+            error.setSize(40,40);
+            error.setVisible(true);
         }
     }
     public synchronized void withdraw() {
@@ -251,6 +299,7 @@ public class NormalFrame extends JFrame implements Serializable, Activator {
     }
 
     public void Hint() {
+        if(PathExplorer.isFailed() || PathExplorer.isFinished()) return;
         update(PathExplorer.getHint(map.item[currentSite].x, map.item[currentSite].y));
     }
 
@@ -270,6 +319,7 @@ public class NormalFrame extends JFrame implements Serializable, Activator {
 
     @Override
     public synchronized void repaint() {
+        if(!isVisible()) return;
         super.repaint();
         SwingUtilities.invokeLater(()->{
             Dimension d = getSize();
@@ -339,5 +389,14 @@ public class NormalFrame extends JFrame implements Serializable, Activator {
     protected void processComponentEvent(ComponentEvent e) {
         super.processComponentEvent(e);
         repaint();
+    }
+
+    @Override
+    protected void processWindowEvent(WindowEvent e) {
+        super.processWindowEvent(e);
+        if(e.getID() == WindowEvent.WINDOW_CLOSING) {
+            setVisible(false);
+            LevelFrame.closenormalframe();
+        }
     }
 }
