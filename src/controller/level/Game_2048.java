@@ -259,7 +259,7 @@ public class Game_2048 extends NormalFrame implements Serializable, Activator {
             map.item[boxSite] = new Point(x, y);
             item[currentSite].move(PathExplorer.dir[DIR][0]*size, PathExplorer.dir[DIR][1]*size, UserConfig.GAME_SPEED, UserConfig.REFRESH_RATE);
             item[boxSite].move(PathExplorer.dir[DIR][0]*size, PathExplorer.dir[DIR][1]*size, UserConfig.GAME_SPEED, UserConfig.REFRESH_RATE);
-            a[x+2*dir[DIR][0]][y+2*dir[DIR][1]] = a[x+dir[DIR][0]][y+dir[DIR][1]]; a[x+dir[DIR][0]][y+dir[DIR][1]] = a[x][y]; a[x][y] = 0;
+            a[x+dir[DIR][0]][y+dir[DIR][1]] = a[x][y]; a[x][y] = a[x+dir[DIR^3][0]][y+dir[DIR^3][1]]; a[x+dir[DIR^3][0]][y+dir[DIR^3][1]] = 0;
         }
         else if((temp & 8) != 0) {
             int boxSite = getBoxSite(new Point(x,y));
