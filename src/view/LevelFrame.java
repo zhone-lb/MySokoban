@@ -318,6 +318,7 @@ public class LevelFrame extends JFrame{
                 for(int i=0;i<User.userlist.get(User.getuser("admin")).framelistsave.size();++i){
                     nowlist.add(User.userlist.get(User.getuser("admin")).framelistsave.get(i).clone());
                 }
+                User.userlist.get(User.currentuser).error=false;
             }
             else{
                 StartFrame.closelevelframe();;
