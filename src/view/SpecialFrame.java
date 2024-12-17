@@ -50,7 +50,7 @@ public class SpecialFrame extends JFrame {
         else {
             for (int i = 0; i < 9; i++) {
                 if(User.userlist.get(User.currentuser).specialList.get(i) == null) frames.add(null);
-                frames.add(User.userlist.get(User.currentuser).specialList.get(i).clone());
+                else frames.add(User.userlist.get(User.currentuser).specialList.get(i).clone());
             }
         }
 

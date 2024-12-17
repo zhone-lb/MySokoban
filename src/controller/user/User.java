@@ -35,7 +35,8 @@ public class User implements Serializable {
             this.framelistsave.add(userlist.get(getuser("admin")).framelistsave.get(i).clone());
         }
         for (int i = 0; i < userlist.get(getuser("admin")).specialList.size(); i++) {
-            this.specialList.add(userlist.get(getuser("admin")).specialList.get(i).clone());
+            if(userlist.get(getuser("admin")).specialList.get(i) == null) this.specialList.add(null);
+            else this.specialList.add(userlist.get(getuser("admin")).specialList.get(i).clone());
         }
         userlist.add(this);
         saveuserlist();

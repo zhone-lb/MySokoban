@@ -25,8 +25,8 @@ public class MultiHero extends NormalFrame implements Serializable, Activator {
         PathExplorer.Init(originMap);
         isActivated = false;
         try {
-            currentHero = new ImageIcon(ImageIO.read(new File("src\\model\\data\\image\\Guide.png")));
-            inactiveHero = new ImageIcon(ImageIO.read(new File("src\\model\\data\\image\\background.png")));
+            currentHero = new ImageIcon(ImageIO.read(new File("src\\model\\data\\image\\hero3.png")));
+            inactiveHero = new ImageIcon(ImageIO.read(new File("src\\model\\data\\image\\hero_no.png")));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -69,7 +69,7 @@ public class MultiHero extends NormalFrame implements Serializable, Activator {
                 }
             }
 
-            exited = new view.character.Button("src\\model\\data\\image\\background.png","src\\model\\data\\image\\background.png");
+            exited = new view.character.Button("src\\model\\data\\image\\back_0.png","src\\model\\data\\image\\back_1.png");
             add(exited);
             exited.setBounds(0,0,size,size);
             exited.addMouseListener(new MouseAdapter() {
@@ -81,7 +81,7 @@ public class MultiHero extends NormalFrame implements Serializable, Activator {
             });
             exited.activate();
 
-            reset = new view.character.Button("src\\model\\data\\image\\background.png","src\\model\\data\\image\\background.png");
+            reset = new view.character.Button("src\\model\\data\\image\\restart_0.png","src\\model\\data\\image\\restart_1.png");
             add(reset);
             reset.setBounds(0,0,size,size);
             reset.addMouseListener(new MouseAdapter() {
@@ -93,7 +93,7 @@ public class MultiHero extends NormalFrame implements Serializable, Activator {
             });
             reset.activate();
 
-            hint = new view.character.Button("src\\model\\data\\image\\background.png","src\\model\\data\\image\\background.png");
+            hint = new view.character.Button("src\\model\\data\\image\\hint.png","src\\model\\data\\image\\hint.png");
             add(hint);
             hint.setBounds(0,0,size,size);
             hint.addMouseListener(new MouseAdapter() {
@@ -105,7 +105,7 @@ public class MultiHero extends NormalFrame implements Serializable, Activator {
             });
             hint.activate();
 
-            withdraw = new Button("src\\model\\data\\image\\background.png","src\\model\\data\\image\\background.png");
+            withdraw = new Button("src\\model\\data\\image\\undo.png","src\\model\\data\\image\\undo.png");
             add(withdraw);
             withdraw.setBounds(0,0,size,size);
             withdraw.addMouseListener(new MouseAdapter() {
@@ -122,12 +122,12 @@ public class MultiHero extends NormalFrame implements Serializable, Activator {
             step.setBounds(0,0,size,size);
             step.activate();
 
-            background = new Item("src\\model\\data\\image\\background.png") {};
+            background = new Item("src\\model\\data\\image\\normalbackground.png") {};
             add(background);
             background.setBounds(0,0,size*(col+1), size*(row+1));
             background.activate();
 
-            column = new Item("src\\model\\data\\image\\background.png") {};
+            column = new Item("src\\model\\data\\image\\woodground.jpg") {};
             add(column);
             column.setBounds(0,0,size*(col+1), size*(row+1));
             column.activate();

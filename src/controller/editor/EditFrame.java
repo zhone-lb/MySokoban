@@ -144,12 +144,12 @@ public class EditFrame extends NormalFrame {
                 }
             });
 
-            column = new Item("src\\model\\data\\image\\background.png") {};
+            column = new Item("src\\model\\data\\image\\woodground.jpg") {};
             add(column);
             column.setBounds(0,0,size*(col+1), size*(row+1));
             column.activate();
 
-            background = new Item("src\\model\\data\\image\\background.png") {};
+            background = new Item("src\\model\\data\\image\\normalbackground.png") {};
             add(background);
             background.setBounds(0,0,size*(col+1), size*(row+1));
             background.activate();
