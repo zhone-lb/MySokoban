@@ -131,6 +131,7 @@ public class MapEditor {
             jFrame.dispose();
         });
 
+
         table.revalidate();
         table.repaint();
 
