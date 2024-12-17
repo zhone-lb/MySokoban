@@ -71,6 +71,24 @@ public class Main {
 //        NormalFrame frame = new MultiHero(map);
 //        User.userlist.get(User.getuser("admin")).specialList.set(3,frame);
 
+//        Point[] item = new Point[12];
+//        item[0] = new Point(0,0);
+//        item[1] = new Point(1,0);
+//        item[2] = new Point(2,0);
+//        item[3] = new Point(0,1);
+//        item[4] = new Point(1,2);
+//        item[5] = new Point(1,1);
+//        item[6] = new Point(0,2);
+//        item[7] = new Point(2,2);
+//        item[8] = new Point(0,3);
+//        item[9] = new Point(1,3);
+//        item[10] = new Point(3,0);
+//        item[11] = new Point(3,1);
+//        int[] type = {2,2,0,0,3,1,2,1,2,3,2,2};
+//        Map map = new Map(4,4,item,type);
+//        NormalFrame frame = new MultiHero(map);
+//        User.userlist.get(User.getuser("admin")).specialList.set(,frame);
+
 //        Point[] item = new Point[8];
 //        item[0] = new Point(0,0);
 //        item[1] = new Point(1,0);
@@ -84,6 +102,24 @@ public class Main {
 //        Map map = new Map(3,4,item,type);
 //        NormalFrame frame = new Game_2048(map);
 //        User.userlist.get(User.getuser("admin")).specialList.set(6,frame);
+
+//        Point[] item = new Point[12];
+//        item[0] = new Point(0,0);
+//        item[1] = new Point(1,0);
+//        item[2] = new Point(2,0);
+//        item[3] = new Point(0,1);
+//        item[4] = new Point(1,1);
+//        item[5] = new Point(2,1);
+//        item[6] = new Point(0,2);
+//        item[7] = new Point(1,2);
+//        item[8] = new Point(2,2);
+//        item[9] = new Point(0,3);
+//        item[10] = new Point(1,3);
+//        item[11] = new Point(2,3);
+//        int[] type = {4,16,128,2,-2,1024,4,64,512,8,32,256};
+//        Map map = new Map(4,3,item,type);
+//        NormalFrame frame = new Game_2048(map);
+//        User.userlist.get(User.getuser("admin")).specialList.set(8,frame);
 
 
 //        User.saveuserlist();
