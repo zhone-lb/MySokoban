@@ -125,7 +125,7 @@ public class SpecialFrame extends JFrame {
                     thread.start();
                 }
                 else {
-                    if(frames.get(1) != null) frames.get(2).activate();
+                    if(frames.get(2) != null) frames.get(2).activate();
                 }
             }
         });

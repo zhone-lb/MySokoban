@@ -99,6 +99,7 @@ public class LevelFrame extends JFrame{
             @Override
             public void mouseClicked(MouseEvent e) {
                 if(JOptionPane.showConfirmDialog(null, "确认要重置吗？", "确认", JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION) {
+                    nowlist.clear();
                     for (int i = 0; i < User.userlist.get(User.getuser("admin")).framelistsave.size(); ++i) {
                         nowlist.add(User.userlist.get(User.getuser("admin")).framelistsave.get(i).clone());
 
