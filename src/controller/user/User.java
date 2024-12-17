@@ -63,6 +63,9 @@ public class User implements Serializable {
         }
         userlist.add(this);
     }
+    public static void clearlist(){
+        userlist.clear();
+    }
     public static int getuser(String name){
         for(int i=0;i<userlist.size();i++){
             if(userlist.get(i).name.equals(name)){
@@ -72,6 +75,7 @@ public class User implements Serializable {
         return -1;
     }
     public static void getuserlist() {
+        clearlist();
         File file=new File("src/model/data/User/userlist.txt");
         try{
             Scanner input=new Scanner(file);

@@ -24,13 +24,20 @@ public class SpecialFrame extends JFrame {
         add(panel);
         panel.setSize(800,400);
         panel.setLocation(100,100);
-        panel.setBackground(new Color(120,31,34));
+        panel.setOpaque(false);
+//        panel.setBackground(new Color(120,31,34));
+
+        JLabel background=new JLabel();
+        background.setSize(1080,720);
+        Image backimage =(new ImageIcon("src/model/data/image//levelback.png")).getImage().getScaledInstance(1080, 720, Image.SCALE_SMOOTH);
+        background.setIcon(new ImageIcon(backimage));
 
         JLabel error = new JLabel("特殊模式");
-        error.setFont(new Font("微软雅黑",Font.BOLD,28));
+        error.setFont(new Font("华文彩云",Font.BOLD,58));
+        error.setForeground(new Color(255,0,100));
         add(error);
-        error.setLocation(430,20);
-        error.setSize(200,60);
+        error.setLocation(370,20);
+        error.setSize(400,60);
         error.setVisible(true);
 
         frames = new ArrayList<>();
@@ -49,8 +56,7 @@ public class SpecialFrame extends JFrame {
 
 
         button = new Button[9];
-
-        button[0] = new Button("src\\model\\data\\image\\Wall.png","src\\model\\data\\image\\Wall.png");
+        button[0] = new Button("src\\model\\data\\image\\button0_0.png","src\\model\\data\\image\\button0_1.png");
         button[0].setSize(50,30);
         panel.add(button[0]);
         button[0].addMouseListener(new MouseAdapter() {
@@ -75,7 +81,7 @@ public class SpecialFrame extends JFrame {
         });
         button[0].activate();
 
-        button[1] = new Button("src\\model\\data\\image\\Wall.png","src\\model\\data\\image\\Wall.png");
+        button[1] = new Button("src\\model\\data\\image\\button1_0.png","src\\model\\data\\image\\button1_1.png");
         button[1].setSize(50,30);
         panel.add(button[1]);
         button[1].addMouseListener(new MouseAdapter() {
@@ -100,7 +106,7 @@ public class SpecialFrame extends JFrame {
         });
         button[1].activate();
 
-        button[2] = new Button("src\\model\\data\\image\\Wall.png","src\\model\\data\\image\\Wall.png");
+        button[2] = new Button("src\\model\\data\\image\\button2_0.png","src\\model\\data\\image\\button2_1.png");
         button[2].setSize(50,30);
         panel.add(button[2]);
         button[2].addMouseListener(new MouseAdapter() {
@@ -125,7 +131,7 @@ public class SpecialFrame extends JFrame {
         });
         button[2].activate();
 
-        button[3] = new Button("src\\model\\data\\image\\Wall.png","src\\model\\data\\image\\Wall.png");
+        button[3] = new Button("src\\model\\data\\image\\button3_0.png","src\\model\\data\\image\\button3_1.png");
         button[3].setSize(50,30);
         panel.add(button[3]);
         button[3].addMouseListener(new MouseAdapter() {
@@ -137,7 +143,7 @@ public class SpecialFrame extends JFrame {
         });
         button[3].activate();
 
-        button[4] = new Button("src\\model\\data\\image\\Wall.png","src\\model\\data\\image\\Wall.png");
+        button[4] = new Button("src\\model\\data\\image\\button4_0.png","src\\model\\data\\image\\button4_1.png");
         button[4].setSize(50,30);
         panel.add(button[4]);
         button[4].addMouseListener(new MouseAdapter() {
@@ -149,7 +155,7 @@ public class SpecialFrame extends JFrame {
         });
         button[4].activate();
 
-        button[5] = new Button("src\\model\\data\\image\\Wall.png","src\\model\\data\\image\\Wall.png");
+        button[5] = new Button("src\\model\\data\\image\\button5_0.png","src\\model\\data\\image\\button5_1.png");
         button[5].setSize(50,30);
         panel.add(button[5]);
         button[5].addMouseListener(new MouseAdapter() {
@@ -161,7 +167,7 @@ public class SpecialFrame extends JFrame {
         });
         button[5].activate();
 
-        button[6] = new Button("src\\model\\data\\image\\Wall.png","src\\model\\data\\image\\Wall.png");
+        button[6] = new Button("src\\model\\data\\image\\button6_0.png","src\\model\\data\\image\\button6_1.png");
         button[6].setSize(60,30);
         panel.add(button[6]);
         button[6].addMouseListener(new MouseAdapter() {
@@ -173,7 +179,7 @@ public class SpecialFrame extends JFrame {
         });
         button[6].activate();
 
-        button[7] = new Button("src\\model\\data\\image\\Wall.png","src\\model\\data\\image\\Wall.png");
+        button[7] = new Button("src\\model\\data\\image\\button7_0.png","src\\model\\data\\image\\button7_1.png");
         button[7].setSize(50,30);
         panel.add(button[7]);
         button[7].addMouseListener(new MouseAdapter() {
@@ -185,7 +191,9 @@ public class SpecialFrame extends JFrame {
         });
         button[7].activate();
 
-        button[8] = new Button("src\\model\\data\\image\\Wall.png","src\\model\\data\\image\\Wall.png");
+
+        button[8] = new Button("src\\model\\data\\image\\button8_0.png","src\\model\\data\\image\\button8_1.png");
+        button[8].setText("2048模式 2");
         button[8].setSize(50,30);
         panel.add(button[8]);
         button[8].addMouseListener(new MouseAdapter() {
@@ -206,6 +214,7 @@ public class SpecialFrame extends JFrame {
         for (int i = 0; i < 9; i++) {
             button[i].activate();
         }
+        add(background);
     }
 
     @Override

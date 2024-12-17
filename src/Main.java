@@ -40,7 +40,7 @@ public class Main {
 //        MapEditor mapEditor = new MapEditor();
 //        NormalFrame normalFrame = mapEditor.CreateFrame();
 //        normalFrame.activate();
-        User.getuserlist();
+//        User.getuserlist();
 //        ArrayList<NormalFrame> List=new ArrayList<NormalFrame>();
 //        MapEditor mapEditor =new MapEditor();
 //        NormalFrame frame=mapEditor.CreateFrame();
