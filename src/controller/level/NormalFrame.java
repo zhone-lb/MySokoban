@@ -414,7 +414,7 @@ public class NormalFrame extends JFrame implements Serializable, Activator,Clone
     @Override
     protected void processComponentEvent(ComponentEvent e) {
         super.processComponentEvent(e);
-        repaint();
+//        repaint();
     }
 
     @Override

@@ -314,7 +314,7 @@ public class Game_2048 extends NormalFrame implements Serializable, Activator {
     @Override
     protected void processComponentEvent(ComponentEvent e) {
         super.processComponentEvent(e);
-        repaint();
+//        repaint();
     }
 
     @Override
