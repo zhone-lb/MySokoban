@@ -226,7 +226,7 @@ public class SpecialFrame extends JFrame {
                 User.userlist.get(User.currentuser).specialList = new ArrayList<>();
                 for (int i = 0; i < frames.size(); i++) {
                     if(frames.get(i) == null) User.userlist.get(User.currentuser).specialList.add(null);
-                    User.userlist.get(User.currentuser).specialList.add(frames.get(i).clone());
+                    else User.userlist.get(User.currentuser).specialList.add(frames.get(i).clone());
                 }
             }
 //            if(User.currentuser!=-1&&JOptionPane.showConfirmDialog(null, "是否要保存此次游玩数据？", "确认", JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION){

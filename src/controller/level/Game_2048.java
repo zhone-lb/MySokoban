@@ -38,16 +38,17 @@ public class Game_2048 extends NormalFrame implements Serializable, Activator {
         NumIcon = new ImageIcon[13];
         for (int i = 0; i < 13; i++) {
             try {
-                if(i%2 == 0) NumIcon[i] = new ImageIcon(ImageIO.read(new File("src\\model\\data\\image\\background.png")));
-                else NumIcon[i] = new ImageIcon(ImageIO.read(new File("src\\model\\data\\image\\Guide.png")));
+                if(i == 0 || i == 12) NumIcon[i] = new ImageIcon(ImageIO.read(new File("src\\model\\data\\image\\null.png")));
+                else NumIcon[i] = new ImageIcon(ImageIO.read(new File("src\\model\\data\\image\\"+Integer.toString(1<<i)+".png")));
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
         SwingUtilities.invokeLater(()->{
             for (int i = 0; i < tot; i++) {
-                if(map.type[i] < 0) item[i] = new Hero("src\\model\\data\\image\\Guide.png");
-                else item[i] = new Box("src\\model\\data\\image\\Guide.png");
+                if(map.type[i] < 0) item[i] = new Hero("src\\model\\data\\image\\"+Integer.toString(-map.type[i])+".png");
+                else if(map.type[i] == 4096)  item[i] = new Box("src\\model\\data\\image\\Wall.png");
+                else item[i] = new Box("src\\model\\data\\image\\"+map.type[i]+".png");
             }
             for (int i = 0; i < tot; i++) item[i].setId(i);
         });
@@ -87,7 +88,7 @@ public class Game_2048 extends NormalFrame implements Serializable, Activator {
                 if(map.type[i] < 0) currentSite = i;
             }
 
-            exited = new Button("src\\model\\data\\image\\background.png","src\\model\\data\\image\\background.png");
+            exited = new Button("src\\model\\data\\image\\back_0.png","src\\model\\data\\image\\back_1.png");
             add(exited);
             exited.setBounds(0,0,size,size);
             exited.addMouseListener(new MouseAdapter() {
@@ -99,7 +100,7 @@ public class Game_2048 extends NormalFrame implements Serializable, Activator {
             });
             exited.activate();
 
-            reset = new Button("src\\model\\data\\image\\background.png","src\\model\\data\\image\\background.png");
+            reset = new Button("src\\model\\data\\image\\restart_0.png","src\\model\\data\\image\\restart_1.png");
             add(reset);
             reset.setBounds(0,0,size,size);
             reset.addMouseListener(new MouseAdapter() {
@@ -111,7 +112,7 @@ public class Game_2048 extends NormalFrame implements Serializable, Activator {
             });
             reset.activate();
 
-            hint = new Button("src\\model\\data\\image\\background.png","src\\model\\data\\image\\background.png");
+            hint = new Button("src\\model\\data\\image\\hint.png","src\\model\\data\\image\\hint.png");
             add(hint);
             hint.setBounds(0,0,size,size);
             hint.addMouseListener(new MouseAdapter() {
@@ -123,7 +124,7 @@ public class Game_2048 extends NormalFrame implements Serializable, Activator {
             });
             hint.activate();
 
-            withdraw = new Button("src\\model\\data\\image\\background.png","src\\model\\data\\image\\background.png");
+            withdraw = new Button("src\\model\\data\\image\\undo.png","src\\model\\data\\image\\undo.png");
             add(withdraw);
             withdraw.setBounds(0,0,size,size);
             withdraw.addMouseListener(new MouseAdapter() {
@@ -140,12 +141,12 @@ public class Game_2048 extends NormalFrame implements Serializable, Activator {
             step.setBounds(0,0,size,size);
             step.activate();
 
-            background = new Item("src\\model\\data\\image\\background.png") {};
+            background = new Item("src\\model\\data\\image\\normalbackground.png") {};
             add(background);
             background.setBounds(0,0,size*(col+1), size*(row+1));
             background.activate();
 
-            column = new Item("src\\model\\data\\image\\background.png") {};
+            column = new Item("src\\model\\data\\image\\woodground.jpg") {};
             add(column);
             column.setBounds(0,0,size*(col+1), size*(row+1));
             column.activate();
